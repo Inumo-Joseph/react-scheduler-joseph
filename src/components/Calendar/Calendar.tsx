@@ -1,11 +1,19 @@
-import { ChangeEvent, FC, useCallback, useEffect, useRef, useState } from "react";
+import React, { ChangeEvent, FC, useCallback, useEffect, useRef, useState } from "react";
 import debounce from "lodash.debounce";
 import { useCalendar } from "@/context/CalendarProvider";
-import { Day, SchedulerData, SchedulerProjectData, TooltipData, ZoomLevel } from "@/types/global";
+import {
+  Day,
+  SchedulerData,
+  SchedulerProjectData,
+  TooltipData,
+  ZoomLevel,
+  SchedulerRow
+} from "@/types/global";
 import { getTooltipData } from "@/utils/getTooltipData";
 import { usePagination } from "@/hooks/usePagination";
 import EmptyBox from "../EmptyBox";
 import { Grid, Header, LeftColumn, Tooltip } from "..";
+import UsersIcon from "../UserIcon";
 import { CalendarProps } from "./types";
 import { StyledOuterWrapper, StyledInnerWrapper, StyledEmptyBoxWrapper } from "./styles";
 
@@ -21,10 +29,12 @@ const initialTooltipData: TooltipData = {
 
 export const Calendar: FC<CalendarProps> = ({
   data,
-  onTileClick,
   onItemClick,
   toggleTheme,
-  topBarWidth
+  topBarWidth,
+  renderData,
+  isHidden,
+  setIsHidden
 }) => {
   const [tooltipData, setTooltipData] = useState<TooltipData>(initialTooltipData);
   const [filteredData, setFilteredData] = useState(data);
@@ -35,7 +45,23 @@ export const Calendar: FC<CalendarProps> = ({
     startDate,
     config: { includeTakenHoursOnWeekendsInDayView, showTooltip, showThemeToggle }
   } = useCalendar();
+
   const gridRef = useRef<HTMLDivElement>(null);
+  // const tileRef = useRef<Record<string, React.RefObject<HTMLButtonElement>>>({});
+  const tileRef = useRef<HTMLButtonElement>(null);
+
+  const [hoveredTileData, setHoveredTileData] = useState<SchedulerProjectData | null>(null);
+  const [hoveredTileRef, setHoveredTileRef] = useState<React.RefObject<HTMLButtonElement> | null>(
+    null
+  );
+
+  console.log("IsHidden in Calendar ---------", isHidden);
+
+  const handleTileHover = (data: SchedulerProjectData, ref: React.RefObject<HTMLButtonElement>) => {
+    setHoveredTileData(data);
+    setHoveredTileRef(ref);
+  };
+
   const {
     page,
     projectsPerPerson,
@@ -47,6 +73,7 @@ export const Calendar: FC<CalendarProps> = ({
     previous,
     reset
   } = usePagination(filteredData);
+
   const debouncedHandleMouseOver = useRef(
     debounce(
       (
@@ -56,7 +83,8 @@ export const Calendar: FC<CalendarProps> = ({
         projectsPerPerson: SchedulerProjectData[][][],
         zoom: ZoomLevel
       ) => {
-        if (!gridRef.current) return;
+        if (!gridRef?.current) return;
+
         const { left, top } = gridRef.current.getBoundingClientRect();
         const tooltipCoords = { x: e.clientX - left, y: e.clientY - top };
         const {
@@ -71,12 +99,14 @@ export const Calendar: FC<CalendarProps> = ({
           zoom,
           includeTakenHoursOnWeekendsInDayView
         );
+
         setTooltipData({ coords: { x, y }, resourceIndex, disposition });
         setIsVisible(true);
       },
       300
     )
   );
+
   const debouncedFilterData = useRef(
     debounce((dataToFilter: SchedulerData, enteredSearchPhrase: string) => {
       reset();
@@ -104,10 +134,8 @@ export const Calendar: FC<CalendarProps> = ({
   useEffect(() => {
     const handleMouseOver = (e: MouseEvent) =>
       debouncedHandleMouseOver.current(e, startDate, rowsPerItem, projectsPerPerson, zoom);
-    const gridArea = gridRef.current;
-
+    const gridArea = gridRef?.current;
     if (!gridArea) return;
-
     gridArea.addEventListener("mousemove", handleMouseOver);
     gridArea.addEventListener("mouseleave", handleMouseLeave);
 
@@ -119,9 +147,8 @@ export const Calendar: FC<CalendarProps> = ({
 
   useEffect(() => {
     if (searchPhrase) return;
-
     setFilteredData(data);
-  }, [data, searchPhrase]);
+  }, [data, searchPhrase, hoveredTileData]);
 
   return (
     <StyledOuterWrapper>
@@ -149,16 +176,24 @@ export const Calendar: FC<CalendarProps> = ({
             zoom={zoom}
             rows={totalRowsPerPage}
             ref={gridRef}
-            onTileClick={onTileClick}
+            onTileHover={handleTileHover}
+            projectData={data}
+            isHidden={isHidden}
+            setIsHidden={setIsHidden}
           />
         ) : (
           <StyledEmptyBoxWrapper width={topBarWidth}>
             <EmptyBox />
           </StyledEmptyBoxWrapper>
         )}
-        {showTooltip && isVisible && tooltipData?.resourceIndex > -1 && (
-          <Tooltip tooltipData={tooltipData} zoom={zoom} />
-        )}
+        {/* {showTooltip && isVisible && tooltipData?.resourceIndex > -1 && (
+          <div
+          onMouseEnter={()=>setIsHoveringTooltip(true)}
+          onMouseLeave={()=>setIsHoveringTooltip(false)}
+          >
+          <Tooltip tooltipData={tooltipData} zoom={zoom} content={toolContent(hoveredTileData?.users ?? [''])} />
+          </div>
+        )} */}
       </StyledInnerWrapper>
     </StyledOuterWrapper>
   );

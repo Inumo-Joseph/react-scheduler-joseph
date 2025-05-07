@@ -1,10 +1,19 @@
-import { SchedulerProjectData } from "@/types/global";
+import { Ref } from "react";
+import { SchedulerData, SchedulerProjectData } from "@/types/global";
 
 export type TileProps = {
   row: number;
   data: SchedulerProjectData;
   zoom: number;
-  onTileClick?: (data: SchedulerProjectData) => void;
+  renderData?: React.ReactNode;
+  reportPosition?: (
+    id: string,
+    pos: { x: number; y: number; width: number; height: number }
+  ) => void;
+  projectData: SchedulerData;
+  tileRef?: React.RefObject<HTMLButtonElement>;
+  isHidden?: boolean;
+  setIsHidden: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export type StyledTextProps = {

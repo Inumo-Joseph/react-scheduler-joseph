@@ -3,9 +3,12 @@ import { SchedulerData, SchedulerItemClickData, SchedulerProjectData } from "@/t
 export type CalendarProps = {
   data: SchedulerData;
   topBarWidth: number;
-  onTileClick?: (data: SchedulerProjectData) => void;
   onItemClick?: (data: SchedulerItemClickData) => void;
   toggleTheme?: () => void;
+  renderData?: React.ReactNode;
+  schedulerRef?: React.RefObject<HTMLDivElement>;
+  isHidden?: boolean;
+  setIsHidden: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export type StyledSpanProps = {

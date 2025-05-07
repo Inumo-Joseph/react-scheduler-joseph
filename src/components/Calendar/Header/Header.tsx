@@ -16,11 +16,10 @@ const Header: FC<HeaderProps> = ({ zoom, topBarWidth, showThemeToggle, toggleThe
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const theme = useTheme();
-
   const handleResize = useCallback(
     (ctx: CanvasRenderingContext2D) => {
       const width = getCanvasWidth();
-      const currentHeaderHeight = zoom === 2 ? zoom2HeaderHeight : headerHeight;
+      const currentHeaderHeight = zoom === 3 ? zoom2HeaderHeight : headerHeight;
       const height = currentHeaderHeight + 1;
       resizeCanvas(ctx, width, height);
 

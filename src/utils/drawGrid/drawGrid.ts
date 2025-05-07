@@ -4,6 +4,7 @@ import { Theme } from "@/styles";
 import { drawMonthlyView } from "./drawMonthlyView";
 import { drawYearlyView } from "./drawYearlyView";
 import { drawHourlyView } from "./drawHourlyView";
+import { drawQuarterlyView } from "./drawQuarterlyView";
 
 export const drawGrid = (
   ctx: CanvasRenderingContext2D,
@@ -18,6 +19,9 @@ export const drawGrid = (
   if (!canvasWrapper) return;
 
   switch (zoom) {
+    // case 0:
+    //   drawQuarterlyView(ctx,rows,parsedStartDate,theme)
+    //   break;
     case 0:
       drawYearlyView(ctx, rows, cols, parsedStartDate, theme);
       break;

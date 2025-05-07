@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { weekWidth, boxHeight, dayWidth, zoom2ColumnWidth } from "@/constants";
+import { weekWidth, boxHeight, dayWidth, zoom2ColumnWidth, monthWidth } from "@/constants";
 import { Day, Coords, SchedulerProjectData, TooltipData, ZoomLevel } from "@/types/global";
 import { getOccupancy } from "./getOccupancy";
 
@@ -16,16 +16,19 @@ export const getTooltipData = (
   switch (zoom) {
     case 0:
       timeUnit = "weeks";
-      currBoxWidth = weekWidth;
+      currBoxWidth = monthWidth;
       break;
     case 1:
+      timeUnit = "weeks";
+      currBoxWidth = weekWidth;
+      break;
+    case 2:
       timeUnit = "days";
       currBoxWidth = dayWidth;
       break;
-    case 2:
+    case 3:
       timeUnit = "hours";
       currBoxWidth = zoom2ColumnWidth;
-      break;
   }
   const column =
     zoom === 2
@@ -50,5 +53,6 @@ export const getTooltipData = (
     zoom,
     includeTakenHoursOnWeekendsInDayView
   );
+
   return { coords: { x: xPos, y: yPos }, resourceIndex, disposition };
 };

@@ -1,5 +1,6 @@
 import { prefixId } from "./styles";
 
+export const monthWidth = 25;
 export const dayWidth = 50;
 export const headerMonthHeight = 24;
 export const headerWeekHeight = 16;
@@ -35,7 +36,7 @@ export const canvasHeaderWrapperId = "reactSchedulerCanvasHeaderWrapper";
 export const canvasWrapperId = "reactSchedulerCanvasWrapper";
 export const outsideWrapperId = prefixId;
 export const tileYOffset = 4;
-export const tileHeight = 48;
+export const tileHeight = 30;
 export const formFieldsIds = {
   peopleCount: "peopleCount",
   projectsPerYear: "projectsPerYear",
@@ -44,6 +45,8 @@ export const formFieldsIds = {
   maxRecordsPerPage: "maxRecordsPerPage",
   isFullscreen: "isFullscreen"
 };
+export const yearViewMonthLabelFont = "bold 12px Inter";
+export const yearViewMonthLabelHeight = 16;
 export const businessDays = 5;
 export const maxHoursPerWeek = 40;
 export const maxHoursPerDay = 8;

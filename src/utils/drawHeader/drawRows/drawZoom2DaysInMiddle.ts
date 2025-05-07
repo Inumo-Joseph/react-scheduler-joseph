@@ -17,9 +17,7 @@ export const drawZoom2DaysInMiddle = (
   theme: Theme
 ) => {
   const daysInRange = Math.floor(cols / hoursInDay) + 2;
-
   const width = hoursInDay * zoom2ColumnWidth;
-
   const startDateHour = dayjs(
     `${startDate.year}-${startDate.month + 1}-${startDate.dayOfMonth}T${startDate.hour}:00:00`
   );

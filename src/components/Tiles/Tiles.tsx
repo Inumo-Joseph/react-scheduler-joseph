@@ -1,8 +1,20 @@
-import { FC, useCallback } from "react";
+import { FC, useCallback, useEffect, useRef, useState } from "react";
 import { Tile } from "..";
 import { PlacedTiles, TilesProps } from "./types";
 
-const Tiles: FC<TilesProps> = ({ data, zoom, onTileClick }) => {
+const Tiles: FC<TilesProps> = ({
+  data,
+  zoom,
+  onTileClick,
+  onTileHover,
+  renderData,
+  reportPosition,
+  projectData,
+  isHidden,
+  setIsHidden
+}) => {
+  console.log("IsHidden in Tiles ---", isHidden);
+
   const placeTiles = useCallback((): PlacedTiles => {
     let rows = 0;
     return data
@@ -10,20 +22,27 @@ const Tiles: FC<TilesProps> = ({ data, zoom, onTileClick }) => {
         if (personIndex > 0) {
           rows += Math.max(data[personIndex - 1].data.length, 1);
         }
-        return person.data.map((projectsPerRow, rowIndex) =>
+
+        const personData = person.data.map((projectsPerRow, rowIndex) =>
           projectsPerRow.map((project) => (
             <Tile
               key={project.id}
               row={rowIndex + rows}
               data={project}
               zoom={zoom}
-              onTileClick={onTileClick}
+              renderData={renderData}
+              projectData={projectData}
+              reportPosition={reportPosition}
+              isHidden={isHidden}
+              setIsHidden={setIsHidden}
             />
           ))
         );
+
+        return personData;
       })
       .flat(2);
-  }, [data, onTileClick, zoom]);
+  }, [data, onTileClick, zoom, renderData]);
 
   return <>{placeTiles()}</>;
 };

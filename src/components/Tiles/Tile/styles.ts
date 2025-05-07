@@ -3,21 +3,20 @@ import { leftColumnWidth, tileHeight } from "@/constants";
 import { marginPaddingReset, truncate } from "@/styles";
 import { StyledTextProps } from "./types";
 
-export const StyledTileWrapper = styled.button`
+export const StyledTileWrapper = styled.div`
   ${marginPaddingReset}
   height: ${tileHeight}px;
   position: absolute;
   outline: none;
   border: none;
-  border-radius: 4px;
+  border-radius: 5px;
   text-align: left;
   color: ${({ theme }) => theme.colors.textPrimary};
   width: 100%;
-  cursor: pointer;
 `;
 
 export const StyledTextWrapper = styled.div`
-  margin: 10px 16px;
+  margin: 5px 16px;
   position: relative;
   display: flex;
   font-size: 10px;

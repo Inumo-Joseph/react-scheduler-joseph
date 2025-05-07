@@ -15,11 +15,13 @@ const Scheduler = ({
   config,
   startDate,
   onRangeChange,
-  onTileClick,
   onFilterData,
   onClearFilterData,
   onItemClick,
-  isLoading
+  isLoading,
+  renderData,
+  isHidden,
+  setIsHidden
 }: SchedulerProps) => {
   const appConfig: Config = useMemo(
     () => ({
@@ -50,6 +52,8 @@ const Scheduler = ({
       ...customColors
     }
   };
+
+  console.log("IsHidden in Sceduler ----------- ", isHidden);
 
   useEffect(() => {
     const handleResize = () => {
@@ -86,10 +90,13 @@ const Scheduler = ({
               <StyledInnerWrapper>
                 <Calendar
                   data={data}
-                  onTileClick={onTileClick}
+                  renderData={renderData}
                   topBarWidth={topBarWidth ?? 0}
                   onItemClick={onItemClick}
                   toggleTheme={toggleTheme}
+                  schedulerRef={outsideWrapperRef}
+                  isHidden={isHidden}
+                  setIsHidden={setIsHidden}
                 />
               </StyledInnerWrapper>
             </StyledOutsideWrapper>

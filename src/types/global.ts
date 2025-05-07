@@ -1,7 +1,7 @@
 import { LocaleType } from "@/context/LocaleProvider/types";
 import { ColorType } from "@/styles";
 
-export const allZoomLevel = [0, 1, 2] as const;
+export const allZoomLevel = [0, 1, 2, 3] as const;
 
 export type FilterButtonState = -1 | 0 | 1;
 
@@ -114,6 +114,12 @@ export type SchedulerProjectData = {
    * Background color of the tile, given in rgb color model. If not given, default color (rgb(114, 141,226 )) is set. Optional
    */
   bgColor?: string;
+  /**
+   * ID of the parent task this one depends on. Optional.
+   */
+  dependency?: string;
+
+  users?: any[];
 };
 
 export type Day = {
@@ -126,6 +132,7 @@ export type Day = {
   isBusinessDay: boolean;
   isCurrentDay: boolean;
   year: number;
+  dayOfYear: number;
 };
 
 export type TextAndBoxStyleConfig = {
@@ -186,6 +193,7 @@ export type OccupancyData = {
   taken: TimeUnits;
   free: TimeUnits;
   overtime: TimeUnits;
+  users?: any[];
 };
 
 export type TooltipData = {

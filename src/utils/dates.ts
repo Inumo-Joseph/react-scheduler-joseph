@@ -24,6 +24,7 @@ export const parseDay = (data: dayjs.Dayjs): Day => {
     monthName: data.format("MMMM"),
     isBusinessDay: getIsBusinessDay(data),
     isCurrentDay: data.isSame(dayjs(), "day"),
-    year: parseInt(data.format("YYYY"))
+    year: parseInt(data.format("YYYY")),
+    dayOfYear: parseInt(data.format("YYYY"))
   };
 };
