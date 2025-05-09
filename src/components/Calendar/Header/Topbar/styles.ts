@@ -21,7 +21,7 @@ export const Wrapper = styled.div<TopbarProps>`
   align-items: center;
   height: ${({ theme }) => theme.navHeight};
   padding: 0.625rem 1rem;
-  background-color: ${({ theme }) => theme.colors.background};
+  background-color: transparent;
   z-index: 3;
 `;
 
@@ -48,6 +48,8 @@ export const Today = styled.button`
   position: relative;
   font-weight: 600;
   cursor: pointer;
+  border-radius: 50%;
+  border-color:rgb(0, 0, 0)
   line-height: 1.5rem;
   color: ${({ theme }) => theme.colors.textPrimary};
 

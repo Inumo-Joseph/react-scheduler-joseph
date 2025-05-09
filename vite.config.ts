@@ -5,6 +5,7 @@ import react from "@vitejs/plugin-react";
 import dts from "vite-plugin-dts";
 import { visualizer } from "rollup-plugin-visualizer";
 import svgr from "vite-plugin-svgr";
+import "tailwindcss";
 
 export default defineConfig({
   resolve: {

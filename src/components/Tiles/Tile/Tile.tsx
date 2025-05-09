@@ -1,7 +1,9 @@
 import { FC, useRef, useEffect, useLayoutEffect, useState, useCallback } from "react";
 import { useTheme } from "styled-components";
 import debounce from "lodash.debounce";
-import { Popup } from "semantic-ui-react";
+import Button, { Popup } from "semantic-ui-react";
+import { render } from "react-dom";
+import { Link, Trash2 } from "lucide-react";
 import { useCalendar } from "@/context/CalendarProvider";
 import { getDatesRange } from "@/utils/getDatesRange";
 import { getTileProperties } from "@/utils/getTileProperties";
@@ -19,6 +21,7 @@ import {
   StyledTextWrapper,
   StyledTileWrapper
 } from "./styles";
+import "semantic-ui-css/semantic.min.css";
 
 const initialTooltipData: TooltipData = {
   coords: { x: 0, y: 0 },
@@ -30,15 +33,7 @@ const initialTooltipData: TooltipData = {
   }
 };
 
-const Tile: FC<TileProps> = ({
-  row,
-  data,
-  renderData,
-  reportPosition,
-  projectData,
-  isHidden,
-  setIsHidden
-}) => {
+const Tile: FC<TileProps> = ({ row, data, renderData, reportPosition, projectData }) => {
   const { date } = useCalendar();
   const tileRef = useRef<HTMLDivElement>(null);
   const [popupOpen, setPopupOpen] = useState(false);
@@ -150,48 +145,45 @@ const Tile: FC<TileProps> = ({
     }
   }, [zoom, row, data]);
 
+  const [isHidden, setIsHidden] = useState(false);
   const endDate = new Date(data.endDate);
   const now = new Date();
   const isPast = endDate < now;
   const effectiveIsHidden = isPast ? true : isHidden;
 
-  console.log("IsHidden in Tile for ", isHidden, data.id);
-
   return (
     <div onMouseEnter={() => setPopupOpen(true)} onMouseLeave={() => setPopupOpen(false)}>
       <Popup
         open={popupOpen}
+        size="mini"
         position="top left"
-        contentStyle={{ marginTop: "-40px", marginLeft: "10px" }}
         on="hover" // optional: removes focus/click toggle behavior
         content={() => {
           return (
-            <StyledTooltipWrapper>
-              <div
-                className="flex flex-col items-start "
-                style={{ color: "white", display: "flex", flexDirection: "row" }}>
-                <button
-                  style={{
-                    margin: "4px",
-                    background: isHidden ? "#e04658" : "#038759",
-                    border: "2px solid white",
-                    color: "white",
-                    cursor: "pointer",
-                    borderRadius: "4px",
-                    fontSize: "0.6rem"
-                  }}
-                  onClick={() => {
-                    setIsHidden((prev) => {
-                      const newVal = !prev;
-                      console.log("isHidden will be:", newVal);
-                      return newVal;
-                    });
-                  }}>
-                  {isHidden ? "Undo" : "Done"}
-                </button>
-                {renderData}
-              </div>
-            </StyledTooltipWrapper>
+            <div
+              className="flex flex-col items-start "
+              style={{ color: "white", display: "flex", flexDirection: "row" }}>
+              <button
+                style={{
+                  background: isHidden ? "#e04658" : "#038759",
+                  border: "2px solid white",
+                  color: "white",
+                  cursor: "pointer",
+                  borderRadius: "4px",
+                  fontSize: "0.6rem"
+                }}
+                onClick={() => {
+                  setIsHidden((prev) => {
+                    const newVal = !prev;
+                    console.log("isHidden will be:", newVal);
+                    return newVal;
+                  });
+                }}>
+                {isHidden ? "Undo" : "Done"}
+              </button>
+
+              {renderData}
+            </div>
           );
         }}
         trigger={

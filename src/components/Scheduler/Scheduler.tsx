@@ -1,6 +1,7 @@
 import { ThemeProvider } from "styled-components";
 import { useEffect, useMemo, useRef, useState } from "react";
 import dayjs from "dayjs";
+import { render } from "react-dom";
 import { Calendar } from "@/components";
 import CalendarProvider from "@/context/CalendarProvider";
 import LocaleProvider from "@/context/LocaleProvider";

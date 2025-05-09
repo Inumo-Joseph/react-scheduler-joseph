@@ -12,8 +12,7 @@ export type TileProps = {
   ) => void;
   projectData: SchedulerData;
   tileRef?: React.RefObject<HTMLButtonElement>;
-  isHidden?: boolean;
-  setIsHidden: React.Dispatch<React.SetStateAction<boolean>>;
+  datePassed?: boolean;
 };
 
 export type StyledTextProps = {

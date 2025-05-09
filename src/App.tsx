@@ -1,5 +1,6 @@
 import { useCallback, useMemo, useState } from "react";
 import dayjs from "dayjs";
+import { Link } from "lucide-react";
 import { createMockData } from "./mock/appMock";
 import { ParsedDatesRange } from "./utils/getDatesRange";
 import { ConfigFormValues, SchedulerProjectData } from "./types/global";
@@ -29,33 +30,13 @@ function App() {
 
   const renderData = () => {
     return (
-      <StyledTooltipWrapper>
-        <div
-          className="flex flex-col items-start "
-          style={{ color: "white", display: "flex", flexDirection: "row" }}>
-          <button
-            style={{
-              margin: "4px",
-              background: isHidden ? "#e04658" : "#038759",
-              border: "2px solid white",
-              color: "white",
-              cursor: "pointer",
-              borderRadius: "4px",
-              fontSize: "0.6rem"
-            }}
-            onClick={() => {
-              setIsHidden((prev) => {
-                const newVal = !prev;
-                console.log("isHidden will be:", newVal);
-                return newVal;
-              });
-            }}>
-            {isHidden ? "Undo" : "Done"}
-          </button>
-        </div>
-      </StyledTooltipWrapper>
+      <div>
+        <Link className="!w-3 !h-3" />
+      </div>
     );
   };
+
+  console.log("ReNDER DATA IN APP", renderData());
 
   const dummyData = [
     {
@@ -178,15 +159,6 @@ function App() {
 
   const handleFilterData = () => console.log(`Filters button was clicked.`);
 
-  const handleTileClick = (data: SchedulerProjectData) =>
-    console.log(
-      `Item ${data.title} - ${data.subtitle} was clicked. \n==============\nStart date: ${data.startDate} \n==============\nEnd date: ${data.endDate}\n==============\nOccupancy: ${data.occupancy}`
-    );
-  const handleTileHover = (data: SchedulerProjectData) => {
-    console.log("Hovered tile:", data.title);
-    // Use this to set tooltip data or do anything else
-  };
-
   return (
     <>
       <ConfigPanel values={values} onSubmit={setValues} />
@@ -197,6 +169,7 @@ function App() {
           data={filteredData}
           isLoading={false}
           onFilterData={handleFilterData}
+          renderData={renderData()}
           config={{ zoom: 1, maxRecordsPerPage: maxRecordsPerPage, showThemeToggle: false }}
           onItemClick={(data) => console.log("clicked: ", data)}
           isHidden={isHidden}
@@ -209,7 +182,11 @@ function App() {
             onRangeChange={handleRangeChange}
             isLoading={false}
             data={filteredData}
-            renderData={renderData()}
+            renderData={
+              <div>
+                <Link className="!w-3 !h-3" />
+              </div>
+            }
             onFilterData={handleFilterData}
             onItemClick={(data) => console.log("clicked: ", data)}
             isHidden={isHidden}

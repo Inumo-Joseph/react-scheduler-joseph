@@ -33,8 +33,7 @@ const Tiles: FC<TilesProps> = ({
               renderData={renderData}
               projectData={projectData}
               reportPosition={reportPosition}
-              isHidden={isHidden}
-              setIsHidden={setIsHidden}
+              datePassed={isHidden}
             />
           ))
         );
