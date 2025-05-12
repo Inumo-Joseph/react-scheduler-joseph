@@ -9,8 +9,8 @@ export type GridProps = {
   renderData?: React.ReactNode;
   projectData: SchedulerData;
   schedulerRef?: React.RefObject<HTMLButtonElement>;
-  isHidden?: boolean;
-  setIsHidden: React.Dispatch<React.SetStateAction<boolean>>;
+  truncateText?: boolean;
+  showToggle: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export type StyledSpanProps = {

@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from "react";
 import dayjs from "dayjs";
-import { Link } from "lucide-react";
+import { Link, PanelTopDashed } from "lucide-react";
 import { createMockData } from "./mock/appMock";
 import { ParsedDatesRange } from "./utils/getDatesRange";
 import { ConfigFormValues, SchedulerProjectData } from "./types/global";
@@ -26,8 +26,6 @@ function App() {
     [peopleCount, projectsPerYear, yearsCovered]
   );
 
-  const [isHidden, setIsHidden] = useState(false);
-
   const renderData = () => {
     return (
       <div>
@@ -35,8 +33,6 @@ function App() {
       </div>
     );
   };
-
-  console.log("ReNDER DATA IN APP", renderData());
 
   const dummyData = [
     {
@@ -120,13 +116,30 @@ function App() {
           startDate: new Date("2025-05-10"),
           endDate: new Date("2025-05-013"),
           occupancy: 100,
-          users: ["Colby"]
+          users: ["Colby"],
+          dependency: "task-11"
         },
         {
           id: "task-10",
           title: "Task fifth shift",
+          startDate: new Date("2025-05-6"),
+          endDate: new Date("2025-05-020"),
+          occupancy: 100
+        },
+        {
+          id: "task-11",
+          title: "Fix Flyer Codes",
           startDate: new Date("2025-05-10"),
-          endDate: new Date("2025-06-013"),
+          endDate: new Date("2025-05-013"),
+          occupancy: 100,
+          users: ["Colby"]
+        },
+        {
+          id: "task-12",
+          title: "Cancel Weekend Missions",
+          startDate: new Date("2025-05-05"),
+          endDate: new Date("2025-05-010"),
+          users: ["Dev"],
           occupancy: 100
         }
       ]
@@ -145,18 +158,18 @@ function App() {
   const filteredData = useMemo(
     () =>
       dummyData.map((person) => ({
-        ...person,
-        data: person.data.filter(
-          (project) =>
-            dayjs(project.startDate).isBetween(range.startDate, range.endDate) ||
-            dayjs(project.endDate).isBetween(range.startDate, range.endDate) ||
-            (dayjs(project.startDate).isBefore(range.startDate, "day") &&
-              dayjs(project.endDate).isAfter(range.endDate, "day"))
-        )
+        ...person
+        // data: person.data.filter(
+        //   (project: any) =>
+        //     dayjs(project.startDate).isBetween(range.startDate, range.endDate) ||
+        //     dayjs(project.endDate).isBetween(range.startDate, range.endDate) ||
+        //     (dayjs(project.startDate).isBefore(range.startDate, "day") &&
+        //       dayjs(project.endDate).isAfter(range.endDate, "day"))
+        // )
       })),
     [mocked, range.endDate, range.startDate]
   );
-
+  filteredData.forEach((filtred) => console.log("Filtered DATA", filtred));
   const handleFilterData = () => console.log(`Filters button was clicked.`);
 
   return (
@@ -172,8 +185,6 @@ function App() {
           renderData={renderData()}
           config={{ zoom: 1, maxRecordsPerPage: maxRecordsPerPage, showThemeToggle: false }}
           onItemClick={(data) => console.log("clicked: ", data)}
-          isHidden={isHidden}
-          setIsHidden={setIsHidden}
         />
       ) : (
         <StyledSchedulerFrame>
@@ -184,13 +195,14 @@ function App() {
             data={filteredData}
             renderData={
               <div>
-                <Link className="!w-3 !h-3" />
+                <Link
+                  className={"!w-3 !h-3 stroke-gray-400 hover:stroke-gray-500 cursor-pointer"}
+                  stroke={"green"}
+                />
               </div>
             }
             onFilterData={handleFilterData}
             onItemClick={(data) => console.log("clicked: ", data)}
-            isHidden={isHidden}
-            setIsHidden={setIsHidden}
           />
         </StyledSchedulerFrame>
       )}

@@ -20,9 +20,7 @@ const Scheduler = ({
   onClearFilterData,
   onItemClick,
   isLoading,
-  renderData,
-  isHidden,
-  setIsHidden
+  renderData
 }: SchedulerProps) => {
   const appConfig: Config = useMemo(
     () => ({
@@ -53,8 +51,6 @@ const Scheduler = ({
       ...customColors
     }
   };
-
-  console.log("IsHidden in Sceduler ----------- ", isHidden);
 
   useEffect(() => {
     const handleResize = () => {
@@ -96,8 +92,6 @@ const Scheduler = ({
                   onItemClick={onItemClick}
                   toggleTheme={toggleTheme}
                   schedulerRef={outsideWrapperRef}
-                  isHidden={isHidden}
-                  setIsHidden={setIsHidden}
                 />
               </StyledInnerWrapper>
             </StyledOutsideWrapper>

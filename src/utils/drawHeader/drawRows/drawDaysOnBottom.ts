@@ -8,7 +8,10 @@ import {
   headerDayHeight,
   headerHeight,
   headerMonthHeight,
-  headerWeekHeight
+  headerWeekHeight,
+  zoom2HeaderBottomRowHeight,
+  zoom2HeaderMiddleRowHeight,
+  zoom2HeaderTopRowHeight
 } from "@/constants";
 import { parseDay } from "@/utils/dates";
 import { Theme } from "@/styles";
@@ -24,53 +27,48 @@ export const drawDaysOnBottom = (
 ) => {
   const dayNameYPos = headerHeight - headerDayHeight / dayNameYoffset;
   const dayNumYPos = headerHeight - headerDayHeight / dayNumYOffset;
-  const yPos = headerMonthHeight + headerWeekHeight;
+  const canvasHeight = headerMonthHeight + headerWeekHeight + headerDayHeight;
   let xPos = 0;
+  const yPos = headerMonthHeight + headerWeekHeight + headerDayHeight / 2;
 
   for (let i = 0; i < cols; i++) {
     const day = parseDay(
       dayjs(`${startDate.year}-${startDate.month + 1}-${startDate.dayOfMonth}`).add(i, "days")
     );
-    drawRow(
+    const dayLabel = `${day.dayName.toUpperCase()} ${day.dayOfMonth}`;
+
+    const isToday = day.isCurrentDay;
+
+    // if (isToday) {
+    //   // Draw vertical green line
+    //   ctx.beginPath();
+    //   ctx.moveTo(xPos + dayWidth / 2, 0); // or header height if you only want below header
+    //   ctx.lineTo(xPos + dayWidth / 2, canvasHeight);
+    //   ctx.strokeStyle = "#38A169"; // green
+    //   ctx.lineWidth = 2;
+    //   ctx.stroke();
+    // }
+
+    // Determine styling
+    const textColor = getTextStyle(
       {
-        ctx,
-        x: xPos,
-        y: yPos,
-        width: dayWidth,
-        height: headerDayHeight,
-        isBottomRow: true,
-        fillStyle: getBoxFillStyle(
-          {
-            isCurrent: day.isCurrentDay,
-            isBusinessDay: day.isBusinessDay
-          },
-          theme
-        ),
-        topText: {
-          y: dayNameYPos,
-          label: day.dayName.toUpperCase(),
-          font: fonts.bottomRow.name,
-          color: getTextStyle(
-            { isCurrent: day.isCurrentDay, isBusinessDay: day.isBusinessDay },
-            theme
-          )
-        },
-        bottomText: {
-          y: dayNumYPos,
-          label: `${day.dayOfMonth}`,
-          font: fonts.bottomRow.number,
-          color: getTextStyle(
-            {
-              isCurrent: day.isCurrentDay,
-              isBusinessDay: day.isBusinessDay,
-              variant: "bottomRow"
-            },
-            theme
-          )
-        }
+        isCurrent: day.isCurrentDay,
+        isBusinessDay: day.isBusinessDay,
+        variant: "bottomRow"
       },
       theme
     );
+
+    // Set styles
+    ctx.fillStyle = textColor;
+    ctx.font = fonts.bottomRow.number; // pick a combined or default font
+
+    // Optional: Center text in column
+    const textWidth = ctx.measureText(dayLabel).width;
+    const textX = xPos + (dayWidth - textWidth) / 2;
+
+    // Draw the text
+    ctx.fillText(dayLabel, textX, yPos);
 
     xPos += dayWidth;
   }

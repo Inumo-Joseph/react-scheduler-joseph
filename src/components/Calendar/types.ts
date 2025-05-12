@@ -5,10 +5,8 @@ export type CalendarProps = {
   topBarWidth: number;
   onItemClick?: (data: SchedulerItemClickData) => void;
   toggleTheme?: () => void;
-  renderData?: React.ReactNode;
+  renderData: React.ReactNode;
   schedulerRef?: React.RefObject<HTMLDivElement>;
-  isHidden?: boolean;
-  setIsHidden: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export type StyledSpanProps = {

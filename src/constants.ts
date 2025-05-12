@@ -20,11 +20,11 @@ export const zoom2ButtonJump = 1;
 export const weeksInYear = 52;
 export const navHeight = 44;
 export const fonts = {
-  topRow: "600 14px Inter",
-  middleRow: "400 10px Inter",
+  topRow: "600 14px Arial",
+  middleRow: "400 13px Arial",
   bottomRow: {
-    name: "600 14px Inter",
-    number: "600 10px Inter"
+    name: "600 14px Arial",
+    number: "600 10px Arial"
   }
 };
 export const screenWidthMultiplier = 3;
@@ -36,7 +36,7 @@ export const canvasHeaderWrapperId = "reactSchedulerCanvasHeaderWrapper";
 export const canvasWrapperId = "reactSchedulerCanvasWrapper";
 export const outsideWrapperId = prefixId;
 export const tileYOffset = 4;
-export const tileHeight = 30;
+export const tileHeight = 40;
 export const formFieldsIds = {
   peopleCount: "peopleCount",
   projectsPerYear: "projectsPerYear",

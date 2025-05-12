@@ -1,5 +1,6 @@
 import React, { ChangeEvent, FC, useCallback, useEffect, useRef, useState } from "react";
 import debounce from "lodash.debounce";
+import { ChevronsLeftRightEllipsisIcon } from "lucide-react";
 import { useCalendar } from "@/context/CalendarProvider";
 import {
   Day,
@@ -32,9 +33,7 @@ export const Calendar: FC<CalendarProps> = ({
   onItemClick,
   toggleTheme,
   topBarWidth,
-  renderData,
-  isHidden,
-  setIsHidden
+  renderData
 }) => {
   const [tooltipData, setTooltipData] = useState<TooltipData>(initialTooltipData);
   const [filteredData, setFilteredData] = useState(data);
@@ -48,14 +47,11 @@ export const Calendar: FC<CalendarProps> = ({
 
   const gridRef = useRef<HTMLDivElement>(null);
   // const tileRef = useRef<Record<string, React.RefObject<HTMLButtonElement>>>({});
-  const tileRef = useRef<HTMLButtonElement>(null);
-
+  const [truncateText, setTruncateText] = useState(false);
   const [hoveredTileData, setHoveredTileData] = useState<SchedulerProjectData | null>(null);
   const [hoveredTileRef, setHoveredTileRef] = useState<React.RefObject<HTMLButtonElement> | null>(
     null
   );
-
-  console.log("IsHidden in Calendar ---------", isHidden);
 
   const handleTileHover = (data: SchedulerProjectData, ref: React.RefObject<HTMLButtonElement>) => {
     setHoveredTileData(data);
@@ -74,6 +70,7 @@ export const Calendar: FC<CalendarProps> = ({
     reset
   } = usePagination(filteredData);
 
+  console.log("Page", page);
   const debouncedHandleMouseOver = useRef(
     debounce(
       (
@@ -169,6 +166,8 @@ export const Calendar: FC<CalendarProps> = ({
           topBarWidth={topBarWidth}
           showThemeToggle={showThemeToggle}
           toggleTheme={toggleTheme}
+          truncateText={truncateText}
+          setTruncate={setTruncateText}
         />
         {data.length ? (
           <Grid
@@ -178,8 +177,9 @@ export const Calendar: FC<CalendarProps> = ({
             ref={gridRef}
             onTileHover={handleTileHover}
             projectData={data}
-            isHidden={isHidden}
-            setIsHidden={setIsHidden}
+            truncateText={truncateText}
+            showToggle={setTruncateText}
+            renderData={renderData}
           />
         ) : (
           <StyledEmptyBoxWrapper width={topBarWidth}>

@@ -21,7 +21,13 @@ import {
 } from "./styles";
 import { TopbarProps } from "./types";
 
-const Topbar: FC<TopbarProps> = ({ width, showThemeToggle, toggleTheme }) => {
+const Topbar: FC<TopbarProps> = ({
+  width,
+  showThemeToggle,
+  toggleTheme,
+  setTruncate,
+  truncateText
+}) => {
   const { topbar } = useLanguage();
   const {
     data,
@@ -48,13 +54,13 @@ const Topbar: FC<TopbarProps> = ({ width, showThemeToggle, toggleTheme }) => {
     <Wrapper width={width}>
       {/* <Today onClick={handleGoToday}>{topbar.today}</Today> */}
       <button
-        className="text-[#273754] border border-[#273754] px-3 py-1 rounded-lg"
+        className="text-[#273754] border border-[#273754] bg-[white] px-3 py-1 rounded-lg"
         onClick={handleGoToday}>
         <Calendar />
         <span className="mr-2"> Today</span>
       </button>
 
-      <button className="text-[#273754] border border-[#273754] px-3 py-1 rounded-lg">
+      <button className="text-[#273754] border border-[#273754] bg-[white] px-3 py-1 rounded-lg">
         <Zoom>
           <IconButton
             isDisabled={!isPrevZoom}
@@ -75,15 +81,28 @@ const Topbar: FC<TopbarProps> = ({ width, showThemeToggle, toggleTheme }) => {
         <span className="mr-2"> Days, Weeks, Months, Quarters</span>
       </button>
 
-      <button>
+      <button className="bg-[white] text-[#273754] border border-[#273754] bg-[white] px-3 py-1 rounded-lg">
         <ArrowRightFromLine></ArrowRightFromLine>
       </button>
 
-      <button>
-        <ArrowRightToLineIcon> </ArrowRightToLineIcon>
+      <button
+        className="bg-[white] text-[#273754] border border-[#273754] bg-[white] px-3 py-1 rounded-lg"
+        onClick={() => {
+          setTruncate?.(!truncateText);
+          console.log("setting to", truncateText);
+        }}>
+        <ArrowRightToLineIcon
+          style={{
+            ...(truncateText && {
+              color: "green"
+            })
+          }}></ArrowRightToLineIcon>
       </button>
 
-      <button>Show/Hide Checked Items</button>
+      <button className="bg-[white] text-[#273754] border border-[#273754] bg-[white] px-3 py-1 rounded-lg">
+        Show/Hide Checked Items{" "}
+      </button>
+
       {/* <Filters>
         {filterButtonState >= 0 && (
           <IconButton
@@ -101,6 +120,7 @@ const Topbar: FC<TopbarProps> = ({ width, showThemeToggle, toggleTheme }) => {
           </IconButton>
         )}
       </Filters> */}
+
       <NavigationWrapper>
         <NavBtn disabled={!data?.length} onClick={handleGoPrev}>
           <Icon iconName="arrowLeft" height="15" fill={colors.textPrimary} />

@@ -5,16 +5,18 @@ export type TileProps = {
   row: number;
   data: SchedulerProjectData;
   zoom: number;
-  renderData?: React.ReactNode;
+  renderData: React.ReactNode;
   reportPosition?: (
     id: string,
     pos: { x: number; y: number; width: number; height: number }
   ) => void;
+  truncateText?: boolean;
+  setTruncate?: React.Dispatch<React.SetStateAction<boolean>>;
   projectData: SchedulerData;
   tileRef?: React.RefObject<HTMLButtonElement>;
-  datePassed?: boolean;
 };
 
 export type StyledTextProps = {
   bold?: boolean;
+  truncateText?: boolean;
 };

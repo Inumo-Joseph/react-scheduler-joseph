@@ -1,5 +1,5 @@
 {
-  "name": "@bitnoi.se/react-scheduler-joseph",
+  "name": "react-scheduler-joseph",
   "version": "0.3.0",
   "type": "module",
   "license": "MIT",
@@ -27,7 +27,6 @@
     "lint:fix": "eslint --fix .",
     "format": "prettier --write .",
     "typecheck": "tsc -b",
-    "prepare": "husky install",
     "watch": "vite build --watch"
   },
   "main": "dist/index.umd.js",
@@ -66,7 +65,6 @@
     "styled-components": "5.3.8",
     "styled-normalize": "8.0.7",
     "tailwindcss": "^4.1.5"
-    
   },
   "devDependencies": {
     "@faker-js/faker": "7.6.0",
@@ -88,7 +86,7 @@
     "eslint-plugin-prettier": "4.2.1",
     "eslint-plugin-react": "7.32.2",
     "eslint-plugin-react-hooks": "4.6.0",
-    "husky": "8.0.0",
+    "husky": "^8.0.0",
     "lint-staged": "13.2.0",
     "prettier": "2.8.7",
     "rollup-plugin-visualizer": "5.9.0",

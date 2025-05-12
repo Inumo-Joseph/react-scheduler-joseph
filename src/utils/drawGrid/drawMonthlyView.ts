@@ -24,7 +24,8 @@ export const drawMonthlyView = (
       drawCell(
         ctx,
         y * dayWidth,
-        i * boxHeight,
+        i * 2 * boxHeight,
+        rows,
         dayWidth,
         getIsBusinessDay(date),
         isCurrentDay,

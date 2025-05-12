@@ -18,13 +18,13 @@ const LeftColumnItem: FC<LeftColumnItemProps> = ({ id, item, rows, onItemClick }
       rows={rows}
       onClick={() => onItemClick?.({ id, label: item })}>
       <StyledInnerWrapper>
-        <StyledImageWrapper>
+        {/* <StyledImageWrapper>
           {item.icon ? (
             <StyledImage src={item.icon} alt="Icon"></StyledImage>
           ) : (
             <Icon iconName="defaultAvatar" />
           )}
-        </StyledImageWrapper>
+        </StyledImageWrapper> */}
         <StyledTextWrapper>
           <StyledText isMain>{item.title}</StyledText>
           <StyledText>{item.subtitle}</StyledText>

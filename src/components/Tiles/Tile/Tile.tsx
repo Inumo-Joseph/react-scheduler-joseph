@@ -2,8 +2,7 @@ import { FC, useRef, useEffect, useLayoutEffect, useState, useCallback } from "r
 import { useTheme } from "styled-components";
 import debounce from "lodash.debounce";
 import Button, { Popup } from "semantic-ui-react";
-import { render } from "react-dom";
-import { Link, Trash2 } from "lucide-react";
+import { Link, LinkIcon, Trash2 } from "lucide-react";
 import { useCalendar } from "@/context/CalendarProvider";
 import { getDatesRange } from "@/utils/getDatesRange";
 import { getTileProperties } from "@/utils/getTileProperties";
@@ -11,8 +10,7 @@ import { getTileTextColor } from "@/utils/getTileTextColor";
 import { Day, SchedulerProjectData, TooltipData, ZoomLevel } from "@/types/global";
 import { getTooltipData } from "@/utils/getTooltipData";
 import { usePagination } from "@/hooks/usePagination";
-import { StyledTooltipWrapper } from "../../../../src/components/Tooltip/styles";
-import UsersIcon from "../../../../src/components/UserIcon";
+// import UsersIcon from "../../../../src/components/UserIcon";
 import { TileProps } from "./types";
 import {
   StyledDescription,
@@ -33,7 +31,14 @@ const initialTooltipData: TooltipData = {
   }
 };
 
-const Tile: FC<TileProps> = ({ row, data, renderData, reportPosition, projectData }) => {
+const Tile: FC<TileProps> = ({
+  row,
+  data,
+  renderData,
+  reportPosition,
+  projectData,
+  truncateText
+}) => {
   const { date } = useCalendar();
   const tileRef = useRef<HTMLDivElement>(null);
   const [popupOpen, setPopupOpen] = useState(false);
@@ -57,7 +62,6 @@ const Tile: FC<TileProps> = ({ row, data, renderData, reportPosition, projectDat
   const [hoveredTileData, setHoveredTileData] = useState<SchedulerProjectData | null>(null);
   const [tooltipData, setTooltipData] = useState<TooltipData>(initialTooltipData);
   const [isVisible, setIsVisible] = useState(false);
-  const [popupPosition, setPopupPosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
 
   const handleTileHover = (data: SchedulerProjectData) => {
     setHoveredTileData(data);
@@ -166,8 +170,11 @@ const Tile: FC<TileProps> = ({ row, data, renderData, reportPosition, projectDat
               <button
                 style={{
                   background: isHidden ? "#e04658" : "#038759",
-                  border: "2px solid white",
+                  border: "3px solid white",
                   color: "white",
+                  display: "flex",
+                  flexDirection: "row",
+                  padding: "2px",
                   cursor: "pointer",
                   borderRadius: "4px",
                   fontSize: "0.6rem"
@@ -175,14 +182,18 @@ const Tile: FC<TileProps> = ({ row, data, renderData, reportPosition, projectDat
                 onClick={() => {
                   setIsHidden((prev) => {
                     const newVal = !prev;
-                    console.log("isHidden will be:", newVal);
                     return newVal;
                   });
                 }}>
                 {isHidden ? "Undo" : "Done"}
               </button>
+              {/* <LinkIcon></LinkIcon> */}
 
-              {renderData}
+              {/* <UsersIcon users={data.users} zoom={zoom} /> */}
+              <Trash2></Trash2>
+              <div style={{ color: "black", display: "flex" }} className=" pt-1 pl-1">
+                {renderData}
+              </div>
             </div>
           );
         }}
@@ -201,15 +212,17 @@ const Tile: FC<TileProps> = ({ row, data, renderData, reportPosition, projectDat
               <StyledStickyWrapper>
                 <>
                   {/* UsersIcon and Title on the same line */}
-                  <div style={{ display: "flex", alignItems: "center", gap: "7px" }}>
-                    <UsersIcon users={data.users} zoom={zoom} />
+                  <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                    {/* <UsersIcon users={data.users} zoom={zoom} /> */}
                     <StyledText
                       bold
                       style={{
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                        whiteSpace: "nowrap",
-                        color: "black"
+                        color: "black",
+                        ...(truncateText && {
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          whiteSpace: "nowrap"
+                        })
                       }}>
                       {data.title}
                     </StyledText>

@@ -1,4 +1,5 @@
 import styled, { createGlobalStyle, type DefaultTheme } from "styled-components";
+import { css } from "styled-components";
 
 export const prefixId = "reactSchedulerOutsideWrapper";
 
@@ -58,7 +59,7 @@ export const theme: DefaultTheme = {
 
     textPrimary: "#1C222F",
     textSecondary: "#FFFFFF",
-    placeholder: "#777777",
+    placeholder: "#1C222F",
 
     button: "#FFFFFF",
     border: "#D2D2D2",
@@ -105,10 +106,10 @@ margin: 0;
 padding: 0;
 `;
 
-export const truncate = `
-overflow: hidden;
-text-overflow: ellipsis;
-white-space: nowrap;
+export const truncate = css`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 export const StyledSchedulerFrame = styled.div`

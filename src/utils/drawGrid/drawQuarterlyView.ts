@@ -22,7 +22,7 @@ export const drawQuarterlyView = (
     const isCurrentDay = currentDate.isSame(dayjs(), "month");
 
     for (let y = 0; y < rows; y++) {
-      drawCell(ctx, xPos, y * boxHeight, singleDayWidth, true, isCurrentDay, theme);
+      drawCell(ctx, xPos, y * boxHeight, rows, singleDayWidth, true, isCurrentDay, theme);
     }
 
     xPos += singleDayWidth;

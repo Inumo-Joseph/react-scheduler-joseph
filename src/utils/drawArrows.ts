@@ -22,13 +22,16 @@ export function drawArrow(
   // Adjust startX left if overlapping
   const condition = () => to.x < startX + padding && startX > from.x + padding;
   while (condition()) startX -= 5;
-  startX -= 15;
+  startX -= 0;
 
   const startY = options.barHeight + (padding + options.barHeight) * from._index + padding / 2;
-
   const endX = to.x;
   const endY =
-    options.headerHeight + options.barHeight + (padding + options.barHeight) * to._index + padding;
+    options.headerHeight +
+    options.barHeight +
+    (padding + options.barHeight) * to._index +
+    padding -
+    10;
 
   const clockwise = fromBelowTo ? 1 : 0;
   const curveY = fromBelowTo ? -curve : curve;

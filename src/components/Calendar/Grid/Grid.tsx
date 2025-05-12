@@ -12,7 +12,7 @@ import { GridProps } from "./types";
 import { StyledCanvas, StyledInnerWrapper, StyledSpan, StyledWrapper } from "./styles";
 
 const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
-  { zoom, rows, data, renderData, projectData, isHidden, setIsHidden },
+  { zoom, rows, data, renderData, truncateText, projectData, showToggle },
   ref
 ) {
   const { handleScrollNext, handleScrollPrev, date, isLoading, cols, startDate } = useCalendar();
@@ -34,7 +34,7 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
     }));
   };
 
-  console.log("IsHidden in Grid-----", isHidden);
+  console.log("Set tile Positions");
   const handleResize = useCallback(
     (ctx: CanvasRenderingContext2D) => {
       const width = getCanvasWidth();
@@ -125,8 +125,8 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
           zoom={zoom}
           renderData={renderData}
           reportPosition={handleTilePosition}
-          isHidden={isHidden}
-          setIsHidden={setIsHidden}
+          truncateText={truncateText}
+          showToggle={showToggle}
         />
         <StyledSpan ref={refRight} position="right" />
         <Loader isLoading={isLoading} position="right" />

@@ -6,15 +6,12 @@ const Tiles: FC<TilesProps> = ({
   data,
   zoom,
   onTileClick,
-  onTileHover,
   renderData,
   reportPosition,
   projectData,
-  isHidden,
-  setIsHidden
+  truncateText,
+  showToggle
 }) => {
-  console.log("IsHidden in Tiles ---", isHidden);
-
   const placeTiles = useCallback((): PlacedTiles => {
     let rows = 0;
     return data
@@ -22,7 +19,6 @@ const Tiles: FC<TilesProps> = ({
         if (personIndex > 0) {
           rows += Math.max(data[personIndex - 1].data.length, 1);
         }
-
         const personData = person.data.map((projectsPerRow, rowIndex) =>
           projectsPerRow.map((project) => (
             <Tile
@@ -33,7 +29,8 @@ const Tiles: FC<TilesProps> = ({
               renderData={renderData}
               projectData={projectData}
               reportPosition={reportPosition}
-              datePassed={isHidden}
+              truncateText={truncateText}
+              setTruncate={showToggle}
             />
           ))
         );

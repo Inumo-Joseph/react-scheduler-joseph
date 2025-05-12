@@ -6,11 +6,19 @@ import { useLanguage } from "@/context/LocaleProvider";
 import { drawHeader } from "@/utils/drawHeader/drawHeader";
 import { resizeCanvas } from "@/utils/resizeCanvas";
 import { getCanvasWidth } from "@/utils/getCanvasWidth";
+import { truncate } from "@/styles";
 import { HeaderProps } from "./types";
 import { StyledCanvas, StyledOuterWrapper, StyledWrapper } from "./styles";
 import Topbar from "./Topbar";
 
-const Header: FC<HeaderProps> = ({ zoom, topBarWidth, showThemeToggle, toggleTheme }) => {
+const Header: FC<HeaderProps> = ({
+  zoom,
+  topBarWidth,
+  showThemeToggle,
+  toggleTheme,
+  setTruncate,
+  truncateText
+}) => {
   const { week } = useLanguage();
   const { date, cols, dayOfYear, startDate } = useCalendar();
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -50,7 +58,14 @@ const Header: FC<HeaderProps> = ({ zoom, topBarWidth, showThemeToggle, toggleThe
 
   return (
     <StyledOuterWrapper>
-      <Topbar width={topBarWidth} showThemeToggle={showThemeToggle} toggleTheme={toggleTheme} />
+      <Topbar
+        width={topBarWidth}
+        showThemeToggle={showThemeToggle}
+        toggleTheme={toggleTheme}
+        setTruncate={setTruncate}
+        truncateText={truncateText}
+      />
+      <div className="my-5"></div>
       <StyledWrapper id={canvasHeaderWrapperId}>
         <StyledCanvas ref={canvasRef} />
       </StyledWrapper>

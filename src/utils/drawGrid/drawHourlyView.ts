@@ -33,6 +33,7 @@ export const drawHourlyView = (
         ctx,
         j * zoom2ColumnWidth + zoom2ColumnWidth / 2 - 0.5, // -0.5 to make borders better aligned with hour axis
         i * boxHeight,
+        rows,
         zoom2ColumnWidth,
         getIsBusinessDay(hour),
         isCurrentHour,

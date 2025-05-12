@@ -16,8 +16,6 @@ export type SchedulerProps = {
   onClearFilterData?: () => void;
   onItemClick?: (data: SchedulerItemClickData) => void;
   renderData?: React.ReactNode;
-  isHidden?: boolean;
-  setIsHidden: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export type StyledOutsideWrapperProps = {
