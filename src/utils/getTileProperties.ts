@@ -1,4 +1,5 @@
 import dayjs from "dayjs";
+import { useRef } from "react";
 import { boxHeight, tileYOffset } from "@/constants";
 import { TileProperties } from "@/types/global";
 import { getTileXAndWidth } from "./getTileXAndWidth";
@@ -18,7 +19,6 @@ export const getTileProperties = (
   let parsedResourceEndDate;
   let parsedStartDate;
   let parsedEndDate;
-
   switch (zoom) {
     case 2: {
       parsedResourceStartDate = dayjs(resourceStartDate);

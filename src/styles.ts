@@ -1,11 +1,12 @@
 import styled, { createGlobalStyle, type DefaultTheme } from "styled-components";
+import { css } from "styled-components";
 
 export const prefixId = "reactSchedulerOutsideWrapper";
 
 export const GlobalStyle = createGlobalStyle`
 
   #${prefixId} {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Arial', sans-serif;
     box-sizing: border-box;
     line-height: 1.15;
     -webkit-text-size-adjust: 100%;
@@ -58,18 +59,17 @@ export const theme: DefaultTheme = {
 
     textPrimary: "#1C222F",
     textSecondary: "#FFFFFF",
-    placeholder: "#777777",
+    placeholder: "#1C222F",
 
     button: "#FFFFFF",
     border: "#D2D2D2",
-    tooltip: "#3B3C5F",
+    tooltip: "#FFFFFF",
     hover: "#E6F3FF",
     disabled: "#777777",
     warning: "#EF4444",
 
     defaultTile: "#728DE2",
-
-    accent: "#0A11EB"
+    accent: "#5cb577"
   }
 };
 
@@ -106,10 +106,10 @@ margin: 0;
 padding: 0;
 `;
 
-export const truncate = `
-overflow: hidden;
-text-overflow: ellipsis;
-white-space: nowrap;
+export const truncate = css`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 export const StyledSchedulerFrame = styled.div`

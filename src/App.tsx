@@ -1,10 +1,12 @@
 import { useCallback, useMemo, useState } from "react";
 import dayjs from "dayjs";
+import { Link, PanelTopDashed } from "lucide-react";
 import { createMockData } from "./mock/appMock";
 import { ParsedDatesRange } from "./utils/getDatesRange";
 import { ConfigFormValues, SchedulerProjectData } from "./types/global";
 import ConfigPanel from "./components/ConfigPanel";
 import { StyledSchedulerFrame } from "./styles";
+import { StyledTooltipWrapper } from "./components/Tooltip/styles";
 import { Scheduler } from ".";
 
 function App() {
@@ -24,6 +26,136 @@ function App() {
     [peopleCount, projectsPerYear, yearsCovered]
   );
 
+  const renderData = () => {
+    return (
+      <div>
+        <Link className="!w-3 !h-3" />
+      </div>
+    );
+  };
+
+  const dummyData = [
+    {
+      id: "row-1",
+      label: { icon: "📁", title: "Project A", subtitle: "Phase 1" },
+      data: [
+        {
+          id: "task-1",
+          title: "Task 1",
+          startDate: new Date("2025-05-01"),
+          endDate: new Date("2025-05-03"),
+          occupancy: 100
+
+          // dependency: "task-2"
+        },
+        {
+          id: "task-2",
+          title: "Task 2",
+          startDate: new Date("2025-05-03"),
+          endDate: new Date("2025-05-06"),
+          occupancy: 100,
+          users: []
+        },
+        {
+          id: "task-3",
+          title: "Task 3",
+          startDate: new Date("2025-05-07"),
+          endDate: new Date("2025-05-010"),
+          occupancy: 100,
+          // dependency: "task-2", // depends on Task 1
+          users: ["Fran"]
+        },
+        {
+          id: "task-4",
+          title: "Task 4",
+          startDate: new Date("2025-05-10"),
+          endDate: new Date("2025-05-013"),
+          occupancy: 100,
+          users: ["Colby"],
+          dependency: "task-5"
+        },
+        {
+          id: "task-5",
+          title: "Task 5",
+          startDate: new Date("2025-05-10"),
+          endDate: new Date("2025-06-013"),
+          occupancy: 100,
+          dependency: "task-9"
+        }
+      ]
+    },
+
+    {
+      id: "row-2",
+      label: { icon: "📁", title: "Project B", subtitle: "Phase 1" },
+      data: [
+        {
+          id: "task-6",
+          title: "  Emptying Locker",
+          startDate: new Date("2025-05-01"),
+          endDate: new Date("2025-05-03"),
+          occupancy: 100,
+          dependency: "task-5",
+          bgColor: "rgba(133, 193, 233, 0.83)"
+        },
+        {
+          id: "task-7",
+          title: "Task second shift",
+          startDate: new Date("2025-05-03"),
+          endDate: new Date("2025-05-06"),
+          occupancy: 100,
+          users: ["Rob"],
+          bgColor: "rgba(133, 193, 233, 0.83)"
+        },
+        {
+          id: "task-8",
+          title: "Orlando Roster",
+          startDate: new Date("2025-05-013"),
+          endDate: new Date("2025-05-010"),
+          occupancy: 100,
+          users: ["Fran"],
+          bgColor: "rgba(133, 193, 233, 0.83)"
+        },
+        {
+          id: "task-9",
+          title: "Task fourth Shift",
+          startDate: new Date("2025-05-10"),
+          endDate: new Date("2025-05-013"),
+          occupancy: 100,
+          users: ["Colby"],
+          dependency: "task-3",
+          bgColor: "rgba(133, 193, 233, 0.83)"
+        },
+        {
+          id: "task-10",
+          title: "Task 5th shift",
+          startDate: new Date("2025-05-6"),
+          endDate: new Date("2025-05-020"),
+          occupancy: 100,
+          bgColor: "rgba(133, 193, 233, 0.83)"
+        },
+        {
+          id: "task-11",
+          title: "Fix Flyer Codes",
+          startDate: new Date("2025-05-10"),
+          endDate: new Date("2025-05-013"),
+          occupancy: 100,
+          users: ["Colby"],
+          bgColor: "rgba(133, 193, 233, 0.83)"
+        },
+        {
+          id: "task-12",
+          title: "Cancel Weekend Missions",
+          startDate: new Date("2025-05-05"),
+          endDate: new Date("2025-05-010"),
+          users: ["Dev"],
+          occupancy: 100,
+          bgColor: "rgba(133, 193, 233, 0.83)"
+        }
+      ]
+    }
+  ];
+
   const [range, setRange] = useState<ParsedDatesRange>({
     startDate: new Date(),
     endDate: new Date()
@@ -35,10 +167,10 @@ function App() {
 
   const filteredData = useMemo(
     () =>
-      mocked.map((person) => ({
+      dummyData.map((person) => ({
         ...person,
         data: person.data.filter(
-          (project) =>
+          (project: any) =>
             dayjs(project.startDate).isBetween(range.startDate, range.endDate) ||
             dayjs(project.endDate).isBetween(range.startDate, range.endDate) ||
             (dayjs(project.startDate).isBefore(range.startDate, "day") &&
@@ -47,13 +179,7 @@ function App() {
       })),
     [mocked, range.endDate, range.startDate]
   );
-
   const handleFilterData = () => console.log(`Filters button was clicked.`);
-
-  const handleTileClick = (data: SchedulerProjectData) =>
-    console.log(
-      `Item ${data.title} - ${data.subtitle} was clicked. \n==============\nStart date: ${data.startDate} \n==============\nEnd date: ${data.endDate}\n==============\nOccupancy: ${data.occupancy}`
-    );
 
   return (
     <>
@@ -64,9 +190,9 @@ function App() {
           onRangeChange={handleRangeChange}
           data={filteredData}
           isLoading={false}
-          onTileClick={handleTileClick}
           onFilterData={handleFilterData}
-          config={{ zoom: 0, maxRecordsPerPage: maxRecordsPerPage, showThemeToggle: true }}
+          renderData={renderData()}
+          config={{ zoom: 1, maxRecordsPerPage: maxRecordsPerPage, showThemeToggle: false }}
           onItemClick={(data) => console.log("clicked: ", data)}
         />
       ) : (
@@ -76,7 +202,14 @@ function App() {
             onRangeChange={handleRangeChange}
             isLoading={false}
             data={filteredData}
-            onTileClick={handleTileClick}
+            renderData={
+              <div>
+                <Link
+                  className={"!w-3 !h-3 stroke-gray-400 hover:stroke-gray-500 cursor-pointer"}
+                  stroke={"green"}
+                />
+              </div>
+            }
             onFilterData={handleFilterData}
             onItemClick={(data) => console.log("clicked: ", data)}
           />

@@ -28,7 +28,8 @@ export const calendarContext = createContext<CalendarContextType>({
     monthName: "",
     isCurrentDay: false,
     isBusinessDay: false,
-    year: 0
+    year: 0,
+    dayOfYear: 0
   },
   dayOfYear: 0,
   recordsThreshold: 0,

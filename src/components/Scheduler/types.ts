@@ -12,10 +12,10 @@ export type SchedulerProps = {
   config?: Config;
   startDate?: string;
   onRangeChange?: (range: ParsedDatesRange) => void;
-  onTileClick?: (data: SchedulerProjectData) => void;
   onFilterData?: () => void;
   onClearFilterData?: () => void;
   onItemClick?: (data: SchedulerItemClickData) => void;
+  renderData?: React.ReactNode;
 };
 
 export type StyledOutsideWrapperProps = {

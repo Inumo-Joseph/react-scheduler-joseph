@@ -49,6 +49,7 @@ export const drawRow = (config: DrawRowConfig, theme: Theme) => {
     ctx.fillStyle = theme.colors.placeholder;
     ctx.fillText(label, textXPos, textYPos);
   }
+
   if (isBottomRow && fillStyle && topText && bottomText) {
     ctx.fillStyle = fillStyle;
     ctx.fillRect(x, y, width, height);
@@ -64,7 +65,6 @@ export const drawRow = (config: DrawRowConfig, theme: Theme) => {
     ctx.font = bottomText.font;
 
     const dayNumXPos = x + width / 2 - ctx.measureText(bottomText.label).width / 2;
-
     ctx.fillStyle = bottomText.color;
     ctx.fillText(bottomText.label, dayNumXPos, bottomText.y);
   }

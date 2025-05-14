@@ -47,10 +47,8 @@ export const StyledText = styled.p<StyledTextProps>`
   letter-spacing: ${({ isMain }) => (isMain ? 1 + "px" : 0.5 + "px")};
   line-height: ${({ isMain }) => (isMain ? 1.125 + "rem" : 0.75 + "rem")};
   color: ${({ isMain, theme }) => (isMain ? theme.colors.textPrimary : theme.colors.placeholder)};
-  text-overflow: ellipsis;
   display: inline-block;
   max-width: 144px;
   width: 100%;
   white-space: nowrap;
-  overflow: hidden;
 `;

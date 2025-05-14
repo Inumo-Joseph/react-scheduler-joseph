@@ -3,7 +3,8 @@ import { SchedulerData, SchedulerItemClickData, SchedulerProjectData } from "@/t
 export type CalendarProps = {
   data: SchedulerData;
   topBarWidth: number;
-  onTileClick?: (data: SchedulerProjectData) => void;
+  renderData: React.ReactNode;
+  schedulerRef: React.RefObject<HTMLDivElement>;
   onItemClick?: (data: SchedulerItemClickData) => void;
   toggleTheme?: () => void;
 };

@@ -9,6 +9,7 @@ export const StyledOuterWrapper = styled.div`
 
 export const StyledWrapper = styled.div`
   height: ${headerHeight}px;
+  padding-top: 5px
   display: block;
 `;
 

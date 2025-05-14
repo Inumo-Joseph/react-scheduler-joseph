@@ -1,6 +1,7 @@
 import { ThemeProvider } from "styled-components";
 import { useEffect, useMemo, useRef, useState } from "react";
 import dayjs from "dayjs";
+import { render } from "react-dom";
 import { Calendar } from "@/components";
 import CalendarProvider from "@/context/CalendarProvider";
 import LocaleProvider from "@/context/LocaleProvider";
@@ -15,11 +16,11 @@ const Scheduler = ({
   config,
   startDate,
   onRangeChange,
-  onTileClick,
   onFilterData,
   onClearFilterData,
   onItemClick,
-  isLoading
+  isLoading,
+  renderData
 }: SchedulerProps) => {
   const appConfig: Config = useMemo(
     () => ({
@@ -86,10 +87,11 @@ const Scheduler = ({
               <StyledInnerWrapper>
                 <Calendar
                   data={data}
-                  onTileClick={onTileClick}
+                  renderData={renderData}
                   topBarWidth={topBarWidth ?? 0}
                   onItemClick={onItemClick}
                   toggleTheme={toggleTheme}
+                  schedulerRef={outsideWrapperRef}
                 />
               </StyledInnerWrapper>
             </StyledOutsideWrapper>

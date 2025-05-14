@@ -2,14 +2,14 @@ import styled from "styled-components";
 import { marginPaddingReset } from "@/styles";
 
 export const StyledTooltipWrapper = styled.div`
-  padding: 8px 16px;
+  padding: 4px 8px;
   position: absolute;
   background-color: ${({ theme }) => theme.colors.tooltip};
   border-radius: 8px;
   z-index: 3;
   transition: all 0.25s;
   transition-timing-function: ease-out;
-  pointer-events: none;
+  box-shadow: 5px 5px 5px grey;
 `;
 
 export const StyledTooltipContent = styled.div`
