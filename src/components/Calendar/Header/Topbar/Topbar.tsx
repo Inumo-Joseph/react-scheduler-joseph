@@ -53,55 +53,58 @@ const Topbar: FC<TopbarProps> = ({
   return (
     <Wrapper width={width}>
       {/* <Today onClick={handleGoToday}>{topbar.today}</Today> */}
-      <button
-        className="text-[#273754] border border-[#273754] bg-[white] px-3 py-1 rounded-lg"
-        onClick={handleGoToday}>
-        <Calendar />
-        <span className="mr-2"> Today</span>
-      </button>
 
-      <button className="text-[#273754] border border-[#273754] bg-[white] px-3 py-1 rounded-lg">
-        <Zoom>
-          <IconButton
-            isDisabled={!isPrevZoom}
-            onClick={zoomOut}
-            isFullRounded
-            iconName="subtract"
-            width="14"
-          />
-          <IconButton
-            isDisabled={!isNextZoom}
-            onClick={zoomIn}
-            isFullRounded
-            iconName="add"
-            width="14"
-          />
-        </Zoom>
+      <div className="grid grid-flow-col gap-4" style={{ borderColor: "red" }}>
+        <span className="text-[#273754] border border-[#273754] bg-[white] px-1 py-1 rounded-lg">
+          <Calendar width={"25"} onClick={handleGoToday}>
+            {" "}
+          </Calendar>
+          <span className=""></span>
+        </span>
 
-        <span className="mr-2"> Days, Weeks, Months, Quarters</span>
-      </button>
+        <button className="text-[#273754] border border-[#273754] bg-[white] px-1 py-1 rounded-lg">
+          <Zoom>
+            <IconButton
+              isDisabled={!isPrevZoom}
+              onClick={zoomOut}
+              isFullRounded
+              iconName="subtract"
+              width="14"
+            />
 
-      <button className="bg-[white] text-[#273754] border border-[#273754] bg-[white] px-3 py-1 rounded-lg">
-        <ArrowRightFromLine></ArrowRightFromLine>
-      </button>
+            <span className=" "> Days, Weeks, Months, Quarters</span>
 
-      <button
-        className="bg-[white] text-[#273754] border border-[#273754] bg-[white] px-3 py-1 rounded-lg"
-        onClick={() => {
-          setTruncate?.(!truncateText);
-          console.log("setting to", truncateText);
-        }}>
-        <ArrowRightToLineIcon
-          style={{
-            ...(truncateText && {
-              color: "green"
-            })
-          }}></ArrowRightToLineIcon>
-      </button>
+            <IconButton
+              isDisabled={!isNextZoom}
+              onClick={zoomIn}
+              isFullRounded
+              iconName="add"
+              width="14"
+            />
+          </Zoom>
+        </button>
 
-      <button className="bg-[white] text-[#273754] border border-[#273754] bg-[white] px-3 py-1 rounded-lg">
-        Show/Hide Checked Items{" "}
-      </button>
+        <button className="bg-[white] text-[#273754] border border-[#273754] bg-[white] px-3 py-1 rounded-lg">
+          <ArrowRightFromLine></ArrowRightFromLine>
+        </button>
+
+        <button
+          className="bg-[white] text-[#273754] border border-[#273754] bg-[white] px-3 py-1 rounded-lg"
+          onClick={() => {
+            setTruncate?.(!truncateText);
+          }}>
+          <ArrowRightToLineIcon
+            style={{
+              ...(truncateText && {
+                color: "green"
+              })
+            }}></ArrowRightToLineIcon>
+        </button>
+
+        <button className="bg-[white] text-[#273754] border border-[#273754] bg-[white] px-3 py-1 rounded-lg">
+          Show/Hide Checked Items{" "}
+        </button>
+      </div>
 
       {/* <Filters>
         {filterButtonState >= 0 && (

@@ -15,6 +15,7 @@ import {
 } from "@/constants";
 import { parseDay } from "@/utils/dates";
 import { Theme } from "@/styles";
+import { drawDashedLine } from "@/utils/drawDashedLine";
 import { drawRow } from "../../drawRow";
 import { getBoxFillStyle } from "../../getBoxFillStyle";
 import { getTextStyle } from "../../getTextStyle";
@@ -39,16 +40,6 @@ export const drawDaysOnBottom = (
 
     const isToday = day.isCurrentDay;
 
-    // if (isToday) {
-    //   // Draw vertical green line
-    //   ctx.beginPath();
-    //   ctx.moveTo(xPos + dayWidth / 2, 0); // or header height if you only want below header
-    //   ctx.lineTo(xPos + dayWidth / 2, canvasHeight);
-    //   ctx.strokeStyle = "#38A169"; // green
-    //   ctx.lineWidth = 2;
-    //   ctx.stroke();
-    // }
-
     // Determine styling
     const textColor = getTextStyle(
       {
@@ -68,6 +59,15 @@ export const drawDaysOnBottom = (
     const textX = xPos + (dayWidth - textWidth) / 2;
 
     // Draw the text
+    if (isToday) {
+      // Draw vertical green line
+      ctx.fillStyle = "green";
+      ctx.fillRect(textX - 3, yPos - 20, dayWidth, headerDayHeight);
+      ctx.fillStyle = "white";
+
+      ctx.fillText(dayLabel, textX, yPos);
+    }
+
     ctx.fillText(dayLabel, textX, yPos);
 
     xPos += dayWidth;

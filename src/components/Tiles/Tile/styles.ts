@@ -16,10 +16,10 @@ export const StyledTileWrapper = styled.div`
 `;
 
 export const StyledTextWrapper = styled.div`
-  margin: 10px 16px;
+  margin: 5px 16px;
   position: relative;
   display: flex;
-  font-size: 11px;
+  font-size: 10px;
   letter-spacing: 0.5px;
   line-height: 12px;
 `;
@@ -27,22 +27,22 @@ export const StyledTextWrapper = styled.div`
 export const StyledText = styled.p<StyledTextProps>`
   ${marginPaddingReset}
   display: inline;
-  color: black;
-
   font-weight: ${({ bold }) => (bold ? "600" : "400")};
   &:first-child {
     &::after {
       content: "|";
-      margin: 0 4px;
+      margin: 0 3px;
     }
   }
 `;
 
 export const StyledDescription = styled.p`
   ${marginPaddingReset}
+  ${truncate}
 `;
 
 export const StyledStickyWrapper = styled.div`
   position: sticky;
   left: ${leftColumnWidth + 16}px;
+  overflow: hidden;
 `;

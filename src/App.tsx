@@ -44,8 +44,9 @@ function App() {
           title: "Task 1",
           startDate: new Date("2025-05-01"),
           endDate: new Date("2025-05-03"),
-          occupancy: 100,
-          dependency: "task-2"
+          occupancy: 100
+
+          // dependency: "task-2"
         },
         {
           id: "task-2",
@@ -61,7 +62,7 @@ function App() {
           startDate: new Date("2025-05-07"),
           endDate: new Date("2025-05-010"),
           occupancy: 100,
-          dependency: "task-2", // depends on Task 1
+          // dependency: "task-2", // depends on Task 1
           users: ["Fran"]
         },
         {
@@ -78,7 +79,8 @@ function App() {
           title: "Task 5",
           startDate: new Date("2025-05-10"),
           endDate: new Date("2025-06-013"),
-          occupancy: 100
+          occupancy: 100,
+          dependency: "task-9"
         }
       ]
     },
@@ -92,7 +94,9 @@ function App() {
           title: "  Emptying Locker",
           startDate: new Date("2025-05-01"),
           endDate: new Date("2025-05-03"),
-          occupancy: 100
+          occupancy: 100,
+          dependency: "task-5",
+          bgColor: "rgba(133, 193, 233, 0.83)"
         },
         {
           id: "task-7",
@@ -100,15 +104,17 @@ function App() {
           startDate: new Date("2025-05-03"),
           endDate: new Date("2025-05-06"),
           occupancy: 100,
-          users: []
+          users: ["Rob"],
+          bgColor: "rgba(133, 193, 233, 0.83)"
         },
         {
           id: "task-8",
           title: "Orlando Roster",
-          startDate: new Date("2025-05-07"),
+          startDate: new Date("2025-05-013"),
           endDate: new Date("2025-05-010"),
           occupancy: 100,
-          users: ["Fran"]
+          users: ["Fran"],
+          bgColor: "rgba(133, 193, 233, 0.83)"
         },
         {
           id: "task-9",
@@ -117,14 +123,16 @@ function App() {
           endDate: new Date("2025-05-013"),
           occupancy: 100,
           users: ["Colby"],
-          dependency: "task-11"
+          dependency: "task-3",
+          bgColor: "rgba(133, 193, 233, 0.83)"
         },
         {
           id: "task-10",
-          title: "Task fifth shift",
+          title: "Task 5th shift",
           startDate: new Date("2025-05-6"),
           endDate: new Date("2025-05-020"),
-          occupancy: 100
+          occupancy: 100,
+          bgColor: "rgba(133, 193, 233, 0.83)"
         },
         {
           id: "task-11",
@@ -132,7 +140,8 @@ function App() {
           startDate: new Date("2025-05-10"),
           endDate: new Date("2025-05-013"),
           occupancy: 100,
-          users: ["Colby"]
+          users: ["Colby"],
+          bgColor: "rgba(133, 193, 233, 0.83)"
         },
         {
           id: "task-12",
@@ -140,7 +149,8 @@ function App() {
           startDate: new Date("2025-05-05"),
           endDate: new Date("2025-05-010"),
           users: ["Dev"],
-          occupancy: 100
+          occupancy: 100,
+          bgColor: "rgba(133, 193, 233, 0.83)"
         }
       ]
     }
@@ -158,18 +168,17 @@ function App() {
   const filteredData = useMemo(
     () =>
       dummyData.map((person) => ({
-        ...person
-        // data: person.data.filter(
-        //   (project: any) =>
-        //     dayjs(project.startDate).isBetween(range.startDate, range.endDate) ||
-        //     dayjs(project.endDate).isBetween(range.startDate, range.endDate) ||
-        //     (dayjs(project.startDate).isBefore(range.startDate, "day") &&
-        //       dayjs(project.endDate).isAfter(range.endDate, "day"))
-        // )
+        ...person,
+        data: person.data.filter(
+          (project: any) =>
+            dayjs(project.startDate).isBetween(range.startDate, range.endDate) ||
+            dayjs(project.endDate).isBetween(range.startDate, range.endDate) ||
+            (dayjs(project.startDate).isBefore(range.startDate, "day") &&
+              dayjs(project.endDate).isAfter(range.endDate, "day"))
+        )
       })),
     [mocked, range.endDate, range.startDate]
   );
-  filteredData.forEach((filtred) => console.log("Filtered DATA", filtred));
   const handleFilterData = () => console.log(`Filters button was clicked.`);
 
   return (

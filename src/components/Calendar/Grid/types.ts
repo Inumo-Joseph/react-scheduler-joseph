@@ -3,12 +3,12 @@ import { PaginatedSchedulerData, SchedulerData, SchedulerProjectData } from "@/t
 export type GridProps = {
   zoom: number;
   rows: number;
+  schedulerRef: React.RefObject<HTMLDivElement>;
   data: PaginatedSchedulerData;
   onTileClick?: (data: SchedulerProjectData) => void;
   onTileHover?: (data: SchedulerProjectData, ref: React.RefObject<HTMLButtonElement>) => void;
   renderData?: React.ReactNode;
   projectData: SchedulerData;
-  schedulerRef?: React.RefObject<HTMLButtonElement>;
   truncateText?: boolean;
   showToggle: React.Dispatch<React.SetStateAction<boolean>>;
 };

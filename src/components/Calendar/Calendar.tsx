@@ -33,7 +33,8 @@ export const Calendar: FC<CalendarProps> = ({
   onItemClick,
   toggleTheme,
   topBarWidth,
-  renderData
+  renderData,
+  schedulerRef
 }) => {
   const [tooltipData, setTooltipData] = useState<TooltipData>(initialTooltipData);
   const [filteredData, setFilteredData] = useState(data);
@@ -70,7 +71,6 @@ export const Calendar: FC<CalendarProps> = ({
     reset
   } = usePagination(filteredData);
 
-  console.log("Page", page);
   const debouncedHandleMouseOver = useRef(
     debounce(
       (
@@ -175,6 +175,7 @@ export const Calendar: FC<CalendarProps> = ({
             zoom={zoom}
             rows={totalRowsPerPage}
             ref={gridRef}
+            schedulerRef={schedulerRef}
             onTileHover={handleTileHover}
             projectData={data}
             truncateText={truncateText}

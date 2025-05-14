@@ -7,10 +7,10 @@ export function drawArrow(
   from: { x: number; y: number; width: number; height: number; _index: number },
   to: { x: number; y: number; width: number; height: number; _index: number },
   options = {
-    padding: 20,
+    padding: 19,
     arrowCurve: 1,
-    barHeight: 0,
-    headerHeight: 50
+    barHeight: 5,
+    headerHeight: 30
   }
 ) {
   const curve = options.arrowCurve;
@@ -19,21 +19,21 @@ export function drawArrow(
   let startX = from.x + from.width;
   const fromBelowTo = from._index > to._index;
 
+  console.log("Index from", from._index, "Index to", to._index);
+
   // Adjust startX left if overlapping
   const condition = () => to.x < startX + padding && startX > from.x + padding;
-  while (condition()) startX -= 5;
-  startX -= 0;
+  while (condition()) startX -= 10;
+  startX -= 10;
 
-  const startY = options.barHeight + (padding + options.barHeight) * from._index + padding / 2;
+  const startY = from.y - from.height - options.barHeight * 5;
   const endX = to.x;
-  const endY =
-    options.headerHeight +
-    options.barHeight +
-    (padding + options.barHeight) * to._index +
-    padding -
-    10;
+  const endY = to.y - to.height - options.headerHeight;
+  //
+  // options.barHeight +
+  //
+  // padding
 
-  const clockwise = fromBelowTo ? 1 : 0;
   const curveY = fromBelowTo ? -curve : curve;
 
   ctx.beginPath();
@@ -48,7 +48,7 @@ export function drawArrow(
       effectiveCurve = padding / 2;
     }
 
-    const down2 = endY - curveY;
+    const down2 = endY;
     const left = to.x - padding;
 
     // v down1
@@ -74,26 +74,26 @@ export function drawArrow(
     // vertical down
     ctx.lineTo(left - effectiveCurve, down2);
     // arc right
-    ctx.arcTo(left - effectiveCurve, down2 + curveY, endX, endY, effectiveCurve);
+    ctx.arcTo(left - effectiveCurve, down2, endX, endY, effectiveCurve);
     // final segment to arrowhead point
     ctx.lineTo(endX, endY);
   } else {
     // Simple vertical offset and curve for non-overlapping tasks
     let effectiveCurve = curve;
     if (endX < startX + curve) effectiveCurve = endX - startX;
-    const offset = fromBelowTo ? endY + effectiveCurve : endY - effectiveCurve;
+    const offset = endY + effectiveCurve;
 
     ctx.lineTo(startX, offset);
-    ctx.arcTo(startX, offset + curveY, startX + effectiveCurve, offset + curveY, effectiveCurve);
+    ctx.arcTo(startX, offset, startX + effectiveCurve, offset, effectiveCurve);
     ctx.lineTo(endX, endY);
   }
 
-  ctx.strokeStyle = "grey";
+  ctx.strokeStyle = "black";
   ctx.lineWidth = 3;
   ctx.stroke();
 
   // Draw arrowhead
-  const headlen = 6;
+  const headlen = 8;
   const angle = Math.atan2(endY - startY, endX);
   ctx.beginPath();
   ctx.moveTo(endX, endY);
@@ -106,7 +106,7 @@ export function drawArrow(
     endY - headlen * Math.sin(angle + Math.PI / 6)
   );
   ctx.closePath();
-  ctx.fillStyle = "grey";
+  ctx.fillStyle = "black";
   ctx.fill();
 }
 

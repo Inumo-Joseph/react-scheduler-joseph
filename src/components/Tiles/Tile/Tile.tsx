@@ -10,7 +10,7 @@ import { getTileTextColor } from "@/utils/getTileTextColor";
 import { Day, SchedulerProjectData, TooltipData, ZoomLevel } from "@/types/global";
 import { getTooltipData } from "@/utils/getTooltipData";
 import { usePagination } from "@/hooks/usePagination";
-// import UsersIcon from "../../../../src/components/UserIcon";
+import UsersIcon from "../../../../src/components/UserIcon";
 import { TileProps } from "./types";
 import {
   StyledDescription,
@@ -140,6 +140,14 @@ const Tile: FC<TileProps> = ({
       if (!canvas) return;
       const canvasRect = canvas.getBoundingClientRect();
 
+      console.log(
+        "Tile Positions for ",
+        data.id,
+        "x:",
+        tileRect.left - canvasRect.left,
+        "y:",
+        tileRect.top - canvasRect.top
+      );
       reportPosition?.(data.id, {
         x: tileRect.left - canvasRect.left,
         y: tileRect.top - canvasRect.top,
@@ -187,9 +195,9 @@ const Tile: FC<TileProps> = ({
                 }}>
                 {isHidden ? "Undo" : "Done"}
               </button>
-              {/* <LinkIcon></LinkIcon> */}
+              <LinkIcon></LinkIcon>
 
-              {/* <UsersIcon users={data.users} zoom={zoom} /> */}
+              <UsersIcon users={data.users} zoom={zoom} />
               <Trash2></Trash2>
               <div style={{ color: "black", display: "flex" }} className=" pt-1 pl-1">
                 {renderData}
@@ -213,12 +221,12 @@ const Tile: FC<TileProps> = ({
                 <>
                   {/* UsersIcon and Title on the same line */}
                   <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                    {/* <UsersIcon users={data.users} zoom={zoom} /> */}
+                    <UsersIcon users={data.users} zoom={zoom} />
                     <StyledText
                       bold
                       style={{
                         color: "black",
-                        ...(truncateText && {
+                        ...(!truncateText && {
                           overflow: "hidden",
                           textOverflow: "ellipsis",
                           whiteSpace: "nowrap"

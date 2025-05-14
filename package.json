@@ -42,9 +42,6 @@
       "require": "./dist/style.css"
     }
   },
-  "files": [
-    "dist"
-  ],
   "publishConfig": {
     "access": "public"
   },

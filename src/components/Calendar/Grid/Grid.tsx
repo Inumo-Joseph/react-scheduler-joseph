@@ -34,7 +34,6 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
     }));
   };
 
-  console.log("Set tile Positions");
   const handleResize = useCallback(
     (ctx: CanvasRenderingContext2D) => {
       const width = getCanvasWidth();
@@ -71,7 +70,8 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
     );
 
     handleResize(ctx); // draw grid first
-    drawDependencyArrows(ctx, allProjects, tilePositions, zoom); // draw arrows over grid
+    drawDependencyArrows(ctx, allProjects, tilePositions, zoom);
+    // draw arrows over grid
   }, [date, rows, zoom, handleResize, tilePositions]);
 
   useEffect(() => {
@@ -81,7 +81,6 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
       { root: document.getElementById(outsideWrapperId) }
     );
     observerRight.observe(refRight.current);
-
     return () => observerRight.disconnect();
   }, [handleScrollNext]);
 
