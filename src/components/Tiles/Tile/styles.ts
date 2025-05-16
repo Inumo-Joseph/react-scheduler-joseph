@@ -9,29 +9,29 @@ export const StyledTileWrapper = styled.div`
   position: absolute;
   outline: none;
   border: none;
-  border-radius: 5px;
+  border-radius: 2px;
   text-align: left;
   color: ${({ theme }) => theme.colors.textPrimary};
   width: 100%;
 `;
 
 export const StyledTextWrapper = styled.div`
-  margin: 5px 16px;
+  margin: 10px 16px;
   position: relative;
   display: flex;
-  font-size: 10px;
-  letter-spacing: 0.5px;
+  font-size: 12px;
+  letter-spacing: 0.2px;
   line-height: 12px;
 `;
 
 export const StyledText = styled.p<StyledTextProps>`
   ${marginPaddingReset}
   display: inline;
-  font-weight: ${({ bold }) => (bold ? "600" : "400")};
+  font-weight: ${({ bold }) => (bold ? "500" : "400")};
   &:first-child {
     &::after {
       content: "|";
-      margin: 0 3px;
+      margin: 3px 3px;
     }
   }
 `;

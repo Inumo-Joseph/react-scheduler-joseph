@@ -15,9 +15,9 @@ const UsersIcon: FC<UsersIconProps> = ({ users, zoom }) => {
 
   if (!users || users.length === 0) return null;
 
-  const firstUser = users[0];
+  const firstUser = users[0]?.toUpperCase();
   const initials = getInitials(firstUser);
-  const width = Math.min(20 * zoom, 20);
+  const width = Math.min(21 * zoom, 21);
   const fontsize = Math.min(6 * zoom, 6);
 
   return (

@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from "react";
 import dayjs from "dayjs";
-import { Link, PanelTopDashed } from "lucide-react";
+import { Link, PanelTopDashed, Trash, Trash2 } from "lucide-react";
 import { createMockData } from "./mock/appMock";
 import { ParsedDatesRange } from "./utils/getDatesRange";
 import { ConfigFormValues, SchedulerProjectData } from "./types/global";
@@ -21,16 +21,16 @@ function App() {
 
   const { peopleCount, projectsPerYear, yearsCovered, isFullscreen, maxRecordsPerPage } = values;
 
-  const mocked = useMemo(
-    () => createMockData(+peopleCount, +yearsCovered, +projectsPerYear),
-    [peopleCount, projectsPerYear, yearsCovered]
-  );
-
   const renderData = () => {
     return (
-      <div>
-        <Link className="!w-3 !h-3" />
-      </div>
+      <>
+        <div className="flex px-2">
+          <Link className="!w-5 !h-5" />
+        </div>
+        <div className="flex px-2">
+          <Trash2 className="!w-5 !h-5"></Trash2>
+        </div>
+      </>
     );
   };
 
@@ -177,7 +177,7 @@ function App() {
               dayjs(project.endDate).isAfter(range.endDate, "day"))
         )
       })),
-    [mocked, range.endDate, range.startDate]
+    [range.endDate, range.startDate]
   );
   const handleFilterData = () => console.log(`Filters button was clicked.`);
 

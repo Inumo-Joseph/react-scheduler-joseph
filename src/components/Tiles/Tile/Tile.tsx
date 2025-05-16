@@ -2,7 +2,7 @@ import { FC, useRef, useEffect, useLayoutEffect, useState, useCallback } from "r
 import { useTheme } from "styled-components";
 import debounce from "lodash.debounce";
 import Button, { Popup } from "semantic-ui-react";
-import { Link, LinkIcon, Trash2 } from "lucide-react";
+import { ChevronsUp, Link, LinkIcon, Trash2 } from "lucide-react";
 import { useCalendar } from "@/context/CalendarProvider";
 import { getDatesRange } from "@/utils/getDatesRange";
 import { getTileProperties } from "@/utils/getTileProperties";
@@ -37,7 +37,8 @@ const Tile: FC<TileProps> = ({
   renderData,
   reportPosition,
   projectData,
-  truncateText
+  truncateText,
+  setTruncate
 }) => {
   const { date } = useCalendar();
   const tileRef = useRef<HTMLDivElement>(null);
@@ -48,6 +49,8 @@ const Tile: FC<TileProps> = ({
     startDate,
     config: { includeTakenHoursOnWeekendsInDayView, showTooltip, showThemeToggle }
   } = useCalendar();
+
+  console.log("Truncate Text", truncateText);
 
   const datesRange = getDatesRange(date, zoom);
   const { y, x, width } = getTileProperties(
@@ -173,19 +176,15 @@ const Tile: FC<TileProps> = ({
         content={() => {
           return (
             <div
-              className="flex flex-col items-start "
+              className="flex flex-col items-start gap-3"
               style={{ color: "white", display: "flex", flexDirection: "row" }}>
               <button
+                className="rounded-sm py-2"
                 style={{
                   background: isHidden ? "#e04658" : "#038759",
-                  border: "3px solid white",
-                  color: "white",
-                  display: "flex",
+
                   flexDirection: "row",
-                  padding: "2px",
-                  cursor: "pointer",
-                  borderRadius: "4px",
-                  fontSize: "0.6rem"
+                  padding: "3px"
                 }}
                 onClick={() => {
                   setIsHidden((prev) => {
@@ -195,11 +194,9 @@ const Tile: FC<TileProps> = ({
                 }}>
                 {isHidden ? "Undo" : "Done"}
               </button>
-              <LinkIcon></LinkIcon>
 
               <UsersIcon users={data.users} zoom={zoom} />
-              <Trash2></Trash2>
-              <div style={{ color: "black", display: "flex" }} className=" pt-1 pl-1">
+              <div style={{ color: "black", display: "flex" }} className=" pt-0.5">
                 {renderData}
               </div>
             </div>
@@ -220,17 +217,15 @@ const Tile: FC<TileProps> = ({
               <StyledStickyWrapper>
                 <>
                   {/* UsersIcon and Title on the same line */}
-                  <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "8px" }} className="">
                     <UsersIcon users={data.users} zoom={zoom} />
                     <StyledText
                       bold
                       style={{
                         color: "black",
-                        ...(!truncateText && {
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                          whiteSpace: "nowrap"
-                        })
+                        textOverflow: !truncateText ? "ellipsis" : "",
+                        overflow: !truncateText ? "hidden" : "visible",
+                        whiteSpace: "nowrap"
                       }}>
                       {data.title}
                     </StyledText>
