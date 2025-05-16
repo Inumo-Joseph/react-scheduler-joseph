@@ -1,11 +1,11 @@
 {
-  "name": "@d-arken/react-scheduler",
+  "name": "Inumo-Joseph/react-scheduler-joseph",
   "version": "0.3.13",
   "type": "module",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/d-arken/react-scheduler"
+    "url": "https://github.com/Inumo-Joseph/react-scheduler-joseph"
   },
   "files": [
     "dist"
