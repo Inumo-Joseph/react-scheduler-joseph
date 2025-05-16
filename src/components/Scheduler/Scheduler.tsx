@@ -1,7 +1,6 @@
 import { ThemeProvider } from "styled-components";
-import { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import dayjs from "dayjs";
-import { render } from "react-dom";
 import { Calendar } from "@/components";
 import CalendarProvider from "@/context/CalendarProvider";
 import LocaleProvider from "@/context/LocaleProvider";
@@ -22,7 +21,9 @@ const Scheduler = ({
   isLoading,
   renderData
 }: SchedulerProps) => {
-  const appConfig: Config = useMemo(
+  // eslint-disable-next-line
+  console.log("LALALALA", React);
+  const appConfig: Config = React.useMemo(
     () => ({
       zoom: 0,
       filterButtonState: 1,
