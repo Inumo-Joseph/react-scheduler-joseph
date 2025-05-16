@@ -1,12 +1,15 @@
 {
-  "name": "react-scheduler-joseph",
-  "version": "0.3.0",
+  "name": "Inumo-Joseph/react-scheduler-joseph",
+  "version": "0.3.13",
   "type": "module",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Bitnoise/react-scheduler"
+    "url": "https://github.com/Inumo-Joseph/react-scheduler-joseph"
   },
+  "files": [
+    "dist"
+  ],
   "keywords": [
     "scheduler",
     "gantt",
@@ -91,5 +94,9 @@
     "vite": "4.1.0",
     "vite-plugin-dts": "2.2.0",
     "vite-plugin-svgr": "2.4.0"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
   }
 }
