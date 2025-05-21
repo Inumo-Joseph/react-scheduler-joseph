@@ -22,7 +22,6 @@ const Scheduler = ({
   renderData
 }: SchedulerProps) => {
   // eslint-disable-next-line
-  console.log("LALALALA", React);
   const appConfig: Config = React.useMemo(
     () => ({
       zoom: 0,

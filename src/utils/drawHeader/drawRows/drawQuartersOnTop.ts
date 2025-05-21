@@ -14,8 +14,14 @@ export const drawQuartersOnTop = (
   const canvasWidth = ctx.canvas.width * 2;
   let xPos = 0;
   let currentYear = startDate.year;
+
   const currentMonth = startDate.month;
+  const startMonthIndex = dayjs(
+    `${startDate.year}-${startDate.month}-${startDate.dayOfMonth}`
+  ).month();
   let currentQuarter = Math.floor(currentMonth / 3) + 1;
+  console.log("Current startMonthINdex", startMonthIndex);
+
   let totalWidth = 0;
 
   const getDaysInQuarter = (year: number, quarter: number): number => {

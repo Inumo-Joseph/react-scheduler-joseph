@@ -72,7 +72,7 @@ const Topbar: FC<TopbarProps> = ({
               width="14"
             />
 
-            <span className=" "> Days, Weeks, Months, Quarters</span>
+            <span className=" "> Days Weeks Months Quarters</span>
 
             <IconButton
               isDisabled={!isNextZoom}

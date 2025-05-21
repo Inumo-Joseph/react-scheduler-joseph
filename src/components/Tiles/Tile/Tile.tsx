@@ -140,14 +140,6 @@ const Tile: FC<TileProps> = ({
       if (!canvas) return;
       const canvasRect = canvas.getBoundingClientRect();
 
-      console.log(
-        "Tile Positions for ",
-        data.id,
-        "x:",
-        tileRect.left - canvasRect.left,
-        "y:",
-        tileRect.top - canvasRect.top
-      );
       reportPosition?.(data.id, {
         x: tileRect.left - canvasRect.left,
         y: tileRect.top - canvasRect.top,

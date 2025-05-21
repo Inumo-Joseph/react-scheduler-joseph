@@ -19,7 +19,7 @@ export function drawArrow(
   let startX = from.x + from.width;
   const fromBelowTo = from._index > to._index;
 
-  console.log("Index from", from._index, "Index to", to._index);
+  // console.log("Index from", from._index, "Index to", to._index);
 
   // Adjust startX left if overlapping
   const condition = () => to.x < startX + padding && startX > from.x + padding;

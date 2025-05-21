@@ -1,5 +1,5 @@
 {
-  "name": "Inumo-Joseph/react-scheduler-joseph",
+  "name": "react-scheduler-joseph",
   "version": "0.3.13",
   "type": "module",
   "license": "MIT",
@@ -58,8 +58,6 @@
     "lodash.debounce": "4.0.8",
     "lucide-react": "^0.508.0",
     "path": "0.12.7",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
     "semantic-ui-css": "^2.5.0",
     "semantic-ui-react": "^2.1.5",
     "styled-components": "5.3.8",
