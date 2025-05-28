@@ -30,7 +30,7 @@ export const drawHeader = (
     // drawMonthsOnBottom(ctx,cols,startDate,theme)
     case 0:
       // drawYearsOnTop(ctx, startDate, dayOfYear, theme);
-      drawQuartersOnTop(ctx, startDate, dayOfYear, theme);
+      drawQuartersOnTop(ctx, startDate, cols, theme);
       drawMonthsInMiddle(ctx, cols, startDate, theme);
       drawWeeksOnBottom(ctx, cols, startDate, weekLabel, theme);
       break;

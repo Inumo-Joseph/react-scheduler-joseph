@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useState } from "react";
 import dayjs from "dayjs";
-import { Link, PanelTopDashed } from "lucide-react";
+import { Link, LinkIcon, PanelTopDashed, Trash2, UsersIcon } from "lucide-react";
+import { StepTitle } from "semantic-ui-react";
 import { createMockData } from "./mock/appMock";
 import { ParsedDatesRange } from "./utils/getDatesRange";
 import { ConfigFormValues, SchedulerProjectData } from "./types/global";
@@ -27,12 +28,10 @@ function App() {
   );
 
   const renderData = () => {
-    return (
-      <div>
-        <Link className="!w-3 !h-3" />
-      </div>
-    );
+    return <div></div>;
   };
+
+  const [isHidden, setIsHidden] = useState(false);
 
   const dummyData = [
     {
@@ -40,47 +39,52 @@ function App() {
       label: { icon: "📁", title: "Project A", subtitle: "Phase 1" },
       data: [
         {
+          cardId: "row-1",
           id: "task-1",
-          title: "Task 1",
+          name: "Task 1",
           startDate: new Date("2025-05-01"),
-          endDate: new Date("2025-05-03"),
+          dueDate: new Date("2025-05-03"),
           occupancy: 100
 
           // dependency: "task-2"
         },
         {
+          cardId: "row-1",
           id: "task-2",
-          title: "Task 2",
+          name: "Task 2",
           startDate: new Date("2025-05-03"),
-          endDate: new Date("2025-05-06"),
+          dueDate: new Date("2025-05-06"),
           occupancy: 100,
           users: []
         },
         {
+          cardId: "row-1",
           id: "task-3",
-          title: "Task 3",
+          name: "Task 3",
           startDate: new Date("2025-05-07"),
-          endDate: new Date("2025-05-010"),
+          dueDate: new Date("2025-05-010"),
           occupancy: 100,
-          // dependency: "task-2", // depends on Task 1
+          // parentTaskId: "task-2", // depends on Task 1
           users: ["Fran"]
         },
         {
+          cardId: "row-1",
           id: "task-4",
-          title: "Task 4",
+          name: "Task 4",
           startDate: new Date("2025-05-10"),
-          endDate: new Date("2025-05-013"),
+          dueDate: new Date("2025-05-013"),
           occupancy: 100,
           users: ["Colby"],
-          dependency: "task-5"
+          parentTaskId: "task-5"
         },
         {
+          cardId: "row-1",
           id: "task-5",
-          title: "Task 5",
+          name: "Task 5",
           startDate: new Date("2025-05-10"),
-          endDate: new Date("2025-06-013"),
+          dueDate: new Date("2025-06-013"),
           occupancy: 100,
-          dependency: "task-9"
+          parentTaskId: "task-9"
         }
       ]
     },
@@ -90,64 +94,71 @@ function App() {
       label: { icon: "📁", title: "Project B", subtitle: "Phase 1" },
       data: [
         {
+          cardId: "row-2",
           id: "task-6",
-          title: "  Emptying Locker",
+          name: "  Emptying Locker",
           startDate: new Date("2025-05-01"),
-          endDate: new Date("2025-05-03"),
+          dueDate: new Date("2025-05-03"),
           occupancy: 100,
-          dependency: "task-5",
+          parentTaskId: "task-5",
           bgColor: "rgba(133, 193, 233, 0.83)"
         },
         {
+          cardId: "row-2",
           id: "task-7",
-          title: "Task second shift",
+          name: "Task second shift",
           startDate: new Date("2025-05-03"),
-          endDate: new Date("2025-05-06"),
+          dueDate: new Date("2025-05-06"),
           occupancy: 100,
           users: ["Rob"],
           bgColor: "rgba(133, 193, 233, 0.83)"
         },
         {
+          cardId: "row-2",
           id: "task-8",
-          title: "Orlando Roster",
+          name: "Orlando Roster",
           startDate: new Date("2025-05-013"),
-          endDate: new Date("2025-05-010"),
+          dueDate: new Date("2025-05-010"),
           occupancy: 100,
           users: ["Fran"],
           bgColor: "rgba(133, 193, 233, 0.83)"
         },
         {
+          cardId: "row-2",
           id: "task-9",
-          title: "Task fourth Shift",
+          name: "Task fourth Shift",
           startDate: new Date("2025-05-10"),
-          endDate: new Date("2025-05-013"),
+          dueDate: new Date("2025-05-013"),
           occupancy: 100,
           users: ["Colby"],
-          dependency: "task-3",
+          parentTaskId: "task-3",
           bgColor: "rgba(133, 193, 233, 0.83)"
         },
         {
+          cardId: "row-2",
           id: "task-10",
-          title: "Task 5th shift",
+          name: "Task 5th shift",
           startDate: new Date("2025-05-6"),
-          endDate: new Date("2025-05-020"),
+          dueDate: new Date("2025-05-020"),
           occupancy: 100,
           bgColor: "rgba(133, 193, 233, 0.83)"
         },
         {
+          cardId: "row-2",
           id: "task-11",
-          title: "Fix Flyer Codes",
+          name: "Fix Flyer Codes",
           startDate: new Date("2025-05-10"),
-          endDate: new Date("2025-05-013"),
+          dueDate: new Date("2025-05-013"),
           occupancy: 100,
           users: ["Colby"],
           bgColor: "rgba(133, 193, 233, 0.83)"
         },
         {
+          cardId: "row-2",
           id: "task-12",
-          title: "Cancel Weekend Missions",
+          name: "Cancel Weekend Missions",
           startDate: new Date("2025-05-05"),
-          endDate: new Date("2025-05-010"),
+          dueDate: new Date("2025-05-010"),
           users: ["Dev"],
           occupancy: 100,
           bgColor: "rgba(133, 193, 233, 0.83)"
@@ -156,6 +167,37 @@ function App() {
     }
   ];
 
+  const renderPopup = () => {
+    return (
+      <div
+        className="flex flex-col items-start "
+        style={{ color: "white", display: "flex", flexDirection: "row" }}>
+        <button
+          style={{
+            background: isHidden ? "#e04658" : "#038759",
+            border: "3px solid white",
+            color: "white",
+            display: "flex",
+            flexDirection: "row",
+            padding: "2px",
+            cursor: "pointer",
+            borderRadius: "4px",
+            fontSize: "0.6rem"
+          }}
+          onClick={() => {
+            setIsHidden((prev) => {
+              const newVal = !prev;
+              return newVal;
+            });
+          }}>
+          {isHidden ? "Undo" : "Done"}
+        </button>
+        <LinkIcon></LinkIcon>
+
+        <Trash2></Trash2>
+      </div>
+    );
+  };
   const [range, setRange] = useState<ParsedDatesRange>({
     startDate: new Date(),
     endDate: new Date()
@@ -172,9 +214,9 @@ function App() {
         data: person.data.filter(
           (project: any) =>
             dayjs(project.startDate).isBetween(range.startDate, range.endDate) ||
-            dayjs(project.endDate).isBetween(range.startDate, range.endDate) ||
+            dayjs(project.dueDate).isBetween(range.startDate, range.endDate) ||
             (dayjs(project.startDate).isBefore(range.startDate, "day") &&
-              dayjs(project.endDate).isAfter(range.endDate, "day"))
+              dayjs(project.dueDate).isAfter(range.endDate, "day"))
         )
       })),
     [mocked, range.endDate, range.startDate]

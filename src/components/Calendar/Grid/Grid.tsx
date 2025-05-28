@@ -12,7 +12,20 @@ import { GridProps } from "./types";
 import { StyledCanvas, StyledInnerWrapper, StyledSpan, StyledWrapper } from "./styles";
 
 const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
-  { zoom, rows, data, renderData, truncateText, projectData, showToggle },
+  {
+    zoom,
+    rows,
+    data,
+    renderData,
+    truncateText,
+    projectData,
+    showToggle,
+    tasks,
+    parentChildTask,
+    alarmClock,
+    Users,
+    hideCheckedItems
+  },
   ref
 ) {
   const { handleScrollNext, handleScrollPrev, date, isLoading, cols, startDate } = useCalendar();
@@ -126,6 +139,11 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
           reportPosition={handleTilePosition}
           truncateText={truncateText}
           showToggle={showToggle}
+          parentChildTask={parentChildTask}
+          alarmClock={alarmClock}
+          Users={Users}
+          hideCheckedItems={hideCheckedItems}
+          tasks={tasks}
         />
         <StyledSpan ref={refRight} position="right" />
         <Loader isLoading={isLoading} position="right" />

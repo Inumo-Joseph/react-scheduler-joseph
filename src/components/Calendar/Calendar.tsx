@@ -34,7 +34,12 @@ export const Calendar: FC<CalendarProps> = ({
   toggleTheme,
   topBarWidth,
   renderData,
-  schedulerRef
+  schedulerRef,
+  tasks,
+  parentChildTask,
+  alarmClock,
+  Users,
+  hideCheckedItems
 }) => {
   const [tooltipData, setTooltipData] = useState<TooltipData>(initialTooltipData);
   const [filteredData, setFilteredData] = useState(data);
@@ -181,6 +186,11 @@ export const Calendar: FC<CalendarProps> = ({
             truncateText={truncateText}
             showToggle={setTruncateText}
             renderData={renderData}
+            parentChildTask={parentChildTask}
+            alarmClock={alarmClock}
+            Users={Users}
+            hideCheckedItems={hideCheckedItems}
+            tasks={tasks}
           />
         ) : (
           <StyledEmptyBoxWrapper width={topBarWidth}>

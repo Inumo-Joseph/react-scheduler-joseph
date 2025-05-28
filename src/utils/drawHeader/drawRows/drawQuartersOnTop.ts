@@ -1,64 +1,63 @@
 import dayjs from "dayjs";
-import { Theme } from "@/styles";
-import { fonts, topRowTextYPos, headerMonthHeight, singleDayWidth } from "@/constants";
 import { Day } from "@/types/global";
-import { drawRow } from "../../drawRow";
+import {
+  dayWidth,
+  fonts,
+  headerDayHeight,
+  headerHeight,
+  headerMonthHeight,
+  headerWeekHeight,
+  middleRowTextYPos,
+  monthsInYear,
+  topRowTextYPos,
+  weeksInYear,
+  weekWidth
+} from "@/constants";
+import { drawRow } from "@/utils/drawRow";
+import { Theme } from "@/styles";
+import { getBoxFillStyle } from "@/utils/getBoxFillStyle";
+import { getTextStyle } from "@/utils/getTextStyle";
 
 export const drawQuartersOnTop = (
   ctx: CanvasRenderingContext2D,
   startDate: Day,
-  dayOfYear: number,
+  cols: number,
   theme: Theme
 ) => {
-  const yPos = 0;
-  const canvasWidth = ctx.canvas.width * 2;
+  const yPos = 2;
+  const quarterLabelY = headerWeekHeight / 1.6;
   let xPos = 0;
-  let currentYear = startDate.year;
 
-  const currentMonth = startDate.month;
-  const startMonthIndex = dayjs(
-    `${startDate.year}-${startDate.month}-${startDate.dayOfMonth}`
-  ).month();
-  let currentQuarter = Math.floor(currentMonth / 3) + 1;
-  console.log("Current startMonthINdex", startMonthIndex);
+  let lastDrawnQuarter = -1;
 
-  let totalWidth = 0;
+  for (let i = 0; i < cols; i++) {
+    const currentWeek = dayjs(
+      `${startDate.year}-${startDate.month + 1}-${startDate.dayOfMonth}`
+    ).add(i, "week");
+    const isoWeek = currentWeek.isoWeek();
 
-  const getDaysInQuarter = (year: number, quarter: number): number => {
-    const startMonth = (quarter - 1) * 3;
-    let days = 0;
-    for (let i = 0; i < 3; i++) {
-      days += dayjs(`${year}-${startMonth + i + 1}-01`).daysInMonth();
+    const quarter = Math.floor((isoWeek - 1) / 13);
+
+    if (quarter !== lastDrawnQuarter && quarter >= 0 && quarter < 4) {
+      const quarterLabel = `Q${quarter + 1}`;
+
+      drawRow(
+        {
+          ctx,
+          x: xPos,
+          y: yPos,
+          width: 13 * weekWidth,
+          height: headerMonthHeight,
+          textYPos: quarterLabelY,
+          label: quarterLabel,
+          font: fonts.topRow
+        },
+        theme
+      );
+
+      lastDrawnQuarter = quarter;
     }
-    return days;
-  };
 
-  while (totalWidth <= canvasWidth) {
-    const daysInThisQuarter = getDaysInQuarter(currentYear, currentQuarter);
-    const width = daysInThisQuarter * singleDayWidth;
-
-    drawRow(
-      {
-        ctx,
-        x: xPos,
-        y: yPos,
-        width,
-        height: headerMonthHeight,
-        textYPos: topRowTextYPos,
-        label: `Q${currentQuarter} ${currentYear}`,
-        font: fonts.topRow
-      },
-      theme
-    );
-
-    xPos += width;
-    totalWidth += width;
-
-    // Advance to next quarter
-    currentQuarter++;
-    if (currentQuarter > 4) {
-      currentQuarter = 1;
-      currentYear++;
-    }
+    xPos += weekWidth;
   }
 };

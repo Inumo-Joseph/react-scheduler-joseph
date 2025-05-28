@@ -11,6 +11,11 @@ export type SchedulerProps = {
   isLoading?: boolean;
   config?: Config;
   startDate?: string;
+  tasks?: any;
+  parentChildTask?: any;
+  alarmClock?: any;
+  Users?: any;
+  hideCheckedItems?: any;
   onRangeChange?: (range: ParsedDatesRange) => void;
   onFilterData?: () => void;
   onClearFilterData?: () => void;

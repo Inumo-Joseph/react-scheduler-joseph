@@ -16,8 +16,8 @@ export const getWeekOccupancy = (
     const startWeekNum = dayjs(item.startDate).isoWeek();
     const startDateDayNum = dayjs(item.startDate).isoWeekday();
 
-    const endWeekNum = dayjs(item.endDate).isoWeek();
-    const endDateDayNum = dayjs(item.endDate).isoWeekday();
+    const endWeekNum = dayjs(item.dueDate).isoWeek();
+    const endDateDayNum = dayjs(item.dueDate).isoWeekday();
 
     const { hours: itemHours, minutes: itemMinutes } = getDuration(item.occupancy);
 
@@ -31,7 +31,7 @@ export const getWeekOccupancy = (
       const minutes =
         endDateDayNum > businessDays ? businessDays * itemMinutes : endDateDayNum * itemMinutes;
       return { hours, minutes };
-    } else if (dayjs(focusedDate).isBetween(item.startDate, item.endDate)) {
+    } else if (dayjs(focusedDate).isBetween(item.startDate, item.dueDate)) {
       return { hours: businessDays * itemHours, minutes: businessDays * itemMinutes };
     }
     return { hours: 0, minutes: 0 };

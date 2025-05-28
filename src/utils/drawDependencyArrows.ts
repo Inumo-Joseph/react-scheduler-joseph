@@ -13,7 +13,7 @@ export function drawDependencyArrows(
   zoom: number
 ) {
   data.forEach((task) => {
-    const to = tilePositions[task.dependency ?? ""];
+    const to = tilePositions[task.parentTaskId ?? ""];
     const from = tilePositions[task.id];
     if (!from || !to) return;
     // console.log('Data',data)
@@ -22,7 +22,7 @@ export function drawDependencyArrows(
     // // console.log(` From ${task.id} with index of ${ data.indexOf(task)} - ${tilePositions[task.id].x} : ${tilePositions[task.id].y}  to ${task.dependency} - ${to.x} : ${to.y}`)
 
     const index = data.indexOf(task);
-    const index2 = data.findIndex((currentTask) => currentTask.id === task.dependency);
+    const index2 = data.findIndex((currentTask) => currentTask.id === task.parentTaskId);
     drawArrow(
       ctx,
       zoom,

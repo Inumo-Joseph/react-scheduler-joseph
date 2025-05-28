@@ -1,11 +1,24 @@
 import { Ref } from "react";
 import { SchedulerData, SchedulerProjectData } from "@/types/global";
 
+type AddParentChildTaskProps = {
+  anotherTrigger?: boolean;
+  updateTaskMode?: () => void;
+  form: any;
+  task: any;
+  selectedParentTask: any;
+};
+
 export type TileProps = {
   row: number;
   data: SchedulerProjectData;
   zoom: number;
   renderData: React.ReactNode;
+  tasks?: any;
+  parentChildTask?: (props: AddParentChildTaskProps) => React.ReactNode;
+  alarmClock?: any;
+  Users?: any;
+  hideCheckedItems?: any;
   reportPosition?: (
     id: string,
     pos: { x: number; y: number; width: number; height: number }

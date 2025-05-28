@@ -19,7 +19,12 @@ const Scheduler = ({
   onClearFilterData,
   onItemClick,
   isLoading,
-  renderData
+  tasks,
+  renderData,
+  parentChildTask,
+  alarmClock,
+  Users,
+  hideCheckedItems
 }: SchedulerProps) => {
   // eslint-disable-next-line
   const appConfig: Config = React.useMemo(
@@ -92,6 +97,11 @@ const Scheduler = ({
                   onItemClick={onItemClick}
                   toggleTheme={toggleTheme}
                   schedulerRef={outsideWrapperRef}
+                  parentChildTask={parentChildTask}
+                  alarmClock={alarmClock}
+                  Users={Users}
+                  hideCheckedItems={hideCheckedItems}
+                  tasks={tasks}
                 />
               </StyledInnerWrapper>
             </StyledOutsideWrapper>

@@ -20,9 +20,9 @@ export const getOccupancy = (
 
   const occupancy = resource.flat(2).filter((item) => {
     if (zoom === 1) {
-      return dayjs(focusedDate).isBetween(item.startDate, item.endDate, "day", "[]");
+      return dayjs(focusedDate).isBetween(item.startDate, item.dueDate, "day", "[]");
     } else if (zoom === 2) {
-      return dayjs(focusedDate).isBetween(item.startDate, item.endDate, "hour", "[]");
+      return dayjs(focusedDate).isBetween(item.startDate, item.dueDate, "hour", "[]");
     } else {
       return (
         dayjs(item.startDate).isBetween(
@@ -30,7 +30,7 @@ export const getOccupancy = (
           dayjs(focusedDate).add(6, "days"),
           "day",
           "[]"
-        ) || dayjs(focusedDate).isBetween(dayjs(item.startDate), dayjs(item.endDate), "day", "[]")
+        ) || dayjs(focusedDate).isBetween(dayjs(item.startDate), dayjs(item.dueDate), "day", "[]")
       );
     }
   });

@@ -10,15 +10,15 @@ export const setProjectsInRows = (projects: SchedulerProjectData[]): SchedulerPr
         let isColliding = false;
         for (let i = 0; i < row.length; i++) {
           if (
-            dayjs(project.startDate).isBetween(row[i].startDate, row[i].endDate, null, "[]") ||
-            dayjs(project.endDate).isBetween(row[i].startDate, row[i].endDate, null, "[]")
+            dayjs(project.startDate).isBetween(row[i].startDate, row[i].dueDate, null, "[]") ||
+            dayjs(project.dueDate).isBetween(row[i].startDate, row[i].dueDate, null, "[]")
           ) {
             isColliding = true;
             break;
           }
           if (
             dayjs(project.startDate).isBefore(row[i].startDate, "day") &&
-            dayjs(project.endDate).isAfter(row[i].endDate, "day")
+            dayjs(project.dueDate).isAfter(row[i].dueDate, "day")
           ) {
             isColliding = true;
             break;

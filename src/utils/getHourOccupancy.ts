@@ -9,9 +9,9 @@ export const getHourOccupancy = (
   let minutes = 0;
   occupancy.forEach((item) => {
     const startHour = dayjs(item.startDate).hour();
-    const endHour = dayjs(item.endDate).hour();
+    const endHour = dayjs(item.dueDate).hour();
     const tooltipHour = focusedDate.hour();
-    const endMinutes = dayjs(item.endDate).minute();
+    const endMinutes = dayjs(item.dueDate).minute();
     const startMinutes = dayjs(item.startDate).minute();
     if (startHour < tooltipHour && endHour > tooltipHour) {
       // Tooltip hour is contained in the event

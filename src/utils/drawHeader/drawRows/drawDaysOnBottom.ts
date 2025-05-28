@@ -26,9 +26,6 @@ export const drawDaysOnBottom = (
   startDate: Day,
   theme: Theme
 ) => {
-  const dayNameYPos = headerHeight - headerDayHeight / dayNameYoffset;
-  const dayNumYPos = headerHeight - headerDayHeight / dayNumYOffset;
-  const canvasHeight = headerMonthHeight + headerWeekHeight + headerDayHeight;
   let xPos = 0;
   const yPos = headerMonthHeight + headerWeekHeight + headerDayHeight / 2;
 

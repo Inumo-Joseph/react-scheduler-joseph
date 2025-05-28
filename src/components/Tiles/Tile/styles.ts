@@ -19,7 +19,7 @@ export const StyledTextWrapper = styled.div`
   margin: 10px 16px;
   position: relative;
   display: flex;
-  font-size: 10px;
+  font-size: 11.5px;
   letter-spacing: 0.5px;
   line-height: 12px;
 `;

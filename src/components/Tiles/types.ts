@@ -3,6 +3,11 @@ import { PaginatedSchedulerData, SchedulerData, SchedulerProjectData } from "@/t
 export type TilesProps = {
   zoom: number;
   data: PaginatedSchedulerData;
+  tasks?: any;
+  parentChildTask?: any;
+  alarmClock?: any;
+  Users?: any;
+  hideCheckedItems?: any;
   onTileClick?: (data: SchedulerProjectData) => void;
   onTileHover?: (data: SchedulerProjectData, ref: React.RefObject<HTMLButtonElement>) => void;
   projectData: SchedulerData;

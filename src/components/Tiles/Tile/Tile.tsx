@@ -37,7 +37,12 @@ const Tile: FC<TileProps> = ({
   renderData,
   reportPosition,
   projectData,
-  truncateText
+  truncateText,
+  tasks,
+  parentChildTask,
+  alarmClock,
+  Users,
+  hideCheckedItems
 }) => {
   const { date } = useCalendar();
   const tileRef = useRef<HTMLDivElement>(null);
@@ -55,13 +60,13 @@ const Tile: FC<TileProps> = ({
     datesRange.startDate,
     datesRange.endDate,
     data.startDate,
-    data.endDate,
+    data.dueDate,
     zoom
   );
 
   const [hoveredTileData, setHoveredTileData] = useState<SchedulerProjectData | null>(null);
-  const [tooltipData, setTooltipData] = useState<TooltipData>(initialTooltipData);
   const [isVisible, setIsVisible] = useState(false);
+  const selectedParentTasks = null;
 
   const handleTileHover = (data: SchedulerProjectData) => {
     setHoveredTileData(data);
@@ -105,7 +110,6 @@ const Tile: FC<TileProps> = ({
           includeTakenHoursOnWeekendsInDayView
         );
 
-        setTooltipData({ coords: { x, y }, resourceIndex, disposition });
         setIsVisible(true);
       },
       300
@@ -115,7 +119,6 @@ const Tile: FC<TileProps> = ({
   const handleMouseLeave = useCallback(() => {
     debouncedHandleMouseOver.current.cancel();
     setIsVisible(false);
-    setTooltipData(initialTooltipData);
   }, []);
 
   useEffect(() => {
@@ -150,7 +153,7 @@ const Tile: FC<TileProps> = ({
   }, [zoom, row, data]);
 
   const [isHidden, setIsHidden] = useState(false);
-  const endDate = new Date(data.endDate);
+  const endDate = new Date(data.dueDate);
   const now = new Date();
   const isPast = endDate < now;
   const effectiveIsHidden = isPast ? true : isHidden;
@@ -165,32 +168,14 @@ const Tile: FC<TileProps> = ({
         content={() => {
           return (
             <div
-              className="flex flex-col items-start "
+              className="flex flex-col items-start"
               style={{ color: "white", display: "flex", flexDirection: "row" }}>
-              <button
-                style={{
-                  background: isHidden ? "#e04658" : "#038759",
-                  border: "3px solid white",
-                  color: "white",
-                  display: "flex",
-                  flexDirection: "row",
-                  padding: "2px",
-                  cursor: "pointer",
-                  borderRadius: "4px",
-                  fontSize: "0.6rem"
-                }}
-                onClick={() => {
-                  setIsHidden((prev) => {
-                    const newVal = !prev;
-                    return newVal;
-                  });
-                }}>
-                {isHidden ? "Undo" : "Done"}
-              </button>
-              <LinkIcon></LinkIcon>
+              {parentChildTask?.({
+                task: data,
+                selectedParentTask: selectedParentTasks,
+                form: undefined
+              })}
 
-              <UsersIcon users={data.users} zoom={zoom} />
-              <Trash2></Trash2>
               <div style={{ color: "black", display: "flex" }} className=" pt-1 pl-1">
                 {renderData}
               </div>
@@ -224,7 +209,7 @@ const Tile: FC<TileProps> = ({
                           whiteSpace: "nowrap"
                         })
                       }}>
-                      {data.title}
+                      {data.name}
                     </StyledText>
                   </div>
                   {/* Subtitle and description below */}

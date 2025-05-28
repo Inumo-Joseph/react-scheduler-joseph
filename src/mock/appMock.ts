@@ -47,11 +47,12 @@ export const generateProjects = (
     for (let projectIndex = 0; projectIndex < projectsPerYear; projectIndex++) {
       const { startDate, endDate } = getRandomDates(yearIndex);
       data.push({
+        cardId: projectIndex.toString(),
         id: faker.datatype.uuid(),
         startDate,
-        endDate,
+        dueDate: endDate,
         occupancy: Math.ceil(Math.random() * secondsInWorkDay),
-        title,
+        name: title,
         subtitle: getRandomWords(),
         description: getRandomWords(amountOfDscWords),
         bgColor

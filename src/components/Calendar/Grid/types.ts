@@ -5,6 +5,11 @@ export type GridProps = {
   rows: number;
   schedulerRef: React.RefObject<HTMLDivElement>;
   data: PaginatedSchedulerData;
+  tasks?: any;
+  parentChildTask?: any;
+  alarmClock?: any;
+  Users?: any;
+  hideCheckedItems?: any;
   onTileClick?: (data: SchedulerProjectData) => void;
   onTileHover?: (data: SchedulerProjectData, ref: React.RefObject<HTMLButtonElement>) => void;
   renderData?: React.ReactNode;

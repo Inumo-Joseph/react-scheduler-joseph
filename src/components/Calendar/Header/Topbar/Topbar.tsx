@@ -5,9 +5,12 @@ import {
   ArrowRightToLineIcon,
   Calendar,
   LucideLogIn,
-  MoveRightIcon
+  MoveRightIcon,
+  ArrowLeftCircleIcon,
+  ArrowRightCircleIcon
 } from "lucide-react";
 import { Icon, IconButton, Toggle } from "@/components";
+
 import { useCalendar } from "@/context/CalendarProvider";
 import { useLanguage } from "@/context/LocaleProvider";
 import {
@@ -54,15 +57,15 @@ const Topbar: FC<TopbarProps> = ({
     <Wrapper width={width}>
       {/* <Today onClick={handleGoToday}>{topbar.today}</Today> */}
 
-      <div className="grid grid-flow-col gap-4" style={{ borderColor: "red" }}>
-        <span className="text-[#273754] border border-[#273754] bg-[white] px-1 py-1 rounded-lg">
+      <div className="">
+        <span className="" style={{ borderColor: "black", borderRadius: "10px", padding: "10px" }}>
           <Calendar width={"25"} onClick={handleGoToday}>
             {" "}
           </Calendar>
           <span className=""></span>
         </span>
 
-        <button className="text-[#273754] border border-[#273754] bg-[white] px-1 py-1 rounded-lg">
+        <button className="">
           <Zoom>
             <IconButton
               isDisabled={!isPrevZoom}
@@ -72,7 +75,7 @@ const Topbar: FC<TopbarProps> = ({
               width="14"
             />
 
-            <span className=" "> Days Weeks Months Quarters</span>
+            <span className=""> Months-Quarters, Days-Weeks </span>
 
             <IconButton
               isDisabled={!isNextZoom}
@@ -84,12 +87,12 @@ const Topbar: FC<TopbarProps> = ({
           </Zoom>
         </button>
 
-        <button className="bg-[white] text-[#273754] border border-[#273754] bg-[white] px-3 py-1 rounded-lg">
+        <button className="">
           <ArrowRightFromLine></ArrowRightFromLine>
         </button>
 
         <button
-          className="bg-[white] text-[#273754] border border-[#273754] bg-[white] px-3 py-1 rounded-lg"
+          className=""
           onClick={() => {
             setTruncate?.(!truncateText);
           }}>
@@ -101,10 +104,19 @@ const Topbar: FC<TopbarProps> = ({
             }}></ArrowRightToLineIcon>
         </button>
 
-        <button className="bg-[white] text-[#273754] border border-[#273754] bg-[white] px-3 py-1 rounded-lg">
-          Show/Hide Checked Items{" "}
-        </button>
+        <button className="">Show/Hide Checked Items </button>
       </div>
+
+      <span style={{ paddingBlockStart: "10px" }}>
+        <NavigationWrapper>
+          <button disabled={!data?.length} style={{ cursor: "" }}>
+            <ArrowLeftCircleIcon onClick={handleGoPrev}>{topbar.prev}</ArrowLeftCircleIcon>
+          </button>
+          <button disabled={!data?.length} style={{ cursor: "" }}>
+            <ArrowRightCircleIcon onClick={handleGoNext}>{topbar.next}</ArrowRightCircleIcon>
+          </button>
+        </NavigationWrapper>
+      </span>
 
       {/* <Filters>
         {filterButtonState >= 0 && (
@@ -124,16 +136,6 @@ const Topbar: FC<TopbarProps> = ({
         )}
       </Filters> */}
 
-      <NavigationWrapper>
-        <NavBtn disabled={!data?.length} onClick={handleGoPrev}>
-          <Icon iconName="arrowLeft" height="15" fill={colors.textPrimary} />
-          {topbar.prev}
-        </NavBtn>
-        <NavBtn disabled={!data?.length} onClick={handleGoNext}>
-          {topbar.next}
-          <Icon iconName="arrowRight" height="15" fill={colors.textPrimary} />
-        </NavBtn>
-      </NavigationWrapper>
       <OptionsContainer>{showThemeToggle && <Toggle toggleTheme={toggleTheme} />}</OptionsContainer>
     </Wrapper>
   );

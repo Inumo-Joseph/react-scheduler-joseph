@@ -10,7 +10,12 @@ const Tiles: FC<TilesProps> = ({
   reportPosition,
   projectData,
   truncateText,
-  showToggle
+  showToggle,
+  tasks,
+  parentChildTask,
+  alarmClock,
+  Users,
+  hideCheckedItems
 }) => {
   const placeTiles = useCallback((): PlacedTiles => {
     let rows = 0;
@@ -31,6 +36,11 @@ const Tiles: FC<TilesProps> = ({
               reportPosition={reportPosition}
               truncateText={truncateText}
               setTruncate={showToggle}
+              parentChildTask={parentChildTask}
+              alarmClock={alarmClock}
+              Users={Users}
+              hideCheckedItems={hideCheckedItems}
+              tasks={tasks}
             />
           ))
         );

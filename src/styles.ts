@@ -1,12 +1,13 @@
 import styled, { createGlobalStyle, type DefaultTheme } from "styled-components";
 import { css } from "styled-components";
+import "./assets/font-awesome.css";
 
 export const prefixId = "reactSchedulerOutsideWrapper";
 
 export const GlobalStyle = createGlobalStyle`
 
   #${prefixId} {
-    font-family: 'Arial', sans-serif;
+    font-family: 'font-awesome','Arial', sans-serif;
     box-sizing: border-box;
     line-height: 1.15;
     -webkit-text-size-adjust: 100%;

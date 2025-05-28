@@ -85,6 +85,9 @@ export type SchedulerProjectData = {
   /**
    * Unique Id of item
    */
+
+  cardId: string;
+
   id: string;
   /**
    * Represents start date of from which tile will render
@@ -93,7 +96,7 @@ export type SchedulerProjectData = {
   /**
    * Represents end date to which tile will render
    */
-  endDate: Date;
+  dueDate: Date;
   /**
    * Indicates how much time is spent per day. Given in seconds and converted by Scheduler to hours/minutes
    */
@@ -101,7 +104,7 @@ export type SchedulerProjectData = {
   /**
    * Title of item
    */
-  title: string;
+  name: string;
   /**
    * Subtitle of item. Optional
    */
@@ -117,7 +120,7 @@ export type SchedulerProjectData = {
   /**
    * ID of the parent task this one depends on. Optional.
    */
-  dependency?: string;
+  parentTaskId?: string;
 
   users?: any[];
 };
