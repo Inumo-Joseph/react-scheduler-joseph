@@ -59,7 +59,7 @@ export const drawDaysOnBottom = (
     if (isToday) {
       // Draw vertical green line
       ctx.fillStyle = "green";
-      ctx.fillRect(textX - 3, yPos - 20, dayWidth, headerDayHeight);
+      ctx.fillRect(textX - 10, yPos - 22, dayWidth, headerDayHeight);
       ctx.fillStyle = "white";
 
       ctx.fillText(dayLabel, textX, yPos);

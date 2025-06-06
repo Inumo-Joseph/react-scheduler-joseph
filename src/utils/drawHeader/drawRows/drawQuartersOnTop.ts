@@ -27,19 +27,20 @@ export const drawQuartersOnTop = (
   const yPos = 2;
   const quarterLabelY = headerWeekHeight / 1.6;
   let xPos = 0;
+  let yearIndex = 0;
 
   let lastDrawnQuarter = -1;
-
   for (let i = 0; i < cols; i++) {
+    yearIndex += 4;
     const currentWeek = dayjs(
       `${startDate.year}-${startDate.month + 1}-${startDate.dayOfMonth}`
     ).add(i, "week");
     const isoWeek = currentWeek.isoWeek();
+    const year = startDate.year;
 
     const quarter = Math.floor((isoWeek - 1) / 13);
-
     if (quarter !== lastDrawnQuarter && quarter >= 0 && quarter < 4) {
-      const quarterLabel = `Q${quarter + 1}`;
+      const quarterLabel = `Q${quarter + 1} - ${startDate.year}`;
 
       drawRow(
         {
@@ -47,8 +48,8 @@ export const drawQuartersOnTop = (
           x: xPos,
           y: yPos,
           width: 13 * weekWidth,
-          height: headerMonthHeight,
-          textYPos: quarterLabelY,
+          height: headerMonthHeight + 10,
+          textYPos: topRowTextYPos,
           label: quarterLabel,
           font: fonts.topRow
         },

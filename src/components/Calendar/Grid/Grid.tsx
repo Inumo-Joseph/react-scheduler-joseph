@@ -116,7 +116,6 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
-
     ctx.beginPath();
     ctx.moveTo(50, 50);
     ctx.lineTo(200, 200);
@@ -130,6 +129,7 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
       <StyledInnerWrapper ref={ref}>
         <StyledSpan position="left" ref={refLeft} />
         <Loader isLoading={isLoading} position="left" />
+
         <StyledCanvas ref={canvasRef} />
         <Tiles
           data={data}

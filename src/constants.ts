@@ -2,7 +2,7 @@ import { prefixId } from "./styles";
 
 export const monthWidth = 25;
 export const dayWidth = 50;
-export const headerMonthHeight = 24;
+export const headerMonthHeight = 30;
 export const headerWeekHeight = 20;
 export const headerDayHeight = 45;
 export const headerHeight = headerDayHeight + headerWeekHeight + headerMonthHeight;

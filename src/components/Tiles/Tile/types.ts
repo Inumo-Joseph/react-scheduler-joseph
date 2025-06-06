@@ -27,6 +27,7 @@ export type TileProps = {
   setTruncate?: React.Dispatch<React.SetStateAction<boolean>>;
   projectData: SchedulerData;
   tileRef?: React.RefObject<HTMLButtonElement>;
+  onHover?: React.ReactNode;
 };
 
 export type StyledTextProps = {

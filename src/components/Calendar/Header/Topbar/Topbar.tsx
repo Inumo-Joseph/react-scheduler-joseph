@@ -7,8 +7,10 @@ import {
   LucideLogIn,
   MoveRightIcon,
   ArrowLeftCircleIcon,
-  ArrowRightCircleIcon
+  ArrowRightCircleIcon,
+  CheckSquare2Icon
 } from "lucide-react";
+import { Button } from "semantic-ui-react";
 import { Icon, IconButton, Toggle } from "@/components";
 
 import { useCalendar } from "@/context/CalendarProvider";
@@ -58,65 +60,66 @@ const Topbar: FC<TopbarProps> = ({
       {/* <Today onClick={handleGoToday}>{topbar.today}</Today> */}
 
       <div className="">
-        <span className="" style={{ borderColor: "black", borderRadius: "10px", padding: "10px" }}>
-          <Calendar width={"25"} onClick={handleGoToday}>
-            {" "}
-          </Calendar>
-          <span className=""></span>
+        <span
+          className=""
+          style={{
+            borderColor: "black",
+            borderRadius: "10px",
+            padding: "10px",
+            marginTop: "10px"
+          }}>
+          <button className="">
+            <Zoom>
+              <IconButton
+                isDisabled={!isPrevZoom}
+                onClick={zoomOut}
+                isFullRounded
+                iconName="subtract"
+                width="14"
+              />
+
+              <span className=""> Months-Quarters, Days-Weeks </span>
+
+              <IconButton
+                isDisabled={!isNextZoom}
+                onClick={zoomIn}
+                isFullRounded
+                iconName="add"
+                width="14"
+              />
+            </Zoom>
+          </button>
+        </span>
+        <span className="" style={{ borderColor: "black", marginTop: "1px" }}>
+          <Button
+            className=""
+            onClick={() => {
+              setTruncate?.(!truncateText);
+            }}>
+            <ArrowRightToLineIcon
+              style={{
+                ...(truncateText && {
+                  color: "green"
+                })
+              }}></ArrowRightToLineIcon>
+          </Button>
         </span>
 
-        <button className="">
-          <Zoom>
-            <IconButton
-              isDisabled={!isPrevZoom}
-              onClick={zoomOut}
-              isFullRounded
-              iconName="subtract"
-              width="14"
-            />
+        <Button className=" "> Show / Hide Checked Items</Button>
 
-            <span className=""> Months-Quarters, Days-Weeks </span>
-
-            <IconButton
-              isDisabled={!isNextZoom}
-              onClick={zoomIn}
-              isFullRounded
-              iconName="add"
-              width="14"
-            />
-          </Zoom>
-        </button>
-
-        <button className="">
-          <ArrowRightFromLine></ArrowRightFromLine>
-        </button>
-
-        <button
-          className=""
-          onClick={() => {
-            setTruncate?.(!truncateText);
-          }}>
-          <ArrowRightToLineIcon
-            style={{
-              ...(truncateText && {
-                color: "green"
-              })
-            }}></ArrowRightToLineIcon>
-        </button>
-
-        <button className="">Show/Hide Checked Items </button>
+        <Button onClick={handleGoToday}>
+          <Calendar width={"25"}> </Calendar>
+        </Button>
       </div>
 
-      <span style={{ paddingBlockStart: "10px" }}>
-        <NavigationWrapper>
-          <button disabled={!data?.length} style={{ cursor: "" }}>
-            <ArrowLeftCircleIcon onClick={handleGoPrev}>{topbar.prev}</ArrowLeftCircleIcon>
-          </button>
-          <button disabled={!data?.length} style={{ cursor: "" }}>
-            <ArrowRightCircleIcon onClick={handleGoNext}>{topbar.next}</ArrowRightCircleIcon>
-          </button>
-        </NavigationWrapper>
-      </span>
+      <NavigationWrapper>
+        <Button disabled={!data?.length} style={{ cursor: "" }}>
+          <ArrowLeftCircleIcon onClick={handleGoPrev}>{topbar.prev}</ArrowLeftCircleIcon>
+        </Button>
+        <Button disabled={!data?.length} style={{ cursor: "" }}>
+          <ArrowRightCircleIcon onClick={handleGoNext}>{topbar.next}</ArrowRightCircleIcon>
+        </Button>
+      </NavigationWrapper>
 
       {/* <Filters>
         {filterButtonState >= 0 && (

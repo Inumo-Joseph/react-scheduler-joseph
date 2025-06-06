@@ -7,7 +7,7 @@ export function drawArrow(
   from: { x: number; y: number; width: number; height: number; _index: number },
   to: { x: number; y: number; width: number; height: number; _index: number },
   options = {
-    padding: 19,
+    padding: 9,
     arrowCurve: 1,
     barHeight: 5,
     headerHeight: 30
@@ -15,28 +15,23 @@ export function drawArrow(
 ) {
   const curve = options.arrowCurve;
   const padding = options.padding;
-
+  const zoomPadding = Math.min(zoom + 2, zoom);
   let startX = from.x + from.width;
-  const fromBelowTo = from._index > to._index;
-
-  // console.log("Index from", from._index, "Index to", to._index);
+  const svg = document.getElementById("svg-arrows");
 
   // Adjust startX left if overlapping
   const condition = () => to.x < startX + padding && startX > from.x + padding;
   while (condition()) startX -= 10;
-  startX -= 10;
+  startX -= 0;
 
   const startY = from.y - from.height - options.barHeight * 5;
   const endX = to.x;
   const endY = to.y - to.height - options.headerHeight;
-  //
-  // options.barHeight +
-  //
-  // padding
-
-  const curveY = fromBelowTo ? -curve : curve;
 
   ctx.beginPath();
+
+  ctx.arc(startX, startY + 3.5, 1.5, -90, Math.PI, false);
+  ctx.fill();
   ctx.moveTo(startX, startY);
 
   // Case: overlapping bars, make elbow path with arcs
@@ -45,7 +40,7 @@ export function drawArrow(
     let effectiveCurve = curve;
     if (down1 < 0) {
       down1 = 0;
-      effectiveCurve = padding / 2;
+      effectiveCurve = padding;
     }
 
     const down2 = endY;
@@ -96,64 +91,10 @@ export function drawArrow(
   const headlen = 8;
   const angle = Math.atan2(endY - startY, endX);
   ctx.beginPath();
-  ctx.moveTo(endX, endY);
-  ctx.lineTo(
-    endX - headlen * Math.cos(angle - Math.PI / 6),
-    endY - headlen * Math.sin(angle - Math.PI / 6)
-  );
-  ctx.lineTo(
-    endX - headlen * Math.cos(angle + Math.PI / 6),
-    endY - headlen * Math.sin(angle + Math.PI / 6)
-  );
+  ctx.moveTo(endX + 3, endY);
+  ctx.lineTo(endX - headlen * Math.cos(-Math.PI / 6), endY - headlen * Math.sin(-Math.PI / 6));
+  ctx.lineTo(endX - headlen * Math.cos(+Math.PI / 6), endY - headlen * Math.sin(+Math.PI / 6));
   ctx.closePath();
   ctx.fillStyle = "black";
   ctx.fill();
 }
-
-// export function drawArrow(
-//     ctx: CanvasRenderingContext2D,
-//     zoom: number,
-//     from: { x: number; y: number; width: number; height: number},
-//     to: { x: number; y: number; width: number; height: number }
-//   ) {
-//     const offset = 30; // horizontal spacing for bends
-//     let fromX = from.x + from.width;
-//     let fromY = from.y + from.height / 2  ;
-
-//     // End: middle of the left edge of the parent task
-//     let toX = to.x-50;
-//     let toY = to.y -3;
-
-//     if(zoom == 1)
-//     {
-//         fromX = from.x-60
-//         toX = to.x-50
-//     }
-
-//     // Draw bent (elbow) arrow path
-//     ctx.beginPath();
-//     ctx.moveTo(fromX, fromY);
-//     ctx.lineTo(fromX + offset, fromY); // horizontal
-//     ctx.lineTo(fromX + offset, toY);   // vertical
-//     ctx.lineTo(toX, toY);              // final horizontal to parent
-//     ctx.strokeStyle = "grey";
-//     ctx.lineWidth = 2;
-//     ctx.stroke();
-
-//     // Arrowhead at parent side
-//     const headlen = 5;
-//     const angle = Math.atan2(toY-80 - (fromY), toX - (fromX + offset));
-//     ctx.beginPath();
-//     ctx.moveTo(toX, toY);
-//     ctx.lineTo(
-//       toX - headlen * Math.cos(angle - Math.PI / 6),
-//       toY - headlen * Math.sin(angle - Math.PI / 6)
-//     );
-//     ctx.lineTo(
-//       toX - headlen * Math.cos(angle + Math.PI / 6),
-//       toY - headlen * Math.sin(angle + Math.PI / 6)
-//     );
-//     ctx.closePath();
-//     ctx.fillStyle = "grey";
-//     ctx.fill();
-//   }

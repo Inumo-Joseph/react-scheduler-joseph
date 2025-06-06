@@ -67,10 +67,7 @@ const Tile: FC<TileProps> = ({
   const [hoveredTileData, setHoveredTileData] = useState<SchedulerProjectData | null>(null);
   const [isVisible, setIsVisible] = useState(false);
   const selectedParentTasks = null;
-
-  const handleTileHover = (data: SchedulerProjectData) => {
-    setHoveredTileData(data);
-  };
+  const ctx = CanvasRenderingContext2D;
 
   const {
     page,
@@ -115,6 +112,10 @@ const Tile: FC<TileProps> = ({
       300
     )
   );
+
+  const handleTileHover = (data: SchedulerProjectData) => {
+    setHoveredTileData(data);
+  };
 
   const handleMouseLeave = useCallback(() => {
     debouncedHandleMouseOver.current.cancel();
