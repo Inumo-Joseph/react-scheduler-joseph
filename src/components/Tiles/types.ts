@@ -24,6 +24,7 @@ export type TilesProps = {
   setShowCompleted: React.Dispatch<React.SetStateAction<boolean>>;
   subDispatch?: Dispatch<AnyAction>;
   subEntryActions?: any;
+  form?: any;
 };
 
 export type PlacedTiles = JSX.Element[];

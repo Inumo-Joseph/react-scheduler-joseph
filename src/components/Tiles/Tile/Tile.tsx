@@ -202,7 +202,7 @@ const Tile: FC<TileProps> = ({
                 task: data,
                 setAddTaskMonth: setAddTaskMonth,
                 setAddTaskDate: setAddTaskDate,
-                isRecurringSelected: isRecurringSelected,
+                isRecurringSelected: false,
                 taskDueDate: data.dueDate,
                 setSelectedTask: setSelectedTask,
                 subDispatch: subDispatch,

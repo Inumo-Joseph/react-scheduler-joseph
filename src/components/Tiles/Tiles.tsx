@@ -17,7 +17,8 @@ const Tiles: FC<TilesProps> = ({
   Users,
   hideCheckedItems,
   subDispatch,
-  subEntryActions
+  subEntryActions,
+  form
 }) => {
   const placeTiles = useCallback((): PlacedTiles => {
     let rows = 0;
@@ -45,6 +46,7 @@ const Tiles: FC<TilesProps> = ({
               tasks={tasks}
               subDispatch={subDispatch}
               subEntryActions={subEntryActions}
+              form={form}
             />
           ))
         );
