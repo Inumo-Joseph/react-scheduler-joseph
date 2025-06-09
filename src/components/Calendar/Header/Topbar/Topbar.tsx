@@ -1,5 +1,5 @@
 import { useTheme } from "styled-components";
-import { FC, MouseEventHandler } from "react";
+import { FC, MouseEventHandler, useState } from "react";
 import {
   ArrowRightFromLine,
   ArrowRightToLineIcon,
@@ -31,7 +31,8 @@ const Topbar: FC<TopbarProps> = ({
   showThemeToggle,
   toggleTheme,
   setTruncate,
-  truncateText
+  truncateText,
+  setShowCompleted
 }) => {
   const { topbar } = useLanguage();
   const {
@@ -55,11 +56,15 @@ const Topbar: FC<TopbarProps> = ({
     onClearFilterData?.();
   };
 
+  const toggleShowCompleted = () => {
+    setShowCompleted?.((prevShowCompleted: any) => !prevShowCompleted);
+  };
+
   return (
     <Wrapper width={width}>
       {/* <Today onClick={handleGoToday}>{topbar.today}</Today> */}
 
-      <div className="">
+      <div className="" style={{ paddingTop: "10px" }}>
         <span
           className=""
           style={{
@@ -90,7 +95,7 @@ const Topbar: FC<TopbarProps> = ({
             </Zoom>
           </button>
         </span>
-        <span className="" style={{ borderColor: "black", marginTop: "1px" }}>
+        <span className="" style={{ borderColor: "black", marginTop: "10px" }}>
           <Button
             className=""
             onClick={() => {
@@ -105,21 +110,26 @@ const Topbar: FC<TopbarProps> = ({
           </Button>
         </span>
 
-        <Button className=" "> Show / Hide Checked Items</Button>
-
-        <Button onClick={handleGoToday}>
-          <Calendar width={"25"}> </Calendar>
+        <Button className=" " onClick={toggleShowCompleted}>
+          {" "}
+          <CheckSquare2Icon></CheckSquare2Icon>
         </Button>
-      </div>
 
-      <NavigationWrapper>
+        <span style={{ paddingTop: "10px" }}>
+          <Button onClick={handleGoToday}>
+            <Calendar width={"25"}> </Calendar>
+          </Button>
+        </span>
+
         <Button disabled={!data?.length} style={{ cursor: "" }}>
           <ArrowLeftCircleIcon onClick={handleGoPrev}>{topbar.prev}</ArrowLeftCircleIcon>
         </Button>
         <Button disabled={!data?.length} style={{ cursor: "" }}>
           <ArrowRightCircleIcon onClick={handleGoNext}>{topbar.next}</ArrowRightCircleIcon>
         </Button>
-      </NavigationWrapper>
+      </div>
+
+      <NavigationWrapper></NavigationWrapper>
 
       {/* <Filters>
         {filterButtonState >= 0 && (

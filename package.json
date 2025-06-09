@@ -58,6 +58,7 @@
     "lodash.debounce": "4.0.8",
     "lucide-react": "^0.508.0",
     "path": "0.12.7",
+    "redux": "^5.0.1",
     "semantic-ui-css": "^2.5.0",
     "semantic-ui-react": "^2.1.5",
     "styled-components": "5.3.8",

@@ -24,7 +24,9 @@ const Scheduler = ({
   parentChildTask,
   alarmClock,
   Users,
-  hideCheckedItems
+  hideCheckedItems,
+  subDispatch,
+  subEntryActions
 }: SchedulerProps) => {
   // eslint-disable-next-line
   const appConfig: Config = React.useMemo(
@@ -102,6 +104,8 @@ const Scheduler = ({
                   Users={Users}
                   hideCheckedItems={hideCheckedItems}
                   tasks={tasks}
+                  subDispatch={subDispatch}
+                  subEntryActions={subEntryActions}
                 />
               </StyledInnerWrapper>
             </StyledOutsideWrapper>

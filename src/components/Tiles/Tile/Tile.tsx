@@ -42,11 +42,15 @@ const Tile: FC<TileProps> = ({
   parentChildTask,
   alarmClock,
   Users,
-  hideCheckedItems
+  hideCheckedItems,
+  subDispatch,
+  subEntryActions,
+  form
 }) => {
   const { date } = useCalendar();
   const tileRef = useRef<HTMLDivElement>(null);
   const [popupOpen, setPopupOpen] = useState(false);
+  const [selectedTask, setSelectedTask] = useState<any>({});
 
   const {
     zoom,
@@ -66,8 +70,24 @@ const Tile: FC<TileProps> = ({
 
   const [hoveredTileData, setHoveredTileData] = useState<SchedulerProjectData | null>(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [addTaskMonth, setAddTaskMonth] = useState<Date | undefined>(new Date());
+
+  const setHoursToDate = (date: string | number | Date, hours: any) => {
+    const newDate = new Date(date);
+    newDate.setHours(hours);
+    newDate.setMinutes(0);
+    newDate.setSeconds(0);
+    newDate.setMilliseconds(0);
+    return newDate;
+  };
+
+  const [addTaskDate, setAddTaskDate] = useState<Date | undefined>(() =>
+    setHoursToDate(new Date(), 17)
+  );
+
   const selectedParentTasks = null;
   const ctx = CanvasRenderingContext2D;
+  const isRecurringSelected = form.watch("isRecurring");
 
   const {
     page,
@@ -91,7 +111,6 @@ const Tile: FC<TileProps> = ({
         zoom: ZoomLevel
       ) => {
         if (!tileRef?.current) return;
-
         const { left, top } = tileRef.current.getBoundingClientRect();
         const tooltipCoords = { x: e.clientX - left, y: e.clientY - top };
         const {
@@ -106,7 +125,6 @@ const Tile: FC<TileProps> = ({
           zoom,
           includeTakenHoursOnWeekendsInDayView
         );
-
         setIsVisible(true);
       },
       300
@@ -169,12 +187,28 @@ const Tile: FC<TileProps> = ({
         content={() => {
           return (
             <div
-              className="flex flex-col items-start"
-              style={{ color: "white", display: "flex", flexDirection: "row" }}>
+              className=""
+              style={{ color: "white", display: "flex", flexDirection: "row", width: "10px" }}>
               {parentChildTask?.({
                 task: data,
                 selectedParentTask: selectedParentTasks,
-                form: undefined
+                form: undefined,
+                subDispatch: subDispatch,
+                subEntryActions: subEntryActions
+              })}
+
+              {alarmClock?.({
+                form: form,
+                task: data,
+                setAddTaskMonth: setAddTaskMonth,
+                setAddTaskDate: setAddTaskDate,
+                isRecurringSelected: isRecurringSelected,
+                taskDueDate: data.dueDate,
+                setSelectedTask: setSelectedTask,
+                subDispatch: subDispatch,
+                subEntryActions: subEntryActions,
+                addTaskMonth: undefined,
+                addTaskDate: null
               })}
 
               <div style={{ color: "black", display: "flex" }} className=" pt-1 pl-1">

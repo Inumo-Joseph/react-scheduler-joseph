@@ -1,3 +1,5 @@
+import { Dispatch } from "react";
+import { AnyAction } from "redux";
 import { PaginatedSchedulerData, SchedulerData, SchedulerProjectData } from "@/types/global";
 
 export type TilesProps = {
@@ -19,6 +21,9 @@ export type TilesProps = {
   tileRef?: React.RefObject<HTMLButtonElement>;
   showToggle: React.Dispatch<React.SetStateAction<boolean>>;
   truncateText?: boolean;
+  setShowCompleted: React.Dispatch<React.SetStateAction<boolean>>;
+  subDispatch?: Dispatch<AnyAction>;
+  subEntryActions?: any;
 };
 
 export type PlacedTiles = JSX.Element[];

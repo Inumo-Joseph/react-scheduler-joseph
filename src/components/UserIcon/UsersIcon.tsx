@@ -13,9 +13,10 @@ const UsersIcon: FC<UsersIconProps> = ({ users, zoom }) => {
     return initials;
   }
 
+  console.log(name);
   if (!users || users.length === 0) return null;
 
-  const firstUser = users[0];
+  const firstUser = users?.[0];
   const initials = getInitials(firstUser);
   const width = Math.min(20 * zoom, 20);
   const fontsize = Math.min(6 * zoom, 6);

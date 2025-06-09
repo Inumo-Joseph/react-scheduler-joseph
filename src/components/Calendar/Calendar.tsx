@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, useCallback, useEffect, useRef, useState } from "react";
+import React, { ChangeEvent, FC, useCallback, useEffect, useRef, useState, Dispatch } from "react";
 import debounce from "lodash.debounce";
 import { ChevronsLeftRightEllipsisIcon } from "lucide-react";
 import { useCalendar } from "@/context/CalendarProvider";
@@ -39,7 +39,9 @@ export const Calendar: FC<CalendarProps> = ({
   parentChildTask,
   alarmClock,
   Users,
-  hideCheckedItems
+  hideCheckedItems,
+  subDispatch,
+  subEntryActions
 }) => {
   const [tooltipData, setTooltipData] = useState<TooltipData>(initialTooltipData);
   const [filteredData, setFilteredData] = useState(data);
@@ -58,6 +60,7 @@ export const Calendar: FC<CalendarProps> = ({
   const [hoveredTileRef, setHoveredTileRef] = useState<React.RefObject<HTMLButtonElement> | null>(
     null
   );
+  const [showCompleted, setShowCompleted] = useState(false);
 
   const handleTileHover = (data: SchedulerProjectData, ref: React.RefObject<HTMLButtonElement>) => {
     setHoveredTileData(data);
@@ -173,6 +176,7 @@ export const Calendar: FC<CalendarProps> = ({
           toggleTheme={toggleTheme}
           truncateText={truncateText}
           setTruncate={setTruncateText}
+          setShowCompleted={setShowCompleted}
         />
         {data.length ? (
           <Grid
@@ -191,6 +195,9 @@ export const Calendar: FC<CalendarProps> = ({
             Users={Users}
             hideCheckedItems={hideCheckedItems}
             tasks={tasks}
+            setShowCompleted={setShowCompleted}
+            subDispatch={subDispatch}
+            subEntryActions={subEntryActions}
           />
         ) : (
           <StyledEmptyBoxWrapper width={topBarWidth}>

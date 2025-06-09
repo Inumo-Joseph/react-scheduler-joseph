@@ -17,7 +17,8 @@ const Header: FC<HeaderProps> = ({
   showThemeToggle,
   toggleTheme,
   setTruncate,
-  truncateText
+  truncateText,
+  setShowCompleted
 }) => {
   const { week } = useLanguage();
   const { date, cols, dayOfYear, startDate } = useCalendar();
@@ -64,6 +65,7 @@ const Header: FC<HeaderProps> = ({
         toggleTheme={toggleTheme}
         setTruncate={setTruncate}
         truncateText={truncateText}
+        setShowCompleted={setShowCompleted}
       />
       <div className="my-5"></div>
       <StyledWrapper id={canvasHeaderWrapperId}>

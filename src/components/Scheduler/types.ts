@@ -1,3 +1,5 @@
+import React, { Dispatch } from "react";
+import { AnyAction } from "redux";
 import {
   Config,
   SchedulerData,
@@ -5,7 +7,6 @@ import {
   SchedulerProjectData
 } from "@/types/global";
 import { ParsedDatesRange } from "@/utils/getDatesRange";
-
 export type SchedulerProps = {
   data: SchedulerData;
   isLoading?: boolean;
@@ -21,6 +22,8 @@ export type SchedulerProps = {
   onClearFilterData?: () => void;
   onItemClick?: (data: SchedulerItemClickData) => void;
   renderData?: React.ReactNode;
+  subDispatch?: Dispatch<AnyAction>;
+  subEntryActions?: any;
 };
 
 export type StyledOutsideWrapperProps = {

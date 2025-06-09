@@ -1,3 +1,5 @@
+import { Dispatch } from "react";
+import { AnyAction } from "redux";
 import { PaginatedSchedulerData, SchedulerData, SchedulerProjectData } from "@/types/global";
 
 export type GridProps = {
@@ -16,6 +18,9 @@ export type GridProps = {
   projectData: SchedulerData;
   truncateText?: boolean;
   showToggle: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowCompleted: React.Dispatch<React.SetStateAction<boolean>>;
+  subDispatch?: Dispatch<AnyAction>;
+  subEntryActions?: any;
 };
 
 export type StyledSpanProps = {

@@ -24,7 +24,7 @@ export function drawArrow(
   while (condition()) startX -= 10;
   startX -= 0;
 
-  const startY = from.y - from.height - options.barHeight * 5;
+  const startY = from.y - from.height - options.barHeight * 8;
   const endX = to.x;
   const endY = to.y - to.height - options.headerHeight;
 

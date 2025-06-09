@@ -24,7 +24,10 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
     parentChildTask,
     alarmClock,
     Users,
-    hideCheckedItems
+    hideCheckedItems,
+    setShowCompleted,
+    subDispatch,
+    subEntryActions
   },
   ref
 ) {
@@ -144,6 +147,9 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
           Users={Users}
           hideCheckedItems={hideCheckedItems}
           tasks={tasks}
+          setShowCompleted={setShowCompleted}
+          subDispatch={subDispatch}
+          subEntryActions={subEntryActions}
         />
         <StyledSpan ref={refRight} position="right" />
         <Loader isLoading={isLoading} position="right" />

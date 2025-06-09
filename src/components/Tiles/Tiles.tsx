@@ -15,7 +15,9 @@ const Tiles: FC<TilesProps> = ({
   parentChildTask,
   alarmClock,
   Users,
-  hideCheckedItems
+  hideCheckedItems,
+  subDispatch,
+  subEntryActions
 }) => {
   const placeTiles = useCallback((): PlacedTiles => {
     let rows = 0;
@@ -41,6 +43,8 @@ const Tiles: FC<TilesProps> = ({
               Users={Users}
               hideCheckedItems={hideCheckedItems}
               tasks={tasks}
+              subDispatch={subDispatch}
+              subEntryActions={subEntryActions}
             />
           ))
         );

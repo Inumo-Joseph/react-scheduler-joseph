@@ -1,8 +1,8 @@
+import { AnyAction } from "redux";
+import { Dispatch } from "react";
 import { SchedulerData, SchedulerItemClickData, SchedulerProjectData } from "@/types/global";
-
 export type CalendarProps = {
   data: SchedulerData;
-
   topBarWidth: number;
   renderData: React.ReactNode;
   schedulerRef: React.RefObject<HTMLDivElement>;
@@ -13,6 +13,8 @@ export type CalendarProps = {
   hideCheckedItems?: any;
   onItemClick?: (data: SchedulerItemClickData) => void;
   toggleTheme?: () => void;
+  subDispatch?: Dispatch<AnyAction>;
+  subEntryActions?: any;
 };
 
 export type StyledSpanProps = {
