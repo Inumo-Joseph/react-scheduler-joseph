@@ -18,9 +18,11 @@ export type GridProps = {
   projectData: SchedulerData;
   truncateText?: boolean;
   showToggle: React.Dispatch<React.SetStateAction<boolean>>;
+  showCompleted?: boolean;
   setShowCompleted: React.Dispatch<React.SetStateAction<boolean>>;
   subDispatch?: Dispatch<AnyAction>;
   subEntryActions?: any;
+  form?: any;
 };
 
 export type StyledSpanProps = {

@@ -26,7 +26,8 @@ const Scheduler = ({
   Users,
   hideCheckedItems,
   subDispatch,
-  subEntryActions
+  subEntryActions,
+  form
 }: SchedulerProps) => {
   // eslint-disable-next-line
   const appConfig: Config = React.useMemo(
@@ -106,6 +107,7 @@ const Scheduler = ({
                   tasks={tasks}
                   subDispatch={subDispatch}
                   subEntryActions={subEntryActions}
+                  form={form}
                 />
               </StyledInnerWrapper>
             </StyledOutsideWrapper>

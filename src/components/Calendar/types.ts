@@ -15,6 +15,7 @@ export type CalendarProps = {
   toggleTheme?: () => void;
   subDispatch?: Dispatch<AnyAction>;
   subEntryActions?: any;
+  form?: any;
 };
 
 export type StyledSpanProps = {

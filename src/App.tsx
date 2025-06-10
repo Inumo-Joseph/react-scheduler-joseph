@@ -42,9 +42,11 @@ function App() {
           cardId: "row-1",
           id: "task-1",
           name: "Task 1",
-          startDate: new Date("2025-05-01"),
-          dueDate: new Date("2025-05-03"),
-          occupancy: 100
+          startDate: new Date("2025-06-01"),
+          dueDate: new Date("2025-06-03"),
+          occupancy: 100,
+          isCompleted: false,
+          isRecurring: false
 
           // dependency: "task-2"
         },
@@ -52,39 +54,47 @@ function App() {
           cardId: "row-1",
           id: "task-2",
           name: "Task 2",
-          startDate: new Date("2025-05-03"),
-          dueDate: new Date("2025-05-06"),
+          startDate: new Date("2025-06-03"),
+          dueDate: new Date("2025-06-06"),
           occupancy: 100,
-          users: []
+          users: [],
+          isCompleted: false,
+          isRecurring: false
         },
         {
           cardId: "row-1",
           id: "task-3",
           name: "Task 3",
-          startDate: new Date("2025-05-07"),
-          dueDate: new Date("2025-05-010"),
+          startDate: new Date("2025-06-07"),
+          dueDate: new Date("2025-06-010"),
           occupancy: 100,
           // parentTaskId: "task-2", // depends on Task 1
-          users: ["Fran"]
+          users: ["Fran"],
+          isCompleted: false,
+          isRecurring: false
         },
         {
           cardId: "row-1",
           id: "task-4",
           name: "Task 4",
-          startDate: new Date("2025-05-10"),
-          dueDate: new Date("2025-05-013"),
+          startDate: new Date("2025-06-10"),
+          dueDate: new Date("2025-06-013"),
           occupancy: 100,
           users: ["Colby"],
-          parentTaskId: "task-5"
+          parentTaskId: "task-5",
+          isCompleted: false,
+          isRecurring: false
         },
         {
           cardId: "row-1",
           id: "task-5",
           name: "Task 5",
-          startDate: new Date("2025-05-10"),
-          dueDate: new Date("2025-06-013"),
+          startDate: new Date("2025-06-10"),
+          dueDate: new Date("2025-07-013"),
           occupancy: 100,
-          parentTaskId: "task-9"
+          parentTaskId: "task-9",
+          isCompleted: false,
+          isRecurring: false
         }
       ]
     },
@@ -97,71 +107,86 @@ function App() {
           cardId: "row-2",
           id: "task-6",
           name: "  Emptying Locker",
-          startDate: new Date("2025-05-01"),
-          dueDate: new Date("2025-05-03"),
+          startDate: new Date("2025-06-01"),
+          dueDate: new Date("2025-06-03"),
           occupancy: 100,
           parentTaskId: "task-5",
-          bgColor: "rgba(133, 193, 233, 0.83)"
+          bgColor: "rgba(133, 193, 233, 0.83)",
+          isCompleted: false,
+          isRecurring: false
         },
         {
           cardId: "row-2",
           id: "task-7",
           name: "Task second shift",
-          startDate: new Date("2025-05-03"),
-          dueDate: new Date("2025-05-06"),
+          startDate: new Date("2025-06-03"),
+          dueDate: new Date("2025-06-06"),
           occupancy: 100,
           users: ["Rob"],
-          bgColor: "rgba(133, 193, 233, 0.83)"
+          bgColor: "rgba(133, 193, 233, 0.83)",
+          isCompleted: false,
+          isRecurring: false,
+          parentTaskId: "task-5"
         },
         {
           cardId: "row-2",
           id: "task-8",
           name: "Orlando Roster",
-          startDate: new Date("2025-05-013"),
-          dueDate: new Date("2025-05-010"),
+          startDate: new Date("2025-06-013"),
+          dueDate: new Date("2025-06-010"),
           occupancy: 100,
           users: ["Fran"],
-          bgColor: "rgba(133, 193, 233, 0.83)"
+          bgColor: "rgba(133, 193, 233, 0.83)",
+          isCompleted: false,
+          isRecurring: false
         },
         {
           cardId: "row-2",
           id: "task-9",
           name: "Task fourth Shift",
-          startDate: new Date("2025-05-10"),
-          dueDate: new Date("2025-05-013"),
+          startDate: new Date("2025-06-10"),
+          dueDate: new Date("2025-06-013"),
           occupancy: 100,
           users: ["Colby"],
           parentTaskId: "task-3",
-          bgColor: "rgba(133, 193, 233, 0.83)"
+          bgColor: "rgba(133, 193, 233, 0.83)",
+          isCompleted: false,
+          isRecurring: false
         },
         {
           cardId: "row-2",
           id: "task-10",
           name: "Task 5th shift",
-          startDate: new Date("2025-05-6"),
-          dueDate: new Date("2025-05-020"),
+          startDate: new Date("2025-06-6"),
+          dueDate: new Date("2025-06-020"),
           occupancy: 100,
-          bgColor: "rgba(133, 193, 233, 0.83)"
+          bgColor: "rgba(133, 193, 233, 0.83)",
+          isCompleted: false,
+          isRecurring: false
         },
         {
           cardId: "row-2",
           id: "task-11",
           name: "Fix Flyer Codes",
-          startDate: new Date("2025-05-10"),
-          dueDate: new Date("2025-05-013"),
+          startDate: new Date("2025-06-10"),
+          dueDate: new Date("2025-06-013"),
           occupancy: 100,
           users: ["Colby"],
-          bgColor: "rgba(133, 193, 233, 0.83)"
+          bgColor: "rgba(133, 193, 233, 0.83)",
+          isCompleted: false,
+          isRecurring: false
         },
         {
           cardId: "row-2",
           id: "task-12",
           name: "Cancel Weekend Missions",
-          startDate: new Date("2025-05-05"),
-          dueDate: new Date("2025-05-010"),
+          startDate: new Date("2025-6-05"),
+          dueDate: new Date("2025-06-010"),
           users: ["Dev"],
           occupancy: 100,
-          bgColor: "rgba(133, 193, 233, 0.83)"
+          bgColor: "rgba(133, 193, 233, 0.83)",
+          isCompleted: false,
+          isRecurring: false
         }
       ]
     }

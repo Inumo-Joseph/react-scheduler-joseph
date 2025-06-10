@@ -24,6 +24,7 @@ export type SchedulerProps = {
   renderData?: React.ReactNode;
   subDispatch?: Dispatch<AnyAction>;
   subEntryActions?: any;
+  form?: any;
 };
 
 export type StyledOutsideWrapperProps = {

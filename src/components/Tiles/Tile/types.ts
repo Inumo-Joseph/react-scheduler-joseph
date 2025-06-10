@@ -17,7 +17,7 @@ type AlarmClockProps = {
   isRecurringSelected: boolean;
   addTaskMonth: Date | undefined;
   setAddTaskMonth: (month: Date) => void;
-  addTaskDate: Date | null;
+  addTaskDate: Date | undefined;
   setAddTaskDate: (date: Date | undefined) => void;
   alarmClockTriger?: boolean;
   updateTaskMode?: boolean;
@@ -51,6 +51,8 @@ export type TileProps = {
   subDispatch?: Dispatch<AnyAction>;
   subEntryActions?: any;
   form?: any;
+  tilePositions?: Record<string, { x: number; y: number; width: number; height: number }>;
+  onTileHover?: (data: SchedulerProjectData, ref: React.RefObject<HTMLButtonElement>) => void;
 };
 
 export type StyledTextProps = {

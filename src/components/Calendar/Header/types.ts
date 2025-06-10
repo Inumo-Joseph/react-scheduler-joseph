@@ -5,5 +5,6 @@ export type HeaderProps = {
   toggleTheme?: () => void;
   truncateText?: boolean;
   setTruncate?: React.Dispatch<React.SetStateAction<boolean>>;
+  showCompleted?: boolean;
   setShowCompleted?: React.Dispatch<React.SetStateAction<boolean>>;
 };

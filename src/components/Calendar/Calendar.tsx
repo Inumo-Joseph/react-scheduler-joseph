@@ -41,7 +41,8 @@ export const Calendar: FC<CalendarProps> = ({
   Users,
   hideCheckedItems,
   subDispatch,
-  subEntryActions
+  subEntryActions,
+  form
 }) => {
   const [tooltipData, setTooltipData] = useState<TooltipData>(initialTooltipData);
   const [filteredData, setFilteredData] = useState(data);
@@ -176,6 +177,7 @@ export const Calendar: FC<CalendarProps> = ({
           toggleTheme={toggleTheme}
           truncateText={truncateText}
           setTruncate={setTruncateText}
+          showCompleted={showCompleted}
           setShowCompleted={setShowCompleted}
         />
         {data.length ? (
@@ -195,9 +197,11 @@ export const Calendar: FC<CalendarProps> = ({
             Users={Users}
             hideCheckedItems={hideCheckedItems}
             tasks={tasks}
+            showCompleted={showCompleted}
             setShowCompleted={setShowCompleted}
             subDispatch={subDispatch}
             subEntryActions={subEntryActions}
+            form={form}
           />
         ) : (
           <StyledEmptyBoxWrapper width={topBarWidth}>

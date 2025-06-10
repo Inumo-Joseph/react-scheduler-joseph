@@ -9,7 +9,7 @@ export function drawArrow(
   options = {
     padding: 9,
     arrowCurve: 1,
-    barHeight: 5,
+    barHeight: 7,
     headerHeight: 30
   }
 ) {
@@ -22,9 +22,9 @@ export function drawArrow(
   // Adjust startX left if overlapping
   const condition = () => to.x < startX + padding && startX > from.x + padding;
   while (condition()) startX -= 10;
-  startX -= 0;
+  startX -= 2;
 
-  const startY = from.y - from.height - options.barHeight * 8;
+  const startY = from.y - from.height - options.barHeight * 7;
   const endX = to.x;
   const endY = to.y - to.height - options.headerHeight;
 

@@ -19,8 +19,10 @@ export type TilesProps = {
     pos: { x: number; y: number; width: number; height: number }
   ) => void;
   tileRef?: React.RefObject<HTMLButtonElement>;
+  tilePositions?: Record<string, { x: number; y: number; width: number; height: number }>;
   showToggle: React.Dispatch<React.SetStateAction<boolean>>;
   truncateText?: boolean;
+  showCompleted?: boolean;
   setShowCompleted: React.Dispatch<React.SetStateAction<boolean>>;
   subDispatch?: Dispatch<AnyAction>;
   subEntryActions?: any;

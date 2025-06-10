@@ -11,6 +11,7 @@ const Tiles: FC<TilesProps> = ({
   projectData,
   truncateText,
   showToggle,
+  showCompleted,
   tasks,
   parentChildTask,
   alarmClock,
@@ -18,7 +19,9 @@ const Tiles: FC<TilesProps> = ({
   hideCheckedItems,
   subDispatch,
   subEntryActions,
-  form
+  form,
+  onTileHover,
+  tilePositions
 }) => {
   const placeTiles = useCallback((): PlacedTiles => {
     let rows = 0;
@@ -27,6 +30,7 @@ const Tiles: FC<TilesProps> = ({
         if (personIndex > 0) {
           rows += Math.max(data[personIndex - 1].data.length, 1);
         }
+        console.log("SHOW COMPLETED", showCompleted);
         const personData = person.data.map((projectsPerRow, rowIndex) =>
           projectsPerRow.map((project) => (
             <Tile
@@ -47,6 +51,7 @@ const Tiles: FC<TilesProps> = ({
               subDispatch={subDispatch}
               subEntryActions={subEntryActions}
               form={form}
+              tilePositions={tilePositions}
             />
           ))
         );

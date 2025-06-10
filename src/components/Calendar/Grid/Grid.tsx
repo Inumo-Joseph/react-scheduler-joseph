@@ -24,10 +24,13 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
     parentChildTask,
     alarmClock,
     Users,
+    onTileHover,
     hideCheckedItems,
+    showCompleted,
     setShowCompleted,
     subDispatch,
-    subEntryActions
+    subEntryActions,
+    form
   },
   ref
 ) {
@@ -147,9 +150,13 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
           Users={Users}
           hideCheckedItems={hideCheckedItems}
           tasks={tasks}
+          onTileHover={onTileHover}
+          showCompleted={showCompleted}
           setShowCompleted={setShowCompleted}
           subDispatch={subDispatch}
           subEntryActions={subEntryActions}
+          form={form}
+          tilePositions={tilePositions}
         />
         <StyledSpan ref={refRight} position="right" />
         <Loader isLoading={isLoading} position="right" />

@@ -2,7 +2,7 @@ import { FC, useRef, useEffect, useLayoutEffect, useState, useCallback } from "r
 import { useTheme } from "styled-components";
 import debounce from "lodash.debounce";
 import Button, { Popup } from "semantic-ui-react";
-import { Link, LinkIcon, Trash2 } from "lucide-react";
+import { Link, LinkIcon, Subscript, Trash2 } from "lucide-react";
 import { useCalendar } from "@/context/CalendarProvider";
 import { getDatesRange } from "@/utils/getDatesRange";
 import { getTileProperties } from "@/utils/getTileProperties";
@@ -10,6 +10,7 @@ import { getTileTextColor } from "@/utils/getTileTextColor";
 import { Day, SchedulerProjectData, TooltipData, ZoomLevel } from "@/types/global";
 import { getTooltipData } from "@/utils/getTooltipData";
 import { usePagination } from "@/hooks/usePagination";
+import { drawArrow } from "@/utils/drawArrows";
 import UsersIcon from "../../../../src/components/UserIcon";
 import { TileProps } from "./types";
 import {
@@ -20,16 +21,6 @@ import {
   StyledTileWrapper
 } from "./styles";
 import "semantic-ui-css/semantic.min.css";
-
-const initialTooltipData: TooltipData = {
-  coords: { x: 0, y: 0 },
-  resourceIndex: 0,
-  disposition: {
-    taken: { hours: 0, minutes: 0 },
-    free: { hours: 0, minutes: 0 },
-    overtime: { hours: 0, minutes: 0 }
-  }
-};
 
 const Tile: FC<TileProps> = ({
   row,
@@ -45,7 +36,9 @@ const Tile: FC<TileProps> = ({
   hideCheckedItems,
   subDispatch,
   subEntryActions,
-  form
+  form,
+  tilePositions,
+  onTileHover
 }) => {
   const { date } = useCalendar();
   const tileRef = useRef<HTMLDivElement>(null);
@@ -67,7 +60,9 @@ const Tile: FC<TileProps> = ({
     data.dueDate,
     zoom
   );
+  console.log("From top REPORTDISPOSITION", tilePositions);
 
+  console.log("From top SUBDISPATCH", subDispatch);
   const [hoveredTileData, setHoveredTileData] = useState<SchedulerProjectData | null>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [addTaskMonth, setAddTaskMonth] = useState<Date | undefined>(new Date());
@@ -87,7 +82,9 @@ const Tile: FC<TileProps> = ({
 
   const selectedParentTasks = null;
   const ctx = CanvasRenderingContext2D;
+  console.log("From Middle form: ", form);
   const isRecurringSelected = form.watch("isRecurring");
+  console.log("From Middle selectedParentTasks: ", selectedParentTasks);
 
   const {
     page,
@@ -114,9 +111,7 @@ const Tile: FC<TileProps> = ({
         const { left, top } = tileRef.current.getBoundingClientRect();
         const tooltipCoords = { x: e.clientX - left, y: e.clientY - top };
         const {
-          coords: { x, y },
-          resourceIndex,
-          disposition
+          coords: { x, y }
         } = getTooltipData(
           startDate,
           tooltipCoords,
@@ -131,9 +126,7 @@ const Tile: FC<TileProps> = ({
     )
   );
 
-  const handleTileHover = (data: SchedulerProjectData) => {
-    setHoveredTileData(data);
-  };
+  const handleTileHover = (data: SchedulerProjectData) => {};
 
   const handleMouseLeave = useCallback(() => {
     debouncedHandleMouseOver.current.cancel();
@@ -141,7 +134,23 @@ const Tile: FC<TileProps> = ({
   }, []);
 
   useEffect(() => {
+    if (selectedTask) {
+      form.reset({
+        from: "",
+        name: selectedTask?.name || "",
+        userId: selectedTask?.userId || "",
+        dueDate: selectedTask?.dueDate ? new Date(selectedTask.dueDate) : addTaskDate,
+        time: selectedTask?.dueTime || 17,
+        recurring: selectedTask?.recurring || null,
+        reminder: selectedTask?.reminder || "None",
+        isRecurring: selectedTask?.isRecurring || false
+      });
+    }
+  }, [form, selectedTask]);
+
+  useEffect(() => {
     handleTileHover(data);
+
     const handleMouseOver = (e: MouseEvent) =>
       debouncedHandleMouseOver.current(e, startDate, rowsPerItem, projectsPerPerson, zoom);
     const gridArea = tileRef?.current;
@@ -175,10 +184,19 @@ const Tile: FC<TileProps> = ({
   const endDate = new Date(data.dueDate);
   const now = new Date();
   const isPast = endDate < now;
+
   const effectiveIsHidden = isPast ? true : isHidden;
+  if (data.isCompleted || data.isDueDateCompleted) {
+    setIsHidden(true);
+  }
 
   return (
-    <div onMouseEnter={() => setPopupOpen(true)} onMouseLeave={() => setPopupOpen(false)}>
+    <div
+      onMouseEnter={() => {
+        setPopupOpen(true);
+        handleTileHover;
+      }}
+      onMouseLeave={() => setPopupOpen(false)}>
       <Popup
         open={popupOpen}
         size="mini"
@@ -197,18 +215,45 @@ const Tile: FC<TileProps> = ({
                 subEntryActions: subEntryActions
               })}
 
+              <button
+                style={{
+                  background: isHidden ? "#e04658" : "#038759",
+                  border: "3px solid white",
+                  color: "white",
+                  display: "flex",
+                  flexDirection: "row",
+                  padding: "2px",
+                  cursor: "pointer",
+                  borderRadius: "4px",
+                  fontSize: "0.6rem"
+                }}
+                onClick={() => {
+                  setIsHidden((prev) => {
+                    const newVal = !prev;
+                    subDispatch?.(
+                      subEntryActions.updateTask(data.id, {
+                        ...data,
+                        isCompleted: !data.isCompleted
+                      })
+                    );
+                    return newVal;
+                  });
+                }}>
+                {isHidden ? "Undo" : "Done"}
+              </button>
+
               {alarmClock?.({
                 form: form,
                 task: data,
                 setAddTaskMonth: setAddTaskMonth,
                 setAddTaskDate: setAddTaskDate,
-                isRecurringSelected: false,
+                isRecurringSelected: isRecurringSelected,
                 taskDueDate: data.dueDate,
                 setSelectedTask: setSelectedTask,
                 subDispatch: subDispatch,
                 subEntryActions: subEntryActions,
-                addTaskMonth: undefined,
-                addTaskDate: null
+                addTaskMonth: addTaskMonth,
+                addTaskDate: addTaskDate
               })}
 
               <div style={{ color: "black", display: "flex" }} className=" pt-1 pl-1">

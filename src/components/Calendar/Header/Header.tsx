@@ -18,6 +18,7 @@ const Header: FC<HeaderProps> = ({
   toggleTheme,
   setTruncate,
   truncateText,
+  showCompleted,
   setShowCompleted
 }) => {
   const { week } = useLanguage();

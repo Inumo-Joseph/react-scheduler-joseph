@@ -13,7 +13,7 @@ const UsersIcon: FC<UsersIconProps> = ({ users, zoom }) => {
     return initials;
   }
 
-  console.log(name);
+  console.log("USERS IN USERSICON", users);
   if (!users || users.length === 0) return null;
 
   const firstUser = users?.[0];
@@ -64,7 +64,7 @@ const UsersIcon: FC<UsersIconProps> = ({ users, zoom }) => {
           maxWidth: "90%",
           padding: "0"
         }}
-        title={users[0]} // tooltip with full name
+        title={users?.[0]} // tooltip with full name
       >
         {firstUser}
       </span>

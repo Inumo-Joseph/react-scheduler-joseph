@@ -123,6 +123,16 @@ export type SchedulerProjectData = {
   parentTaskId?: string;
 
   users?: any[];
+
+  dueTime?: string;
+
+  isDueDateCompleted?: boolean;
+
+  recurring?: string;
+
+  isReurring?: boolean;
+
+  isCompleted?: boolean;
 };
 
 export type Day = {
