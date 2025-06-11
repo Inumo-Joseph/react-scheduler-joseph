@@ -29,7 +29,6 @@ const Tile: FC<TileProps> = ({
   reportPosition,
   projectData,
   truncateText,
-  tasks,
   parentChildTask,
   alarmClock,
   Users,
@@ -60,7 +59,6 @@ const Tile: FC<TileProps> = ({
     data.dueDate,
     zoom
   );
-  console.log("From top REPORTDISPOSITION", tilePositions);
 
   console.log("From top SUBDISPATCH", subDispatch);
   const [hoveredTileData, setHoveredTileData] = useState<SchedulerProjectData | null>(null);

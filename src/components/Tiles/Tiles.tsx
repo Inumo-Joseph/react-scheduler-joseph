@@ -12,7 +12,6 @@ const Tiles: FC<TilesProps> = ({
   truncateText,
   showToggle,
   showCompleted,
-  tasks,
   parentChildTask,
   alarmClock,
   Users,
@@ -47,7 +46,6 @@ const Tiles: FC<TilesProps> = ({
               alarmClock={alarmClock}
               Users={Users}
               hideCheckedItems={hideCheckedItems}
-              tasks={tasks}
               subDispatch={subDispatch}
               subEntryActions={subEntryActions}
               form={form}

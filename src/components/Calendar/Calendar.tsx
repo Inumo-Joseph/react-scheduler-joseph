@@ -35,7 +35,6 @@ export const Calendar: FC<CalendarProps> = ({
   topBarWidth,
   renderData,
   schedulerRef,
-  tasks,
   parentChildTask,
   alarmClock,
   Users,
@@ -196,7 +195,6 @@ export const Calendar: FC<CalendarProps> = ({
             alarmClock={alarmClock}
             Users={Users}
             hideCheckedItems={hideCheckedItems}
-            tasks={tasks}
             showCompleted={showCompleted}
             setShowCompleted={setShowCompleted}
             subDispatch={subDispatch}

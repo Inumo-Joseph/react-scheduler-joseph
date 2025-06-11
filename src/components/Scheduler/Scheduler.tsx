@@ -19,7 +19,6 @@ const Scheduler = ({
   onClearFilterData,
   onItemClick,
   isLoading,
-  tasks,
   renderData,
   parentChildTask,
   alarmClock,
@@ -104,7 +103,6 @@ const Scheduler = ({
                   alarmClock={alarmClock}
                   Users={Users}
                   hideCheckedItems={hideCheckedItems}
-                  tasks={tasks}
                   subDispatch={subDispatch}
                   subEntryActions={subEntryActions}
                   form={form}

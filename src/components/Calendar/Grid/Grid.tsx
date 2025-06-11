@@ -20,7 +20,6 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
     truncateText,
     projectData,
     showToggle,
-    tasks,
     parentChildTask,
     alarmClock,
     Users,
@@ -149,7 +148,6 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
           alarmClock={alarmClock}
           Users={Users}
           hideCheckedItems={hideCheckedItems}
-          tasks={tasks}
           onTileHover={onTileHover}
           showCompleted={showCompleted}
           setShowCompleted={setShowCompleted}
