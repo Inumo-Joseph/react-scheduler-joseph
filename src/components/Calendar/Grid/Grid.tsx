@@ -37,6 +37,7 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const refRight = useRef<HTMLSpanElement>(null);
   const refLeft = useRef<HTMLSpanElement>(null);
+  console.log("SHOW COMPLETED IN GRID", showCompleted);
 
   const theme = useTheme();
   type TilePositionMap = Record<string, { x: number; y: number; width: number; height: number }>;
@@ -59,7 +60,7 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
       resizeCanvas(ctx, width, height);
       drawGrid(ctx, zoom, rows, cols, startDate, theme);
     },
-    [cols, startDate, rows, zoom, theme]
+    [cols, startDate, rows, zoom, theme, truncateText]
   );
 
   useEffect(() => {
@@ -86,11 +87,13 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
     const allProjects: SchedulerProjectData[] = data.flatMap((row) =>
       row.data.flatMap((projectsPerRow) => projectsPerRow)
     );
-
+    const visibleProjects = !showCompleted
+      ? allProjects
+      : allProjects.filter((task) => task.isCompleted);
     handleResize(ctx); // draw grid first
-    drawDependencyArrows(ctx, allProjects, tilePositions, zoom);
+    drawDependencyArrows(ctx, visibleProjects, tilePositions, zoom);
     // draw arrows over grid
-  }, [date, rows, zoom, handleResize, tilePositions]);
+  }, [date, rows, zoom, handleResize, tilePositions, truncateText, showCompleted]);
 
   useEffect(() => {
     if (!refRight.current) return;

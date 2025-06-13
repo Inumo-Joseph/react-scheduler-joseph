@@ -32,6 +32,7 @@ const Topbar: FC<TopbarProps> = ({
   toggleTheme,
   setTruncate,
   truncateText,
+  showCompleted,
   setShowCompleted
 }) => {
   const { topbar } = useLanguage();
@@ -57,13 +58,12 @@ const Topbar: FC<TopbarProps> = ({
   };
 
   const toggleShowCompleted = () => {
-    setShowCompleted?.((prevShowCompleted: any) => !prevShowCompleted);
+    // console.log("Changing showcompleted", showCompleted, "to", !showCompleted)
+    setShowCompleted?.(!showCompleted);
   };
 
   return (
     <Wrapper width={width}>
-      {/* <Today onClick={handleGoToday}>{topbar.today}</Today> */}
-
       <div className="" style={{ paddingTop: "10px" }}>
         <span
           className=""
@@ -112,7 +112,12 @@ const Topbar: FC<TopbarProps> = ({
 
         <Button className=" " onClick={toggleShowCompleted}>
           {" "}
-          <CheckSquare2Icon></CheckSquare2Icon>
+          <CheckSquare2Icon
+            style={{
+              ...(showCompleted && {
+                color: "green"
+              })
+            }}></CheckSquare2Icon>
         </Button>
 
         <span style={{ paddingTop: "10px" }}>

@@ -16,7 +16,7 @@ export const StyledTileWrapper = styled.div`
 `;
 
 export const StyledTextWrapper = styled.div`
-  margin: 10px 16px;
+  margin: 10px;
   position: relative;
   display: flex;
   font-size: 11.5px;
@@ -45,4 +45,5 @@ export const StyledStickyWrapper = styled.div`
   position: sticky;
   left: ${leftColumnWidth + 16}px;
   overflow: hidden;
+  whitespace: nowrap;
 `;

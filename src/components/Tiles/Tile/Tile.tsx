@@ -60,7 +60,7 @@ const Tile: FC<TileProps> = ({
     zoom
   );
 
-  console.log("From top SUBDISPATCH", subDispatch);
+  // console.log("From top SUBDISPATCH", subDispatch);
   const [hoveredTileData, setHoveredTileData] = useState<SchedulerProjectData | null>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [addTaskMonth, setAddTaskMonth] = useState<Date | undefined>(new Date());
@@ -80,9 +80,9 @@ const Tile: FC<TileProps> = ({
 
   const selectedParentTasks = null;
   const ctx = CanvasRenderingContext2D;
-  console.log("From Middle form: ", form);
+  // console.log("From Middle form: ", form);
   const isRecurringSelected = form.watch("isRecurring");
-  console.log("From Middle selectedParentTasks: ", selectedParentTasks);
+  // console.log("From Middle selectedParentTasks: ", selectedParentTasks);
 
   const {
     page,
@@ -182,10 +182,11 @@ const Tile: FC<TileProps> = ({
   const endDate = new Date(data.dueDate);
   const now = new Date();
   const isPast = endDate < now;
-
-  const effectiveIsHidden = isPast ? true : isHidden;
-  if (data.isCompleted || data.isDueDateCompleted) {
-    setIsHidden(true);
+  let effectiveIsHidden = false;
+  if (isPast) {
+    effectiveIsHidden = true;
+  } else {
+    effectiveIsHidden = data.isCompleted ? true : isHidden;
   }
 
   return (
@@ -202,25 +203,15 @@ const Tile: FC<TileProps> = ({
         on="hover" // optional: removes focus/click toggle behavior
         content={() => {
           return (
-            <div
-              className=""
-              style={{ color: "white", display: "flex", flexDirection: "row", width: "10px" }}>
-              {parentChildTask?.({
-                task: data,
-                selectedParentTask: selectedParentTasks,
-                form: undefined,
-                subDispatch: subDispatch,
-                subEntryActions: subEntryActions
-              })}
-
+            <div className="" style={{ color: "white", display: "flex", flexDirection: "row" }}>
               <button
                 style={{
-                  background: isHidden ? "#e04658" : "#038759",
-                  border: "3px solid white",
+                  background: data.isCompleted ? "#e04658" : "#038759",
+                  border: "2px solid white",
                   color: "white",
                   display: "flex",
                   flexDirection: "row",
-                  padding: "2px",
+                  padding: "3px",
                   cursor: "pointer",
                   borderRadius: "4px",
                   fontSize: "0.6rem"
@@ -228,17 +219,28 @@ const Tile: FC<TileProps> = ({
                 onClick={() => {
                   setIsHidden((prev) => {
                     const newVal = !prev;
+                    data.isCompleted = !data?.isCompleted;
+                    console.log("completed status of", data.name, "is", data.isCompleted);
                     subDispatch?.(
                       subEntryActions.updateTask(data.id, {
                         ...data,
-                        isCompleted: !data.isCompleted
+                        isCompleted: !data?.isCompleted
                       })
                     );
                     return newVal;
                   });
                 }}>
-                {isHidden ? "Undo" : "Done"}
+                {data.isCompleted ? "Undo" : "Done"}
               </button>
+
+              {parentChildTask?.({
+                task: data,
+                selectedParentTask: selectedParentTasks,
+                updateTaskMode: true,
+                form: undefined,
+                subDispatch: subDispatch,
+                subEntryActions: subEntryActions
+              })}
 
               {alarmClock?.({
                 form: form,
@@ -254,9 +256,11 @@ const Tile: FC<TileProps> = ({
                 addTaskDate: addTaskDate
               })}
 
-              <div style={{ color: "black", display: "flex" }} className=" pt-1 pl-1">
+              {/* <div style={{ color: "black", display: "flex" }} className=" pt-1 pl-1">
                 {renderData}
-              </div>
+              </div> */}
+
+              <UsersIcon users={data.users} zoom={zoom} />
             </div>
           );
         }}
@@ -277,13 +281,14 @@ const Tile: FC<TileProps> = ({
                   {/* UsersIcon and Title on the same line */}
                   <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                     <UsersIcon users={data.users} zoom={zoom} />
+
                     <StyledText
                       bold
                       style={{
                         color: "black",
                         ...(!truncateText && {
-                          overflow: "hidden",
                           textOverflow: "ellipsis",
+                          overflow: "hidden",
                           whiteSpace: "nowrap"
                         })
                       }}>

@@ -13,7 +13,7 @@ const UsersIcon: FC<UsersIconProps> = ({ users, zoom }) => {
     return initials;
   }
 
-  console.log("USERS IN USERSICON", users);
+  // console.log("USERS IN USERSICON", users);
   if (!users || users.length === 0) return null;
 
   const firstUser = users?.[0];
@@ -37,7 +37,7 @@ const UsersIcon: FC<UsersIconProps> = ({ users, zoom }) => {
         justifyContent: "center",
         overflow: "hidden",
         textAlign: "center",
-        flex: ""
+        flex: "flex-basis"
       }}>
       {/* Optional faded icon behind initials */}
       <div

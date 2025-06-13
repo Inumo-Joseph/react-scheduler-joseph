@@ -43,19 +43,17 @@ function App() {
           id: "task-1",
           name: "Task 1",
           startDate: new Date("2025-06-01"),
-          dueDate: new Date("2025-06-03"),
+          dueDate: new Date("2025-06-05"),
           occupancy: 100,
           isCompleted: false,
           isRecurring: false
-
-          // dependency: "task-2"
         },
         {
           cardId: "row-1",
           id: "task-2",
           name: "Task 2",
           startDate: new Date("2025-06-03"),
-          dueDate: new Date("2025-06-06"),
+          dueDate: new Date("2025-06-10"),
           occupancy: 100,
           users: [],
           isCompleted: false,
@@ -66,9 +64,9 @@ function App() {
           id: "task-3",
           name: "Task 3",
           startDate: new Date("2025-06-07"),
-          dueDate: new Date("2025-06-010"),
+          dueDate: new Date("2025-06-06"),
           occupancy: 100,
-          // parentTaskId: "task-2", // depends on Task 1
+          parentTaskId: "task-2", // depends on Task 1
           users: ["Fran"],
           isCompleted: false,
           isRecurring: false
@@ -92,7 +90,6 @@ function App() {
           startDate: new Date("2025-06-10"),
           dueDate: new Date("2025-07-013"),
           occupancy: 100,
-          parentTaskId: "task-9",
           isCompleted: false,
           isRecurring: false
         }
@@ -107,10 +104,10 @@ function App() {
           cardId: "row-2",
           id: "task-6",
           name: "  Emptying Locker",
-          startDate: new Date("2025-06-01"),
-          dueDate: new Date("2025-06-03"),
+          startDate: new Date("2025-05-28"),
+          dueDate: new Date("2025-06-06"),
           occupancy: 100,
-          parentTaskId: "task-5",
+          parentTaskId: "task-7",
           bgColor: "rgba(133, 193, 233, 0.83)",
           isCompleted: false,
           isRecurring: false
@@ -120,20 +117,20 @@ function App() {
           id: "task-7",
           name: "Task second shift",
           startDate: new Date("2025-06-03"),
-          dueDate: new Date("2025-06-06"),
+          dueDate: new Date("2025-06-03"),
           occupancy: 100,
           users: ["Rob"],
           bgColor: "rgba(133, 193, 233, 0.83)",
           isCompleted: false,
           isRecurring: false,
-          parentTaskId: "task-5"
+          parentTaskId: "task-8"
         },
         {
           cardId: "row-2",
           id: "task-8",
           name: "Orlando Roster",
-          startDate: new Date("2025-06-013"),
-          dueDate: new Date("2025-06-010"),
+          startDate: new Date("2025-06-010"),
+          dueDate: new Date("2025-06-017"),
           occupancy: 100,
           users: ["Fran"],
           bgColor: "rgba(133, 193, 233, 0.83)",
@@ -173,7 +170,7 @@ function App() {
           occupancy: 100,
           users: ["Colby"],
           bgColor: "rgba(133, 193, 233, 0.83)",
-          isCompleted: false,
+          isCompleted: true,
           isRecurring: false
         },
         {
@@ -232,20 +229,21 @@ function App() {
     setRange(range);
   }, []);
 
-  const filteredData = useMemo(
-    () =>
-      dummyData.map((person) => ({
-        ...person,
-        data: person.data.filter(
-          (project: any) =>
-            dayjs(project.startDate).isBetween(range.startDate, range.endDate) ||
-            dayjs(project.dueDate).isBetween(range.startDate, range.endDate) ||
-            (dayjs(project.startDate).isBefore(range.startDate, "day") &&
-              dayjs(project.dueDate).isAfter(range.endDate, "day"))
-        )
-      })),
-    [mocked, range.endDate, range.startDate]
-  );
+  // const filteredData = useMemo(
+  //   () =>
+  //     dummyData.map((person) => ({
+  //       ...person,
+  //       data: person.data.filter(
+  //         (project: any) =>
+  //           dayjs(project.startDate).isBetween(range.startDate, range.endDate) ||
+  //           dayjs(project.dueDate).isBetween(range.startDate, range.endDate) ||
+  //           (dayjs(project.startDate).isBefore(range.startDate, "day") && dayjs(project.dueDate).isAfter(range.endDate, "day")))
+  //     })),
+
+  //   [mocked, range.endDate, range.startDate]
+  // );
+
+  console.log("Filtered Memo", dummyData);
   const handleFilterData = () => console.log(`Filters button was clicked.`);
 
   return (
@@ -255,7 +253,7 @@ function App() {
         <Scheduler
           startDate={values.startDate ? new Date(values.startDate).toISOString() : undefined}
           onRangeChange={handleRangeChange}
-          data={filteredData}
+          data={dummyData}
           isLoading={false}
           onFilterData={handleFilterData}
           renderData={renderData()}
@@ -268,7 +266,7 @@ function App() {
             startDate={values.startDate ? new Date(values.startDate).toISOString() : undefined}
             onRangeChange={handleRangeChange}
             isLoading={false}
-            data={filteredData}
+            data={dummyData}
             renderData={
               <div>
                 <Link

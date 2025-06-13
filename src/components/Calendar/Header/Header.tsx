@@ -66,6 +66,7 @@ const Header: FC<HeaderProps> = ({
         toggleTheme={toggleTheme}
         setTruncate={setTruncate}
         truncateText={truncateText}
+        showCompleted={showCompleted}
         setShowCompleted={setShowCompleted}
       />
       <div className="my-5"></div>

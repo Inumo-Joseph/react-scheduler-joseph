@@ -61,7 +61,6 @@ export const Calendar: FC<CalendarProps> = ({
     null
   );
   const [showCompleted, setShowCompleted] = useState(false);
-
   const handleTileHover = (data: SchedulerProjectData, ref: React.RefObject<HTMLButtonElement>) => {
     setHoveredTileData(data);
     setHoveredTileRef(ref);
@@ -148,7 +147,16 @@ export const Calendar: FC<CalendarProps> = ({
       gridArea.removeEventListener("mousemove", handleMouseOver);
       gridArea.removeEventListener("mouseleave", handleMouseLeave);
     };
-  }, [debouncedHandleMouseOver, handleMouseLeave, projectsPerPerson, rowsPerItem, startDate, zoom]);
+  }, [
+    debouncedHandleMouseOver,
+    handleMouseLeave,
+    projectsPerPerson,
+    rowsPerItem,
+    startDate,
+    zoom,
+    truncateText,
+    showCompleted
+  ]);
 
   useEffect(() => {
     if (searchPhrase) return;

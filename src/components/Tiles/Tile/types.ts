@@ -4,10 +4,12 @@ import { SchedulerData, SchedulerProjectData } from "@/types/global";
 
 type AddParentChildTaskProps = {
   anotherTrigger?: boolean;
-  updateTaskMode?: () => void;
+  updateTaskMode?: boolean;
   form: any;
   task: any;
   selectedParentTask: any;
+  onAssignTask?: React.ReactNode;
+  onCreateTask?: React.ReactNode;
   subDispatch?: Dispatch<AnyAction>;
   subEntryActions: any;
 };
@@ -23,7 +25,7 @@ type AlarmClockProps = {
   updateTaskMode?: boolean;
   task?: any;
   onCalendarUpdate?: (data: any) => void;
-  taskDueDate?: any;
+  taskDueDate?: Date;
   setSelectedTask?: any;
   selectedParentTask?: any;
   subDispatch?: Dispatch<AnyAction>;

@@ -40,7 +40,7 @@ export const drawQuartersOnTop = (
 
     const quarter = Math.floor((isoWeek - 1) / 13);
     if (quarter !== lastDrawnQuarter && quarter >= 0 && quarter < 4) {
-      const quarterLabel = `Q${quarter + 1} - ${startDate.year}`;
+      const quarterLabel = `Q${quarter + 1} - ${startDate.year + 1}`;
 
       drawRow(
         {
