@@ -223,7 +223,6 @@ function App() {
   //   [mocked, range.endDate, range.startDate]
   // );
 
-  console.log("Start Date", values.startDate);
   const handleFilterData = () => console.log(`Filters button was clicked.`);
 
   return (

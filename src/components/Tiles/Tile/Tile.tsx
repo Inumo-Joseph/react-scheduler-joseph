@@ -128,20 +128,20 @@ const Tile: FC<TileProps> = ({
     setIsVisible(false);
   }, []);
 
-  // useEffect(() => {
-  //   if (selectedTask) {
-  //     form.reset({
-  //       from: "",
-  //       name: selectedTask?.name || "",
-  //       userId: selectedTask?.userId || "",
-  //       dueDate: selectedTask?.dueDate ? new Date(selectedTask.dueDate) : addTaskDate,
-  //       time: selectedTask?.dueTime || 17,
-  //       recurring: selectedTask?.recurring || null,
-  //       reminder: selectedTask?.reminder || "None",
-  //       isRecurring: selectedTask?.isRecurring || false
-  //     });
-  //   }
-  // }, [form, selectedTask]);  '
+  useEffect(() => {
+    if (selectedTask) {
+      form.reset({
+        from: "",
+        name: selectedTask?.name || "",
+        userId: selectedTask?.userId || "",
+        dueDate: selectedTask?.dueDate ? new Date(selectedTask.dueDate) : addTaskDate,
+        time: selectedTask?.dueTime || 17,
+        recurring: selectedTask?.recurring || null,
+        reminder: selectedTask?.reminder || "None",
+        isRecurring: selectedTask?.isRecurring || false
+      });
+    }
+  }, [form, selectedTask]);
 
   useEffect(() => {
     handleTileHover(data);
@@ -230,7 +230,6 @@ const Tile: FC<TileProps> = ({
                       ...data,
                       isCompleted: newVal
                     };
-                    data.isCompleted = newVal;
                     onAssignTask?.(data.id, updatedTask);
                     return newVal;
                   });
@@ -238,12 +237,14 @@ const Tile: FC<TileProps> = ({
                 {data.isCompleted ? "Undo" : "Done"}
               </button>
 
-              {parentChildTask?.({
-                task: data,
-                selectedParentTask: selectedParentTasks,
-                updateTaskMode: true,
-                form: undefined
-              })}
+              <div style={{ color: "black" }}>
+                {parentChildTask?.({
+                  task: data,
+                  selectedParentTask: selectedParentTasks,
+                  updateTaskMode: true,
+                  form: undefined
+                })}
+              </div>
 
               {alarmClock?.({
                 form: form,

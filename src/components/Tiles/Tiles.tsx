@@ -28,7 +28,6 @@ const Tiles: FC<TilesProps> = ({
         if (personIndex > 0) {
           rows += Math.max(data[personIndex - 1].data.length, 1);
         }
-        // console.log('Truncate Text in Tiles', truncateText)
         const personData = !showCompleted
           ? person.data.map((projectsPerRow, rowIndex) =>
               projectsPerRow.map((project) => (
@@ -54,7 +53,7 @@ const Tiles: FC<TilesProps> = ({
             )
           : person.data.map((projectsPerRow, rowIndex) =>
               projectsPerRow
-                .filter((projects) => projects.isCompleted)
+                .filter((projects) => !projects.isCompleted)
                 .map((project) => (
                   <Tile
                     key={project.id}
