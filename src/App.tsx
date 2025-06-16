@@ -45,7 +45,7 @@ function App() {
           startDate: new Date("2025-06-01"),
           dueDate: new Date("2025-06-05"),
           occupancy: 100,
-          isCompleted: false,
+          isCompleted: true,
           isRecurring: false
         },
         {
@@ -90,7 +90,7 @@ function App() {
           startDate: new Date("2025-06-10"),
           dueDate: new Date("2025-07-013"),
           occupancy: 100,
-          isCompleted: false,
+          isCompleted: true,
           isRecurring: false
         }
       ]
@@ -189,35 +189,15 @@ function App() {
     }
   ];
 
+  const onAssignTask = (taskId: any, updatedTask: any) => {
+    console.log("onAssign called", taskId, "upDatedTask", updatedTask); // <-- confirm this shows
+  };
+
   const renderPopup = () => {
     return (
       <div
         className="flex flex-col items-start "
-        style={{ color: "white", display: "flex", flexDirection: "row" }}>
-        <button
-          style={{
-            background: isHidden ? "#e04658" : "#038759",
-            border: "3px solid white",
-            color: "white",
-            display: "flex",
-            flexDirection: "row",
-            padding: "2px",
-            cursor: "pointer",
-            borderRadius: "4px",
-            fontSize: "0.6rem"
-          }}
-          onClick={() => {
-            setIsHidden((prev) => {
-              const newVal = !prev;
-              return newVal;
-            });
-          }}>
-          {isHidden ? "Undo" : "Done"}
-        </button>
-        <LinkIcon></LinkIcon>
-
-        <Trash2></Trash2>
-      </div>
+        style={{ color: "white", display: "flex", flexDirection: "row" }}></div>
     );
   };
   const [range, setRange] = useState<ParsedDatesRange>({
@@ -243,7 +223,7 @@ function App() {
   //   [mocked, range.endDate, range.startDate]
   // );
 
-  console.log("Filtered Memo", dummyData);
+  console.log("Start Date", values.startDate);
   const handleFilterData = () => console.log(`Filters button was clicked.`);
 
   return (
@@ -259,6 +239,7 @@ function App() {
           renderData={renderData()}
           config={{ zoom: 1, maxRecordsPerPage: maxRecordsPerPage, showThemeToggle: false }}
           onItemClick={(data) => console.log("clicked: ", data)}
+          onAssignTask={onAssignTask}
         />
       ) : (
         <StyledSchedulerFrame>
@@ -277,6 +258,7 @@ function App() {
             }
             onFilterData={handleFilterData}
             onItemClick={(data) => console.log("clicked: ", data)}
+            onAssignTask={onAssignTask}
           />
         </StyledSchedulerFrame>
       )}

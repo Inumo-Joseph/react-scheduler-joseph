@@ -16,8 +16,7 @@ const Tiles: FC<TilesProps> = ({
   alarmClock,
   Users,
   hideCheckedItems,
-  subDispatch,
-  subEntryActions,
+  onAssignTask,
   form,
   onTileHover,
   tilePositions
@@ -47,8 +46,7 @@ const Tiles: FC<TilesProps> = ({
                   alarmClock={alarmClock}
                   Users={Users}
                   hideCheckedItems={hideCheckedItems}
-                  subDispatch={subDispatch}
-                  subEntryActions={subEntryActions}
+                  onAssignTask={onAssignTask}
                   form={form}
                   tilePositions={tilePositions}
                 />
@@ -72,8 +70,7 @@ const Tiles: FC<TilesProps> = ({
                     alarmClock={alarmClock}
                     Users={Users}
                     hideCheckedItems={hideCheckedItems}
-                    subDispatch={subDispatch}
-                    subEntryActions={subEntryActions}
+                    onAssignTask={onAssignTask}
                     form={form}
                     tilePositions={tilePositions}
                   />

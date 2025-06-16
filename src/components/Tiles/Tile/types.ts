@@ -10,8 +10,6 @@ type AddParentChildTaskProps = {
   selectedParentTask: any;
   onAssignTask?: React.ReactNode;
   onCreateTask?: React.ReactNode;
-  subDispatch?: Dispatch<AnyAction>;
-  subEntryActions: any;
 };
 
 type AlarmClockProps = {
@@ -28,8 +26,6 @@ type AlarmClockProps = {
   taskDueDate?: Date;
   setSelectedTask?: any;
   selectedParentTask?: any;
-  subDispatch?: Dispatch<AnyAction>;
-  subEntryActions: any;
 };
 export type TileProps = {
   row: number;
@@ -50,8 +46,7 @@ export type TileProps = {
   projectData: SchedulerData;
   tileRef?: React.RefObject<HTMLButtonElement>;
   onHover?: React.ReactNode;
-  subDispatch?: Dispatch<AnyAction>;
-  subEntryActions?: any;
+  onAssignTask?: (task: any, updatedTask: any) => void;
   form?: any;
   tilePositions?: Record<string, { x: number; y: number; width: number; height: number }>;
   onTileHover?: (data: SchedulerProjectData, ref: React.RefObject<HTMLButtonElement>) => void;

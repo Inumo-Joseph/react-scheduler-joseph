@@ -39,8 +39,7 @@ export const Calendar: FC<CalendarProps> = ({
   alarmClock,
   Users,
   hideCheckedItems,
-  subDispatch,
-  subEntryActions,
+  onAssignTask,
   form
 }) => {
   const [tooltipData, setTooltipData] = useState<TooltipData>(initialTooltipData);
@@ -54,7 +53,6 @@ export const Calendar: FC<CalendarProps> = ({
   } = useCalendar();
 
   const gridRef = useRef<HTMLDivElement>(null);
-  // const tileRef = useRef<Record<string, React.RefObject<HTMLButtonElement>>>({});
   const [truncateText, setTruncateText] = useState(false);
   const [hoveredTileData, setHoveredTileData] = useState<SchedulerProjectData | null>(null);
   const [hoveredTileRef, setHoveredTileRef] = useState<React.RefObject<HTMLButtonElement> | null>(
@@ -205,8 +203,7 @@ export const Calendar: FC<CalendarProps> = ({
             hideCheckedItems={hideCheckedItems}
             showCompleted={showCompleted}
             setShowCompleted={setShowCompleted}
-            subDispatch={subDispatch}
-            subEntryActions={subEntryActions}
+            onAssignTask={onAssignTask}
             form={form}
           />
         ) : (

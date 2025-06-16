@@ -20,8 +20,7 @@ export type GridProps = {
   showToggle: React.Dispatch<React.SetStateAction<boolean>>;
   showCompleted?: boolean;
   setShowCompleted: React.Dispatch<React.SetStateAction<boolean>>;
-  subDispatch?: Dispatch<AnyAction>;
-  subEntryActions?: any;
+  onAssignTask?: (task: any, updatedTask: any) => void;
   form?: any;
 };
 

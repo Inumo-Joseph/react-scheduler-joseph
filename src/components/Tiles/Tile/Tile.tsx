@@ -33,8 +33,7 @@ const Tile: FC<TileProps> = ({
   alarmClock,
   Users,
   hideCheckedItems,
-  subDispatch,
-  subEntryActions,
+  onAssignTask,
   form,
   tilePositions,
   onTileHover
@@ -80,9 +79,7 @@ const Tile: FC<TileProps> = ({
 
   const selectedParentTasks = null;
   const ctx = CanvasRenderingContext2D;
-  // console.log("From Middle form: ", form);
   const isRecurringSelected = form.watch("isRecurring");
-  // console.log("From Middle selectedParentTasks: ", selectedParentTasks);
 
   const {
     page,
@@ -131,20 +128,20 @@ const Tile: FC<TileProps> = ({
     setIsVisible(false);
   }, []);
 
-  useEffect(() => {
-    if (selectedTask) {
-      form.reset({
-        from: "",
-        name: selectedTask?.name || "",
-        userId: selectedTask?.userId || "",
-        dueDate: selectedTask?.dueDate ? new Date(selectedTask.dueDate) : addTaskDate,
-        time: selectedTask?.dueTime || 17,
-        recurring: selectedTask?.recurring || null,
-        reminder: selectedTask?.reminder || "None",
-        isRecurring: selectedTask?.isRecurring || false
-      });
-    }
-  }, [form, selectedTask]);
+  // useEffect(() => {
+  //   if (selectedTask) {
+  //     form.reset({
+  //       from: "",
+  //       name: selectedTask?.name || "",
+  //       userId: selectedTask?.userId || "",
+  //       dueDate: selectedTask?.dueDate ? new Date(selectedTask.dueDate) : addTaskDate,
+  //       time: selectedTask?.dueTime || 17,
+  //       recurring: selectedTask?.recurring || null,
+  //       reminder: selectedTask?.reminder || "None",
+  //       isRecurring: selectedTask?.isRecurring || false
+  //     });
+  //   }
+  // }, [form, selectedTask]);  '
 
   useEffect(() => {
     handleTileHover(data);
@@ -176,13 +173,14 @@ const Tile: FC<TileProps> = ({
         height: tileRect.height
       });
     }
-  }, [zoom, row, data]);
+  }, [zoom, row, data, onAssignTask]);
 
   const [isHidden, setIsHidden] = useState(false);
   const endDate = new Date(data.dueDate);
   const now = new Date();
   const isPast = endDate < now;
   let effectiveIsHidden = false;
+
   if (isPast) {
     effectiveIsHidden = true;
   } else {
@@ -203,7 +201,16 @@ const Tile: FC<TileProps> = ({
         on="hover" // optional: removes focus/click toggle behavior
         content={() => {
           return (
-            <div className="" style={{ color: "white", display: "flex", flexDirection: "row" }}>
+            <div
+              className=""
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center", // vertical alignment
+                justifyContent: "center", // horizontal centering
+                gap: "5px", // spacing between items
+                color: "white"
+              }}>
               <button
                 style={{
                   background: data.isCompleted ? "#e04658" : "#038759",
@@ -219,14 +226,12 @@ const Tile: FC<TileProps> = ({
                 onClick={() => {
                   setIsHidden((prev) => {
                     const newVal = !prev;
-                    data.isCompleted = !data?.isCompleted;
-                    console.log("completed status of", data.name, "is", data.isCompleted);
-                    subDispatch?.(
-                      subEntryActions.updateTask(data.id, {
-                        ...data,
-                        isCompleted: !data?.isCompleted
-                      })
-                    );
+                    const updatedTask = {
+                      ...data,
+                      isCompleted: newVal
+                    };
+                    data.isCompleted = newVal;
+                    onAssignTask?.(data.id, updatedTask);
                     return newVal;
                   });
                 }}>
@@ -237,9 +242,7 @@ const Tile: FC<TileProps> = ({
                 task: data,
                 selectedParentTask: selectedParentTasks,
                 updateTaskMode: true,
-                form: undefined,
-                subDispatch: subDispatch,
-                subEntryActions: subEntryActions
+                form: undefined
               })}
 
               {alarmClock?.({
@@ -250,17 +253,15 @@ const Tile: FC<TileProps> = ({
                 isRecurringSelected: isRecurringSelected,
                 taskDueDate: data.dueDate,
                 setSelectedTask: setSelectedTask,
-                subDispatch: subDispatch,
-                subEntryActions: subEntryActions,
                 addTaskMonth: addTaskMonth,
                 addTaskDate: addTaskDate
               })}
 
-              {/* <div style={{ color: "black", display: "flex" }} className=" pt-1 pl-1">
-                {renderData}
-              </div> */}
+              <UsersIcon users={data?.users} zoom={zoom} />
 
-              <UsersIcon users={data.users} zoom={zoom} />
+              <div style={{ color: "black", display: "flex" }} className=" pt-1 pl-1">
+                {renderData}
+              </div>
             </div>
           );
         }}

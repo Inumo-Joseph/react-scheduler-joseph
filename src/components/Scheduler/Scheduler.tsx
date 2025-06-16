@@ -24,8 +24,7 @@ const Scheduler = ({
   alarmClock,
   Users,
   hideCheckedItems,
-  subDispatch,
-  subEntryActions,
+  onAssignTask,
   form
 }: SchedulerProps) => {
   // eslint-disable-next-line
@@ -103,8 +102,7 @@ const Scheduler = ({
                   alarmClock={alarmClock}
                   Users={Users}
                   hideCheckedItems={hideCheckedItems}
-                  subDispatch={subDispatch}
-                  subEntryActions={subEntryActions}
+                  onAssignTask={onAssignTask}
                   form={form}
                 />
               </StyledInnerWrapper>

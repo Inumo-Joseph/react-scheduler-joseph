@@ -27,8 +27,7 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
     hideCheckedItems,
     showCompleted,
     setShowCompleted,
-    subDispatch,
-    subEntryActions,
+    onAssignTask,
     form
   },
   ref
@@ -37,7 +36,6 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const refRight = useRef<HTMLSpanElement>(null);
   const refLeft = useRef<HTMLSpanElement>(null);
-  console.log("SHOW COMPLETED IN GRID", showCompleted);
 
   const theme = useTheme();
   type TilePositionMap = Record<string, { x: number; y: number; width: number; height: number }>;
@@ -154,8 +152,7 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
           onTileHover={onTileHover}
           showCompleted={showCompleted}
           setShowCompleted={setShowCompleted}
-          subDispatch={subDispatch}
-          subEntryActions={subEntryActions}
+          onAssignTask={onAssignTask}
           form={form}
           tilePositions={tilePositions}
         />

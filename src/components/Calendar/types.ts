@@ -13,8 +13,7 @@ export type CalendarProps = {
   hideCheckedItems?: any;
   onItemClick?: (data: SchedulerItemClickData) => void;
   toggleTheme?: () => void;
-  subDispatch?: Dispatch<AnyAction>;
-  subEntryActions?: any;
+  onAssignTask?: (task: any, updatedTask: any) => void;
   form?: any;
 };
 

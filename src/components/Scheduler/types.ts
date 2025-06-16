@@ -22,8 +22,7 @@ export type SchedulerProps = {
   onClearFilterData?: () => void;
   onItemClick?: (data: SchedulerItemClickData) => void;
   renderData?: React.ReactNode;
-  subDispatch?: Dispatch<AnyAction>;
-  subEntryActions?: any;
+  onAssignTask?: (task: any, updatedTask: any) => void;
   form?: any;
 };
 
