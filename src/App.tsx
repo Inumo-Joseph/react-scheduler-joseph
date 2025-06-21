@@ -239,6 +239,11 @@ function App() {
           config={{ zoom: 1, maxRecordsPerPage: maxRecordsPerPage, showThemeToggle: false }}
           onItemClick={(data) => console.log("clicked: ", data)}
           onAssignTask={onAssignTask}
+          addTaskButton={
+            <div>
+              <button onClick={() => console.log("button clicked")}>ADD TASK</button>
+            </div>
+          }
         />
       ) : (
         <StyledSchedulerFrame>

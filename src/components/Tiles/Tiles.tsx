@@ -22,42 +22,17 @@ const Tiles: FC<TilesProps> = ({
   tilePositions
 }) => {
   const placeTiles = useCallback((): PlacedTiles => {
-    let rows = 0;
+    let globalRowIndex = 0;
+
     return data
       .map((person, personIndex) => {
-        if (personIndex > 0) {
-          rows += Math.max(data[personIndex - 1].data.length, 1);
-        }
         const personData = !showCompleted
           ? person.data.map((projectsPerRow, rowIndex) =>
-              projectsPerRow.map((project) => (
-                <Tile
-                  key={project.id}
-                  row={rowIndex + rows}
-                  data={project}
-                  zoom={zoom}
-                  renderData={renderData}
-                  projectData={projectData}
-                  reportPosition={reportPosition}
-                  truncateText={truncateText}
-                  setTruncate={showToggle}
-                  parentChildTask={parentChildTask}
-                  alarmClock={alarmClock}
-                  Users={Users}
-                  hideCheckedItems={hideCheckedItems}
-                  onAssignTask={onAssignTask}
-                  form={form}
-                  tilePositions={tilePositions}
-                />
-              ))
-            )
-          : person.data.map((projectsPerRow, rowIndex) =>
-              projectsPerRow
-                .filter((projects) => !projects.isCompleted)
-                .map((project) => (
+              projectsPerRow.map((project) => {
+                const tile = (
                   <Tile
                     key={project.id}
-                    row={rowIndex + rows}
+                    row={globalRowIndex} // Use unique global row index
                     data={project}
                     zoom={zoom}
                     renderData={renderData}
@@ -73,7 +48,38 @@ const Tiles: FC<TilesProps> = ({
                     form={form}
                     tilePositions={tilePositions}
                   />
-                ))
+                );
+                globalRowIndex++; // Increment for each tile
+                return tile;
+              })
+            )
+          : person.data.map((projectsPerRow, rowIndex) =>
+              projectsPerRow
+                .filter((projects) => !projects.isCompleted)
+                .map((project) => {
+                  const tile = (
+                    <Tile
+                      key={project.id}
+                      row={globalRowIndex} // Use unique global row index
+                      data={project}
+                      zoom={zoom}
+                      renderData={renderData}
+                      projectData={projectData}
+                      reportPosition={reportPosition}
+                      truncateText={truncateText}
+                      setTruncate={showToggle}
+                      parentChildTask={parentChildTask}
+                      alarmClock={alarmClock}
+                      Users={Users}
+                      hideCheckedItems={hideCheckedItems}
+                      onAssignTask={onAssignTask}
+                      form={form}
+                      tilePositions={tilePositions}
+                    />
+                  );
+                  globalRowIndex++; // Increment for each tile
+                  return tile;
+                })
             );
 
         return personData;

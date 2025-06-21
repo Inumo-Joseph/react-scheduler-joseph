@@ -162,6 +162,7 @@ const Tile: FC<TileProps> = ({
   useLayoutEffect(() => {
     if (tileRef?.current) {
       const tileRect = tileRef.current.getBoundingClientRect();
+
       const canvas = document.querySelector("canvas");
       if (!canvas) return;
       const canvasRect = canvas.getBoundingClientRect();
@@ -258,7 +259,11 @@ const Tile: FC<TileProps> = ({
                 addTaskDate: addTaskDate
               })}
 
-              <UsersIcon users={data?.users} zoom={zoom} />
+              {Users?.({
+                updateTaskMode: true,
+                form: form,
+                task: data
+              })}
 
               <div style={{ color: "black", display: "flex" }} className=" pt-1 pl-1">
                 {renderData}
@@ -282,7 +287,11 @@ const Tile: FC<TileProps> = ({
                 <>
                   {/* UsersIcon and Title on the same line */}
                   <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                    <UsersIcon users={data.users} zoom={zoom} />
+                    {Users?.({
+                      updateTaskMode: true,
+                      form: form,
+                      task: data
+                    })}
 
                     <StyledText
                       bold

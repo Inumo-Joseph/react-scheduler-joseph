@@ -12,6 +12,7 @@ const LeftColumn: FC<LeftColumnProps> = ({
   onLoadNext,
   onLoadPrevious,
   pageNum,
+  addTaskButton,
   pagesAmount,
   searchInputValue,
   onSearchInputChange,
@@ -61,6 +62,7 @@ const LeftColumn: FC<LeftColumnProps> = ({
         pageNum={pageNum}
         pagesAmount={pagesAmount}
       />
+      <div style={{ paddingLeft: "10px" }}>{addTaskButton}</div>
     </StyledWrapper>
   );
 };

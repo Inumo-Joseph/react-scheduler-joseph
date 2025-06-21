@@ -8,7 +8,7 @@ export const projectsOnGrid = (data: SchedulerData) => {
   const [projectsPerPerson, rowsPerPerson] = data.reduce((acc, curr) => {
     const projectsInRows = setProjectsInRows(curr.data);
     acc[0].push(projectsInRows);
-    acc[1].push(Math.max(projectsInRows.length, 1));
+    acc[1].push(Math.max(projectsInRows.flatMap((project) => project).length, 1));
     return acc;
   }, initialProjectsData);
   return { projectsPerPerson, rowsPerPerson };

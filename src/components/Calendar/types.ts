@@ -11,6 +11,7 @@ export type CalendarProps = {
   alarmClock?: any;
   Users?: any;
   hideCheckedItems?: any;
+  addTaskButton?: React.ReactNode;
   onItemClick?: (data: SchedulerItemClickData) => void;
   toggleTheme?: () => void;
   onAssignTask?: (task: any, updatedTask: any) => void;

@@ -36,7 +36,7 @@ export const drawHeader = (
       break;
 
     case 1:
-      drawMonthsOnTop(ctx, startDate, theme);
+      // drawMonthsOnTop(ctx, startDate, theme);
       drawWeeksInMiddle(ctx, startDate, weekLabel, theme);
       drawDaysOnBottom(ctx, cols, startDate, theme);
       break;

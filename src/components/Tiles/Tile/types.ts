@@ -12,6 +12,12 @@ type AddParentChildTaskProps = {
   onCreateTask?: React.ReactNode;
 };
 
+type UsersProps = {
+  updateTaskMode?: boolean;
+  form: any;
+  task: any;
+};
+
 type AlarmClockProps = {
   form: any;
   isRecurringSelected: boolean;
@@ -35,7 +41,7 @@ export type TileProps = {
   tasks?: any;
   parentChildTask?: (props: AddParentChildTaskProps) => React.ReactNode;
   alarmClock?: (props: AlarmClockProps) => React.ReactNode;
-  Users?: any;
+  Users?: (props: UsersProps) => React.ReactNode;
   hideCheckedItems?: any;
   reportPosition?: (
     id: string,

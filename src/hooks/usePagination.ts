@@ -18,7 +18,6 @@ export const usePagination = (data: SchedulerData): UsePaginationData => {
   }, []);
 
   const { projectsPerPerson, rowsPerPerson } = useMemo(() => projectsOnGrid(data), [data]);
-
   const pages = useMemo(
     () => splitToPages(data, projectsPerPerson, rowsPerPerson, recordsThreshold),
     [data, projectsPerPerson, recordsThreshold, rowsPerPerson]
@@ -47,16 +46,24 @@ export const usePagination = (data: SchedulerData): UsePaginationData => {
 
   const end = startIndex + pages[pageNum].length;
 
-  const rowsPerItem = useMemo(
-    () => rowsPerPerson.slice(startIndex, end),
-    [end, rowsPerPerson, startIndex]
-  );
+  const rowsPerItem = useMemo(() => {
+    console.log(rowsPerPerson.slice(startIndex, end));
+    return rowsPerPerson.slice(startIndex, end);
+  }, [end, rowsPerPerson, startIndex]);
 
   const projectsPerPage = useMemo(
     () => projectsPerPerson.slice(startIndex, end),
     [end, projectsPerPerson, startIndex]
   );
 
+  // console.log("Pages", pages)
+  //   console.log("pagesAmount", pageNum)
+  //   console.log("projectsPerPerson", projectsPerPerson)
+  //  console.log("rowsPerItem", rowsPerItem)
+  //  console.log("totalRowsPerPage",  getTotalRowsPerPage(pages[pageNum]),
+  //   next,
+  //   previous,
+  //   reset)
   return {
     page: pages[pageNum],
     currentPageNum: pageNum,

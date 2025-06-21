@@ -40,7 +40,8 @@ export const Calendar: FC<CalendarProps> = ({
   Users,
   hideCheckedItems,
   onAssignTask,
-  form
+  form,
+  addTaskButton
 }) => {
   const [tooltipData, setTooltipData] = useState<TooltipData>(initialTooltipData);
   const [filteredData, setFilteredData] = useState(data);
@@ -76,6 +77,7 @@ export const Calendar: FC<CalendarProps> = ({
     reset
   } = usePagination(filteredData);
 
+  const totalRows = data;
   const debouncedHandleMouseOver = useRef(
     debounce(
       (
@@ -173,6 +175,7 @@ export const Calendar: FC<CalendarProps> = ({
         searchInputValue={searchPhrase}
         onSearchInputChange={handleSearch}
         onItemClick={onItemClick}
+        addTaskButton={addTaskButton}
       />
       <StyledInnerWrapper>
         <Header
