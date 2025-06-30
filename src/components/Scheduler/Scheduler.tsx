@@ -7,6 +7,7 @@ import LocaleProvider from "@/context/LocaleProvider";
 import { darkTheme, GlobalStyle, theme } from "@/styles";
 import { Config } from "@/types/global";
 import { outsideWrapperId } from "@/constants";
+import { drawDependencyArrows } from "@/utils/drawDependencyArrows";
 import { SchedulerProps } from "./types";
 import { StyledInnerWrapper, StyledOutsideWrapper } from "./styles";
 
@@ -74,7 +75,6 @@ const Scheduler = ({
     handleResize();
 
     window.addEventListener("resize", handleResize);
-
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 

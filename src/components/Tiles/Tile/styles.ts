@@ -15,7 +15,7 @@ export const StyledTileWrapper = styled.div`
 `;
 
 export const StyledTextWrapper = styled.div`
-  margin: 8px;
+  margin: 5px;
   position: relative;
   display: flex;
   font-size: 11.5px;

@@ -131,20 +131,20 @@ const Tile: FC<TileProps> = ({
     setIsVisible(false);
   }, []);
 
-  // useEffect(() => {
-  //   if (selectedTask) {
-  //     form.reset({
-  //       from: "",
-  //       name: selectedTask?.name || "",
-  //       userId: selectedTask?.userId || "",
-  //       dueDate: selectedTask?.dueDate ? new Date(selectedTask.dueDate) : addTaskDate,
-  //       time: selectedTask?.dueTime || 17,
-  //       recurring: selectedTask?.recurring || null,
-  //       reminder: selectedTask?.reminder || "None",
-  //       isRecurring: selectedTask?.isRecurring || false
-  //     });
-  //   }
-  // }, [form, selectedTask]);
+  useEffect(() => {
+    if (selectedTask) {
+      form.reset({
+        from: "",
+        name: selectedTask?.name || "",
+        userId: selectedTask?.userId || "",
+        dueDate: selectedTask?.dueDate ? new Date(selectedTask.dueDate) : addTaskDate,
+        time: selectedTask?.dueTime || 17,
+        recurring: selectedTask?.recurring || null,
+        reminder: selectedTask?.reminder || "None",
+        isRecurring: selectedTask?.isRecurring || false
+      });
+    }
+  }, [form, selectedTask]);
 
   useEffect(() => {
     handleTileHover(data);
@@ -184,6 +184,9 @@ const Tile: FC<TileProps> = ({
   } else {
     effectiveIsHidden = data.isCompleted ? true : isHidden;
   }
+
+  const isSelectedFrom = form.watch("from");
+  const isRecurringSelected = form.watch("isRecurring");
 
   return (
     <div
@@ -244,7 +247,7 @@ const Tile: FC<TileProps> = ({
                 })}
               </div>
 
-              {/* {alarmClock?.({
+              {alarmClock?.({
                 form: form,
                 task: data,
                 setAddTaskMonth: setAddTaskMonth,
@@ -254,7 +257,7 @@ const Tile: FC<TileProps> = ({
                 setSelectedTask: setSelectedTask,
                 addTaskMonth: addTaskMonth,
                 addTaskDate: addTaskDate
-              })} */}
+              })}
 
               {Users?.({
                 form: form,

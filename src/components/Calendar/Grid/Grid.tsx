@@ -72,6 +72,16 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
     const onResize = () => handleResize(ctx);
 
     window.addEventListener("resize", onResize);
+    drawDependencyArrows(
+      ctx,
+      data.flatMap((paginatedRow) => {
+        return paginatedRow.data.flatMap((doubleArray) => {
+          return doubleArray;
+        });
+      }),
+      tilePositions,
+      zoom
+    );
 
     return () => window.removeEventListener("resize", onResize);
   }, [handleResize]);

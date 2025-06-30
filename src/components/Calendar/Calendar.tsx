@@ -193,8 +193,8 @@ export const Calendar: FC<CalendarProps> = ({
     <div
       style={{
         transform: `scale(${gridScale ?? 1})`,
-        transformOrigin: "top-left",
-        width: "fit-content"
+        transformOrigin: "center",
+        width: "max-content"
       }}>
       <StyledOuterWrapper>
         <LeftColumn
