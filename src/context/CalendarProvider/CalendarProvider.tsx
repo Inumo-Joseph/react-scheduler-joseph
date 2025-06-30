@@ -34,12 +34,39 @@ const CalendarProvider = ({
   children,
   isLoading,
   config,
+  schedulerZoom,
   defaultStartDate = dayjs(),
   onRangeChange,
   onFilterData,
-  onClearFilterData
+  onClearFilterData,
+  todayClicked
 }: CalendarProviderProps) => {
   const { zoom: configZoom, maxRecordsPerPage = 50 } = config;
+  let z = schedulerZoom;
+
+  useEffect(() => {
+    switch (schedulerZoom) {
+      case "":
+        z = configZoom;
+        break;
+
+      case "0":
+        z = 0;
+        break;
+
+      case "1":
+        z = 1;
+        break;
+
+      default:
+        z = configZoom;
+        break;
+    }
+    changeZoom(z);
+  }, [schedulerZoom]);
+
+  const parsedZoom =
+    typeof schedulerZoom === "string" ? parseInt(schedulerZoom, 10) : schedulerZoom;
   const [zoom, setZoom] = useState<ZoomLevel>(configZoom);
   const [date, setDate] = useState(dayjs());
   const [isInitialized, setIsInitialized] = useState(false);
@@ -126,6 +153,13 @@ const CalendarProvider = ({
   );
 
   useEffect(() => {
+    // Only act when prop changes
+    if (todayClicked || !todayClicked) {
+      goToToday();
+    }
+  }, [todayClicked]);
+
+  useEffect(() => {
     outsideWrapper.current = document.getElementById(outsideWrapperId);
     setCols(getCols(zoom));
   }, [zoom]);
@@ -156,6 +190,7 @@ const CalendarProvider = ({
   const handleGoNext = () => {
     if (isLoading) return;
 
+    console.log("HandleGo next is being used");
     setDate((prev) =>
       zoom === 2 ? prev.add(zoom2ButtonJump, "hours") : prev.add(buttonWeeksJump, "weeks")
     );
@@ -188,9 +223,9 @@ const CalendarProvider = ({
     }, 300)();
   }, [isInitialized, isLoading, loadMore, moveHorizontalScroll]);
 
-  const handleGoToday = useCallback(() => {
+  const goToToday = useCallback(() => {
+    console.log("handleToday clicked and loading is: ", isLoading);
     if (isLoading) return;
-
     loadMore("middle");
     debounce(() => {
       moveHorizontalScroll("middle", "smooth");
@@ -221,7 +256,7 @@ const CalendarProvider = ({
         handleScrollNext,
         handleGoPrev,
         handleScrollPrev,
-        handleGoToday,
+        handleGoToday: goToToday, // ✅ pass your internal function here
         zoomIn,
         zoomOut,
         zoom,

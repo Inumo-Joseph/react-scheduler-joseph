@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { headerHeight } from "@/constants";
 
 export const StyledOuterWrapper = styled.div`
+  background: white;
   position: sticky;
   top: 0;
   z-index: 1;

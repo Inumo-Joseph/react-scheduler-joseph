@@ -36,9 +36,9 @@ export const getOccupancy = (
   });
 
   switch (zoom) {
-    case 2:
+    case 1:
       return getDayOccupancy(occupancy, focusedDate, zoom, includeTakenHoursOnWeekendsInDayView);
-    case 3:
+    case 2:
       return getHourOccupancy(occupancy, focusedDate);
     default:
       return getWeekOccupancy(occupancy, focusedDate, zoom);

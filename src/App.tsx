@@ -1,7 +1,15 @@
 import { useCallback, useMemo, useState } from "react";
 import dayjs from "dayjs";
-import { Link, LinkIcon, PanelTopDashed, Trash2, UsersIcon } from "lucide-react";
-import { StepTitle } from "semantic-ui-react";
+import {
+  Calendar,
+  Link,
+  LinkIcon,
+  PanelTopDashed,
+  Trash2,
+  UsersIcon,
+  ArrowRightFromLineIcon
+} from "lucide-react";
+import { Button, Label, StepTitle } from "semantic-ui-react";
 import { createMockData } from "./mock/appMock";
 import { ParsedDatesRange } from "./utils/getDatesRange";
 import { ConfigFormValues, SchedulerProjectData } from "./types/global";
@@ -17,7 +25,7 @@ function App() {
     yearsCovered: 0,
     startDate: undefined,
     maxRecordsPerPage: 50,
-    isFullscreen: true
+    isFullscreen: false
   });
 
   const { peopleCount, projectsPerYear, yearsCovered, isFullscreen, maxRecordsPerPage } = values;
@@ -224,9 +232,77 @@ function App() {
   // );
 
   const handleFilterData = () => console.log(`Filters button was clicked.`);
+  const [schedulerZoom, setSchedulerZoom] = useState<any>("1");
+  const [truncateText, setTruncateText] = useState<boolean>();
+  const [showChecked, setShowChecked] = useState<boolean>();
+  const [todayClicked, setTodayClicked] = useState(false);
+  const [schedulerSize, setSchedulerSize] = useState<any>(1);
+  const handleGoTodayClick = () => {
+    setTodayClicked((prev) => !prev);
+    console.log("In app sent down", todayClicked);
+  };
 
   return (
     <>
+      <div style={{ paddingLeft: "300px" }}>
+        <Button>
+          {" "}
+          <div
+            onClick={() => {
+              handleGoTodayClick();
+            }}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center", // vertical alignment
+                justifyContent: "center", // horizontal centering
+                gap: "5px" // spacing between items
+              }}>
+              <Calendar />
+              Today
+            </div>
+          </div>
+        </Button>{" "}
+        {/* This is supposed to triggger a function that goes to the current day */}
+        <Button>
+          <select
+            name="select"
+            value={schedulerZoom}
+            onChange={(e) => setSchedulerZoom(e.target.value)}>
+            <option value=""> DAYS, WEEKS, QUARTERS, YEAR </option>
+            <option value={"1"}> DAYS</option>
+            <option value={"0"}> WEEKS </option>
+          </select>
+        </Button>
+        <Button onClick={() => setTruncateText(false)}> ---| </Button>
+        <Button onClick={() => setTruncateText(true)}>
+          <ArrowRightFromLineIcon></ArrowRightFromLineIcon>
+        </Button>
+        <Button
+          onClick={() => {
+            setShowChecked(!showChecked);
+          }}>
+          {" "}
+          Show/Hide Checked Items{" "}
+        </Button>
+        <Button>
+          {" "}
+          Zoom
+          <select
+            name="select"
+            value={schedulerSize}
+            onChange={(e) => {
+              setSchedulerSize(e.target.value);
+            }}>
+            <option value={1}> 0% </option>
+            <option value={1.1}> 50% </option>
+            <option value={1.2}> 75% </option>
+            <option value={1.3}> 100% </option>
+          </select>
+        </Button>
+      </div>
+
       <ConfigPanel values={values} onSubmit={setValues} />
       {isFullscreen ? (
         <Scheduler
@@ -239,11 +315,16 @@ function App() {
           config={{ zoom: 1, maxRecordsPerPage: maxRecordsPerPage, showThemeToggle: false }}
           onItemClick={(data) => console.log("clicked: ", data)}
           onAssignTask={onAssignTask}
+          schedulerZoom={schedulerZoom}
+          schedulerTruncate={truncateText}
+          hideCheckedItems={showChecked}
           addTaskButton={
             <div>
               <button onClick={() => console.log("button clicked")}>ADD TASK</button>
             </div>
           }
+          todayClicked={todayClicked}
+          schedulerSize={schedulerSize}
         />
       ) : (
         <StyledSchedulerFrame>
@@ -261,8 +342,18 @@ function App() {
               </div>
             }
             onFilterData={handleFilterData}
+            schedulerZoom={schedulerZoom}
+            schedulerTruncate={truncateText}
+            hideCheckedItems={showChecked}
             onItemClick={(data) => console.log("clicked: ", data)}
             onAssignTask={onAssignTask}
+            todayClicked={todayClicked}
+            addTaskButton={
+              <div>
+                <button onClick={() => console.log("button clicked")}>ADD TASK</button>
+              </div>
+            }
+            schedulerSize={schedulerSize}
           />
         </StyledSchedulerFrame>
       )}

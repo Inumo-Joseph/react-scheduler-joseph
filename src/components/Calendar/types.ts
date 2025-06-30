@@ -16,6 +16,9 @@ export type CalendarProps = {
   toggleTheme?: () => void;
   onAssignTask?: (task: any, updatedTask: any) => void;
   form?: any;
+  schedulerZoom?: any;
+  schedulerTruncateText?: boolean;
+  calendarScale?: number; // 0.5 = 50%, 1 = 100%, etc.
 };
 
 export type StyledSpanProps = {

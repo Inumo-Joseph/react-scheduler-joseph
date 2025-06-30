@@ -78,6 +78,7 @@ const Tiles: FC<TilesProps> = ({
                     />
                   );
                   globalRowIndex++; // Increment for each tile
+
                   return tile;
                 })
             );

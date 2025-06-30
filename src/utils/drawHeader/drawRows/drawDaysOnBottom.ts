@@ -26,7 +26,7 @@ export const drawDaysOnBottom = (
   theme: Theme
 ) => {
   let xPos = -25;
-  const yPos = headerMonthHeight + headerWeekHeight + headerDayHeight / 2;
+  const yPos = headerMonthHeight + headerWeekHeight;
 
   for (let i = 0; i < cols; i++) {
     const day = parseDay(
@@ -49,12 +49,11 @@ export const drawDaysOnBottom = (
     // Set styles
     ctx.fillStyle = textColor;
     ctx.font = fonts.bottomRow.number; // pick a combined or default font
-
     // Optional: Center text in column
     const textWidth = ctx.measureText(dayLabel).width;
     const textX = xPos + (dayWidth - textWidth) / 2;
     const lineStartY = yPos;
-    const lineEndY = 1000; // Use provided height or default
+    let lineEndY = 1000; // Use provided height or default
     // Draw the text
     if (isToday) {
       // Draw vertical green line
@@ -81,18 +80,35 @@ export const drawDaysOnBottom = (
       // Save current line style
 
       // Set dashed line style
-      ctx.strokeStyle = "green";
-      ctx.lineWidth = 2;
-      ctx.setLineDash([5, 5]); // 5px dash, 5px gap
+      for (let i = 0; i < 12; i++) {
+        ctx.strokeStyle = "green";
+        ctx.lineWidth = 2;
+        ctx.setLineDash([5, 5]); // 5px dash, 5px gap
 
-      ctx.beginPath();
-      ctx.moveTo(lineX, lineStartY);
-      ctx.lineTo(lineX, lineEndY);
-      ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(lineX, lineStartY);
+        ctx.lineTo(lineX, lineEndY);
+        ctx.stroke();
+        lineEndY += 120;
+      }
 
       // Restore original line style
+    } else {
+      const ovalHeight = headerDayHeight / 2; // Thinner vertically
+      const ovalWidth = dayWidth; // Leave some padding on sides
 
-      // drawDashedLine(ctx, lineStartY, originalLineWidth , theme)
+      const circleCenterY = yPos - headerDayHeight / 4; // Position circle above text
+      ctx.beginPath();
+      ctx.rect(xPos, yPos, dayWidth, ovalHeight);
+      ctx.fillStyle = "white";
+      ctx.fill();
+      ctx.fillStyle = "black";
+
+      const lineX = xPos + dayWidth / 2;
+
+      // Save current line style
+      const originalStrokeStyle = ctx.strokeStyle;
+      const originalLineWidth = ctx.lineWidth;
     }
 
     ctx.fillText(dayLabel, textX, yPos);

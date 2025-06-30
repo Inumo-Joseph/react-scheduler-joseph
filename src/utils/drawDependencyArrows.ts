@@ -10,7 +10,9 @@ export function drawDependencyArrows(
   ctx: CanvasRenderingContext2D,
   data: SchedulerProjectData[],
   tilePositions: TilePositionMap,
-  zoom: number
+  zoom: number,
+  scale?: number,
+  showHideChecked?: boolean
 ) {
   data.forEach((task) => {
     const to = tilePositions[task.parentTaskId ?? ""];
@@ -19,11 +21,27 @@ export function drawDependencyArrows(
 
     const index = data.indexOf(task);
     const index2 = data.findIndex((currentTask) => currentTask.id === task.parentTaskId);
+
+    if (showHideChecked) {
+      if (index2 === -1) return;
+    }
+
+    const fromx = (scale ?? 1) * from.x;
+    const fromy = (scale ?? 1) * from.y;
+    const fromWidth = (scale ?? 1) * from.width;
+    const fromheight = (scale ?? 1) * from.height;
+
+    const tox = (scale ?? 1) * to.x;
+    const toy = (scale ?? 1) * to.y;
+    const toWidth = (scale ?? 1) * to.width;
+    const toHeight = (scale ?? 1) * to.height;
+
     drawArrow(
       ctx,
       zoom,
-      { x: from.x, y: from.y, width: from.width, height: from.height, _index: index },
-      { x: to.x, y: to.y, width: to.width, height: to.height, _index: index2 }
+
+      { x: fromx, y: fromy, width: fromWidth, height: fromheight, _index: index },
+      { x: tox, y: toy, width: toWidth, height: toHeight, _index: index2 }
     );
   });
 }

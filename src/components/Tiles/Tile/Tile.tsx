@@ -59,10 +59,14 @@ const Tile: FC<TileProps> = ({
     zoom
   );
 
-  // console.log("From top SUBDISPATCH", subDispatch);
   const [hoveredTileData, setHoveredTileData] = useState<SchedulerProjectData | null>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [addTaskMonth, setAddTaskMonth] = useState<Date | undefined>(new Date());
+  const [isHidden, setIsHidden] = useState(false);
+  const endDate = new Date(data.dueDate);
+  const now = new Date();
+  const isPast = endDate < now;
+  let effectiveIsHidden = false;
 
   const setHoursToDate = (date: string | number | Date, hours: any) => {
     const newDate = new Date(date);
@@ -79,7 +83,6 @@ const Tile: FC<TileProps> = ({
 
   const selectedParentTasks = null;
   const ctx = CanvasRenderingContext2D;
-  const isRecurringSelected = form.watch("isRecurring");
 
   const {
     page,
@@ -128,20 +131,20 @@ const Tile: FC<TileProps> = ({
     setIsVisible(false);
   }, []);
 
-  useEffect(() => {
-    if (selectedTask) {
-      form.reset({
-        from: "",
-        name: selectedTask?.name || "",
-        userId: selectedTask?.userId || "",
-        dueDate: selectedTask?.dueDate ? new Date(selectedTask.dueDate) : addTaskDate,
-        time: selectedTask?.dueTime || 17,
-        recurring: selectedTask?.recurring || null,
-        reminder: selectedTask?.reminder || "None",
-        isRecurring: selectedTask?.isRecurring || false
-      });
-    }
-  }, [form, selectedTask]);
+  // useEffect(() => {
+  //   if (selectedTask) {
+  //     form.reset({
+  //       from: "",
+  //       name: selectedTask?.name || "",
+  //       userId: selectedTask?.userId || "",
+  //       dueDate: selectedTask?.dueDate ? new Date(selectedTask.dueDate) : addTaskDate,
+  //       time: selectedTask?.dueTime || 17,
+  //       recurring: selectedTask?.recurring || null,
+  //       reminder: selectedTask?.reminder || "None",
+  //       isRecurring: selectedTask?.isRecurring || false
+  //     });
+  //   }
+  // }, [form, selectedTask]);
 
   useEffect(() => {
     handleTileHover(data);
@@ -174,13 +177,7 @@ const Tile: FC<TileProps> = ({
         height: tileRect.height
       });
     }
-  }, [zoom, row, data, onAssignTask]);
-
-  const [isHidden, setIsHidden] = useState(false);
-  const endDate = new Date(data.dueDate);
-  const now = new Date();
-  const isPast = endDate < now;
-  let effectiveIsHidden = false;
+  }, [zoom, row, data, onAssignTask, isPast]);
 
   if (isPast) {
     effectiveIsHidden = true;
@@ -247,7 +244,7 @@ const Tile: FC<TileProps> = ({
                 })}
               </div>
 
-              {alarmClock?.({
+              {/* {alarmClock?.({
                 form: form,
                 task: data,
                 setAddTaskMonth: setAddTaskMonth,
@@ -257,10 +254,9 @@ const Tile: FC<TileProps> = ({
                 setSelectedTask: setSelectedTask,
                 addTaskMonth: addTaskMonth,
                 addTaskDate: addTaskDate
-              })}
+              })} */}
 
               {Users?.({
-                updateTaskMode: true,
                 form: form,
                 task: data
               })}
@@ -283,16 +279,14 @@ const Tile: FC<TileProps> = ({
             }}
             ref={tileRef}>
             <StyledTextWrapper>
-              <StyledStickyWrapper>
+              <StyledStickyWrapper $allowOverflow={truncateText}>
                 <>
                   {/* UsersIcon and Title on the same line */}
                   <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                     {Users?.({
-                      updateTaskMode: true,
                       form: form,
                       task: data
                     })}
-
                     <StyledText
                       bold
                       style={{
@@ -308,7 +302,9 @@ const Tile: FC<TileProps> = ({
                   </div>
                   {/* Subtitle and description below */}
                   <StyledText>{data.subtitle}</StyledText>
-                  <StyledDescription>{data.description}</StyledDescription>
+                  <StyledDescription $allowOverflow={truncateText}>
+                    {data.description}
+                  </StyledDescription>
                 </>
               </StyledStickyWrapper>
             </StyledTextWrapper>

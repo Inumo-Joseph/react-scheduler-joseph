@@ -40,10 +40,10 @@ export const drawHeader = (
       drawWeeksInMiddle(ctx, startDate, weekLabel, theme);
       drawDaysOnBottom(ctx, cols, startDate, theme);
       break;
-    case 2:
-      drawZoom2MonthsOnTop(ctx, cols, startDate, theme);
-      drawZoom2DaysInMiddle(ctx, cols, startDate, theme);
-      drawZoom2HoursOnBottom(ctx, cols, startDate, theme);
-      break;
+    // case 2:
+    //   drawZoom2MonthsOnTop(ctx, cols, startDate, theme);
+    //   drawZoom2DaysInMiddle(ctx, cols, startDate, theme);
+    //   drawZoom2HoursOnBottom(ctx, cols, startDate, theme);
+    //   break;
   }
 };

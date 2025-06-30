@@ -64,16 +64,16 @@ const Topbar: FC<TopbarProps> = ({
 
   return (
     <Wrapper width={width}>
-      <div className="" style={{ paddingTop: "10px" }}>
-        <span
+      <div className="" style={{ paddingTop: "1px" }}>
+        {/* <span
           className=""
           style={{
             borderColor: "black",
             borderRadius: "10px",
             padding: "10px",
             marginTop: "10px"
-          }}>
-          <button className="">
+          }}> */}
+        {/* <button className="">
             <Zoom>
               <IconButton
                 isDisabled={!isPrevZoom}
@@ -131,7 +131,7 @@ const Topbar: FC<TopbarProps> = ({
         </Button>
         <Button disabled={!data?.length} style={{ cursor: "" }}>
           <ArrowRightCircleIcon onClick={handleGoNext}>{topbar.next}</ArrowRightCircleIcon>
-        </Button>
+        </Button> */}
       </div>
 
       <NavigationWrapper></NavigationWrapper>

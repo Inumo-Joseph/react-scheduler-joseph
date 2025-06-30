@@ -6,7 +6,7 @@ import { drawDashedLine } from "../drawDashedLine";
 import { getDaysInMonths } from "../dates";
 import { drawCell } from "./drawCell";
 
-export const drawYearlyView = (
+export const drawWeeklyView = (
   ctx: CanvasRenderingContext2D,
   rows: number,
   cols: number,

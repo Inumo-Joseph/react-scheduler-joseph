@@ -6,6 +6,7 @@ import {
   headerMonthHeight,
   headerWeekHeight,
   middleRowTextYPos,
+  topRowTextYPos,
   weeksInYear
 } from "@/constants";
 import { drawRow } from "@/utils/drawRow";
@@ -18,7 +19,7 @@ export const drawWeeksInMiddle = (
   theme: Theme
 ) => {
   const width = 7 * dayWidth;
-  const yPos = headerMonthHeight;
+  const yPos = 5;
 
   const weeksThreshold = ctx.canvas.width / width + width;
   const startWeek = startDate.weekOfYear;
@@ -41,7 +42,7 @@ export const drawWeeksInMiddle = (
         y: yPos,
         width,
         height: headerWeekHeight,
-        textYPos: middleRowTextYPos,
+        textYPos: topRowTextYPos,
         label: `${weekLabel.toUpperCase()} ${weekIndex}`,
         font: fonts.middleRow
       },

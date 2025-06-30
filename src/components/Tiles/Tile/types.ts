@@ -60,5 +60,5 @@ export type TileProps = {
 
 export type StyledTextProps = {
   bold?: boolean;
-  truncateText?: boolean;
+  $allowOverflow?: boolean; // Add this if you want to use it on StyledText too
 };

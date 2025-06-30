@@ -2,7 +2,7 @@ import { ThemeProvider } from "styled-components";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import dayjs from "dayjs";
 import { Calendar } from "@/components";
-import CalendarProvider from "@/context/CalendarProvider";
+import CalendarProvider, { useCalendar } from "@/context/CalendarProvider";
 import LocaleProvider from "@/context/LocaleProvider";
 import { darkTheme, GlobalStyle, theme } from "@/styles";
 import { Config } from "@/types/global";
@@ -26,7 +26,11 @@ const Scheduler = ({
   hideCheckedItems,
   onAssignTask,
   form,
-  addTaskButton
+  addTaskButton,
+  schedulerZoom,
+  schedulerTruncate,
+  todayClicked,
+  schedulerSize
 }: SchedulerProps) => {
   // eslint-disable-next-line
   const appConfig: Config = React.useMemo(
@@ -41,6 +45,8 @@ const Scheduler = ({
     [config]
   );
 
+  const { handleGoToday } = useCalendar();
+
   const outsideWrapperRef = useRef<HTMLDivElement>(null);
   const [topBarWidth, setTopBarWidth] = useState(outsideWrapperRef.current?.clientWidth);
   const defaultStartDate = useMemo(() => dayjs(startDate), [startDate]);
@@ -48,7 +54,6 @@ const Scheduler = ({
   const toggleTheme = () => {
     themeMode === "light" ? setThemeMode("dark") : setThemeMode("light");
   };
-
   const currentTheme = themeMode === "light" ? theme : darkTheme;
   const customColors = appConfig.theme ? appConfig.theme[currentTheme.mode] : {};
   const mergedTheme = {
@@ -73,6 +78,17 @@ const Scheduler = ({
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  let filteredData = data;
+
+  if (hideCheckedItems) {
+    filteredData = data
+      .map((row) => ({
+        ...row,
+        data: row.data.filter((task) => !task.isCompleted)
+      }))
+      .filter((row) => row.data.length > 0); // remove rows with no completed tasks
+  }
+
   if (!outsideWrapperRef.current) null;
   return (
     <>
@@ -80,20 +96,22 @@ const Scheduler = ({
       <ThemeProvider theme={mergedTheme}>
         <LocaleProvider lang={appConfig.lang} translations={appConfig.translations}>
           <CalendarProvider
-            data={data}
+            data={filteredData}
             isLoading={!!isLoading}
             config={appConfig}
             onRangeChange={onRangeChange}
             defaultStartDate={defaultStartDate}
             onFilterData={onFilterData}
-            onClearFilterData={onClearFilterData}>
+            schedulerZoom={schedulerZoom}
+            onClearFilterData={onClearFilterData}
+            todayClicked={todayClicked}>
             <StyledOutsideWrapper
               showScroll={!!data.length}
               id={outsideWrapperId}
               ref={outsideWrapperRef}>
               <StyledInnerWrapper>
                 <Calendar
-                  data={data}
+                  data={filteredData}
                   renderData={renderData}
                   topBarWidth={topBarWidth ?? 0}
                   onItemClick={onItemClick}
@@ -105,7 +123,10 @@ const Scheduler = ({
                   hideCheckedItems={hideCheckedItems}
                   onAssignTask={onAssignTask}
                   form={form}
+                  schedulerZoom={schedulerZoom}
+                  schedulerTruncateText={schedulerTruncate}
                   addTaskButton={addTaskButton}
+                  calendarScale={schedulerSize}
                 />
               </StyledInnerWrapper>
             </StyledOutsideWrapper>

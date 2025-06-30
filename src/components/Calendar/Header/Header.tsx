@@ -60,7 +60,7 @@ const Header: FC<HeaderProps> = ({
 
   return (
     <StyledOuterWrapper>
-      <Topbar
+      {/* <Topbar
         width={topBarWidth}
         showThemeToggle={showThemeToggle}
         toggleTheme={toggleTheme}
@@ -68,7 +68,7 @@ const Header: FC<HeaderProps> = ({
         truncateText={truncateText}
         showCompleted={showCompleted}
         setShowCompleted={setShowCompleted}
-      />
+      /> */}
       <div className="my-5"></div>
       <StyledWrapper id={canvasHeaderWrapperId}>
         <StyledCanvas ref={canvasRef} />

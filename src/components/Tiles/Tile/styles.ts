@@ -7,7 +7,6 @@ export const StyledTileWrapper = styled.div`
   ${marginPaddingReset}
   height: ${tileHeight}px;
   position: absolute;
-  outline: none;
   border: none;
   border-radius: 5px;
   text-align: left;
@@ -16,7 +15,7 @@ export const StyledTileWrapper = styled.div`
 `;
 
 export const StyledTextWrapper = styled.div`
-  margin: 10px;
+  margin: 8px;
   position: relative;
   display: flex;
   font-size: 11.5px;
@@ -26,24 +25,31 @@ export const StyledTextWrapper = styled.div`
 
 export const StyledText = styled.p<StyledTextProps>`
   ${marginPaddingReset}
+
   display: inline;
   font-weight: ${({ bold }) => (bold ? "600" : "400")};
   &:first-child {
     &::after {
       content: "|";
-      margin: 0 3px;
+      margin: 0 2px;
     }
   }
 `;
 
-export const StyledDescription = styled.p`
+export const StyledDescription = styled.p<{ $allowOverflow?: boolean }>`
   ${marginPaddingReset}
-  ${truncate}
+  ${({ $allowOverflow }) => !$allowOverflow && truncate}
 `;
 
-export const StyledStickyWrapper = styled.div`
+export const StyledStickyWrapper = styled.div<{ $allowOverflow?: boolean }>`
   position: sticky;
   left: ${leftColumnWidth + 16}px;
-  overflow: hidden;
-  whitespace: nowrap;
+  ${({ $allowOverflow }) =>
+    !$allowOverflow &&
+    `
+    overflow: hidden;
+    white-space: nowrap;
+    textOverflow: ellipsis;  
+
+  `}
 `;

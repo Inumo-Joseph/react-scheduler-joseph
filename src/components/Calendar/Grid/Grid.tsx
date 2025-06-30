@@ -25,10 +25,10 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
     Users,
     onTileHover,
     hideCheckedItems,
-    showCompleted,
     setShowCompleted,
     onAssignTask,
-    form
+    form,
+    calendarScale
   },
   ref
 ) {
@@ -40,6 +40,9 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
   const theme = useTheme();
   type TilePositionMap = Record<string, { x: number; y: number; width: number; height: number }>;
   const [tilePositions, setTilePositions] = useState<TilePositionMap>({});
+  const allProjects: SchedulerProjectData[] = data.flatMap((row) =>
+    row.data.flatMap((projectsPerRow) => projectsPerRow)
+  );
 
   const handleTilePosition = (
     id: string,
@@ -81,17 +84,12 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
     if (!ctx) return;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    const allProjects: SchedulerProjectData[] = data.flatMap((row) =>
-      row.data.flatMap((projectsPerRow) => projectsPerRow)
-    );
-    const visibleProjects = !showCompleted
-      ? allProjects
-      : allProjects.filter((task) => task.isCompleted);
     handleResize(ctx); // draw grid first
-    drawDependencyArrows(ctx, visibleProjects, tilePositions, zoom);
+
+    drawDependencyArrows(ctx, allProjects, tilePositions, zoom, calendarScale, hideCheckedItems);
+
     // draw arrows over grid
-  }, [date, rows, zoom, handleResize, tilePositions, truncateText, showCompleted]);
+  }, [date, rows, zoom, handleResize, tilePositions, truncateText, hideCheckedItems]);
 
   useEffect(() => {
     if (!refRight.current) return;
@@ -150,7 +148,7 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
           Users={Users}
           hideCheckedItems={hideCheckedItems}
           onTileHover={onTileHover}
-          showCompleted={showCompleted}
+          showCompleted={hideCheckedItems}
           setShowCompleted={setShowCompleted}
           onAssignTask={onAssignTask}
           form={form}

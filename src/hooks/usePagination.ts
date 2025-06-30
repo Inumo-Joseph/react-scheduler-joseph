@@ -47,7 +47,6 @@ export const usePagination = (data: SchedulerData): UsePaginationData => {
   const end = startIndex + pages[pageNum].length;
 
   const rowsPerItem = useMemo(() => {
-    console.log(rowsPerPerson.slice(startIndex, end));
     return rowsPerPerson.slice(startIndex, end);
   }, [end, rowsPerPerson, startIndex]);
 

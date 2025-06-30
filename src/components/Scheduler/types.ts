@@ -7,6 +7,10 @@ import {
   SchedulerProjectData
 } from "@/types/global";
 import { ParsedDatesRange } from "@/utils/getDatesRange";
+
+export type SchedulerRef = {
+  handleGoToday: () => void;
+};
 export type SchedulerProps = {
   data: SchedulerData;
   isLoading?: boolean;
@@ -25,6 +29,10 @@ export type SchedulerProps = {
   addTaskButton?: React.ReactNode;
   onAssignTask?: (task: any, updatedTask: any) => void;
   form?: any;
+  todayClicked?: any;
+  schedulerZoom?: any;
+  schedulerTruncate?: boolean;
+  schedulerSize?: number;
 };
 
 export type StyledOutsideWrapperProps = {

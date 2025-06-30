@@ -5,7 +5,7 @@ import { Theme } from "@/styles";
 import { getIsBusinessDay } from "../dates";
 import { drawCell } from "./drawCell";
 
-export const drawMonthlyView = (
+export const drawDailyView = (
   ctx: CanvasRenderingContext2D,
   rows: number,
   cols: number,

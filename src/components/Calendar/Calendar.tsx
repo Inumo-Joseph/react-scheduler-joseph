@@ -41,7 +41,10 @@ export const Calendar: FC<CalendarProps> = ({
   hideCheckedItems,
   onAssignTask,
   form,
-  addTaskButton
+  addTaskButton,
+  schedulerZoom,
+  schedulerTruncateText,
+  calendarScale
 }) => {
   const [tooltipData, setTooltipData] = useState<TooltipData>(initialTooltipData);
   const [filteredData, setFilteredData] = useState(data);
@@ -59,6 +62,7 @@ export const Calendar: FC<CalendarProps> = ({
   const [hoveredTileRef, setHoveredTileRef] = useState<React.RefObject<HTMLButtonElement> | null>(
     null
   );
+  const [gridScale, setGridScale] = useState(1);
   const [showCompleted, setShowCompleted] = useState(false);
   const handleTileHover = (data: SchedulerProjectData, ref: React.RefObject<HTMLButtonElement>) => {
     setHoveredTileData(data);
@@ -77,7 +81,6 @@ export const Calendar: FC<CalendarProps> = ({
     reset
   } = usePagination(filteredData);
 
-  const totalRows = data;
   const debouncedHandleMouseOver = useRef(
     debounce(
       (
@@ -163,67 +166,92 @@ export const Calendar: FC<CalendarProps> = ({
     setFilteredData(data);
   }, [data, searchPhrase, hoveredTileData]);
 
+  useEffect(() => {
+    setGridScale(calendarScale ?? 1);
+  }, [calendarScale]);
+
+  let z = schedulerZoom;
+  switch (schedulerZoom) {
+    case "":
+      z = zoom;
+      break;
+
+    case "0":
+      z = 0;
+      break;
+
+    case "1":
+      z = 1;
+      break;
+
+    default:
+      z = zoom;
+      break;
+  }
+
   return (
-    <StyledOuterWrapper>
-      <LeftColumn
-        data={page}
-        pageNum={currentPageNum}
-        pagesAmount={pagesAmount}
-        rows={rowsPerItem}
-        onLoadNext={next}
-        onLoadPrevious={previous}
-        searchInputValue={searchPhrase}
-        onSearchInputChange={handleSearch}
-        onItemClick={onItemClick}
-        addTaskButton={addTaskButton}
-      />
-      <StyledInnerWrapper>
-        <Header
-          zoom={zoom}
-          topBarWidth={topBarWidth}
-          showThemeToggle={showThemeToggle}
-          toggleTheme={toggleTheme}
-          truncateText={truncateText}
-          setTruncate={setTruncateText}
-          showCompleted={showCompleted}
-          setShowCompleted={setShowCompleted}
+    <div
+      style={{
+        transform: `scale(${gridScale ?? 1})`,
+        transformOrigin: "top-left",
+        width: "fit-content"
+      }}>
+      <StyledOuterWrapper>
+        <LeftColumn
+          data={page}
+          pageNum={currentPageNum}
+          pagesAmount={pagesAmount}
+          rows={rowsPerItem}
+          onLoadNext={next}
+          onLoadPrevious={previous}
+          searchInputValue={searchPhrase}
+          onSearchInputChange={handleSearch}
+          onItemClick={onItemClick}
+          addTaskButton={addTaskButton}
         />
-        {data.length ? (
-          <Grid
-            data={page}
+        <StyledInnerWrapper>
+          <Header
             zoom={zoom}
-            rows={totalRowsPerPage}
-            ref={gridRef}
-            schedulerRef={schedulerRef}
-            onTileHover={handleTileHover}
-            projectData={data}
-            truncateText={truncateText}
-            showToggle={setTruncateText}
-            renderData={renderData}
-            parentChildTask={parentChildTask}
-            alarmClock={alarmClock}
-            Users={Users}
-            hideCheckedItems={hideCheckedItems}
+            topBarWidth={topBarWidth}
+            showThemeToggle={showThemeToggle}
+            toggleTheme={toggleTheme}
+            truncateText={schedulerTruncateText}
+            setTruncate={setTruncateText}
             showCompleted={showCompleted}
             setShowCompleted={setShowCompleted}
-            onAssignTask={onAssignTask}
-            form={form}
           />
-        ) : (
-          <StyledEmptyBoxWrapper width={topBarWidth}>
-            <EmptyBox />
-          </StyledEmptyBoxWrapper>
-        )}
-        {/* {showTooltip && isVisible && tooltipData?.resourceIndex > -1 && (
-          <div
-          onMouseEnter={()=>setIsHoveringTooltip(true)}
-          onMouseLeave={()=>setIsHoveringTooltip(false)}
-          >
-          <Tooltip tooltipData={tooltipData} zoom={zoom} content={toolContent(hoveredTileData?.users ?? [''])} />
-          </div>
-        )} */}
-      </StyledInnerWrapper>
-    </StyledOuterWrapper>
+          {data.length ? (
+            <div>
+              <Grid
+                data={page}
+                zoom={zoom}
+                rows={totalRowsPerPage}
+                ref={gridRef}
+                schedulerRef={schedulerRef}
+                onTileHover={handleTileHover}
+                projectData={data}
+                truncateText={schedulerTruncateText}
+                showToggle={setTruncateText}
+                renderData={renderData}
+                parentChildTask={parentChildTask}
+                alarmClock={alarmClock}
+                Users={Users}
+                hideCheckedItems={hideCheckedItems}
+                showCompleted={showCompleted}
+                setShowCompleted={setShowCompleted}
+                onAssignTask={onAssignTask}
+                form={form}
+                calendarScale={calendarScale}
+              />
+            </div>
+          ) : (
+            <StyledEmptyBoxWrapper width={topBarWidth}>
+              <EmptyBox />
+            </StyledEmptyBoxWrapper>
+          )}
+        </StyledInnerWrapper>
+      </StyledOuterWrapper>
+    </div>
   );
 };
 

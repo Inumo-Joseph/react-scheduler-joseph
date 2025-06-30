@@ -31,8 +31,11 @@ export type CalendarContextType = {
 export type CalendarProviderProps = {
   children: ReactNode;
   isLoading: boolean;
+  todayClicked: boolean;
   defaultStartDate?: dayjs.Dayjs;
   data?: SchedulerData;
+  handleGoToday?: () => void;
+  schedulerZoom?: any;
   config: Config;
   onRangeChange?: (range: ParsedDatesRange) => void;
   onFilterData?: () => void;

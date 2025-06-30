@@ -22,6 +22,7 @@ export type GridProps = {
   setShowCompleted: React.Dispatch<React.SetStateAction<boolean>>;
   onAssignTask?: (task: any, updatedTask: any) => void;
   form?: any;
+  calendarScale?: any;
 };
 
 export type StyledSpanProps = {
