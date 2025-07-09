@@ -1,11 +1,11 @@
 import { prefixId } from "./styles";
 
-export const monthWidth = 25;
+export const monthWidth = 84;
 export const dayWidth = 50;
 export const headerMonthHeight = 30;
 export const headerWeekHeight = 20;
 export const headerDayHeight = 45;
-export const headerHeight = headerDayHeight + headerWeekHeight + headerMonthHeight;
+export const headerHeight = headerDayHeight + headerWeekHeight + headerMonthHeight - 56;
 export const weekWidth = 84;
 export const boxHeight = 56;
 export const leftColumnWidth = 196;
@@ -23,8 +23,8 @@ export const fonts = {
   topRow: "600 14px Arial",
   middleRow: "400 13px Arial",
   bottomRow: {
-    name: "600 14px Arial",
-    number: "600 10px Arial"
+    name: "600 11px Arial",
+    number: "100 11px Arial"
   }
 };
 export const screenWidthMultiplier = 3;
@@ -50,6 +50,7 @@ export const yearViewMonthLabelHeight = 16;
 export const businessDays = 5;
 export const maxHoursPerWeek = 40;
 export const maxHoursPerDay = 8;
+export const maxHoursPerMonth = 160;
 export const topRowTextYPos = headerMonthHeight / 2 + 2;
 export const middleRowTextYPos = headerWeekHeight / 2 + headerMonthHeight + 1;
 export const buttonWeeksJump = 2;

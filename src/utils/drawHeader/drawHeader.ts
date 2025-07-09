@@ -24,21 +24,20 @@ export const drawHeader = (
   theme: Theme
 ) => {
   switch (zoom) {
-    // case 0:
-    // drawYearsOnTop(ctx,startDate,dayOfYear,theme)
-    // drawQuartersInMiddle(ctx,cols,startDate,theme)
-    // drawMonthsOnBottom(ctx,cols,startDate,theme)
     case 0:
-      // drawYearsOnTop(ctx, startDate, dayOfYear, theme);
-      drawQuartersOnTop(ctx, startDate, cols, theme);
       drawMonthsInMiddle(ctx, cols, startDate, theme);
       drawWeeksOnBottom(ctx, cols, startDate, weekLabel, theme);
       break;
 
     case 1:
       // drawMonthsOnTop(ctx, startDate, theme);
-      drawWeeksInMiddle(ctx, startDate, weekLabel, theme);
       drawDaysOnBottom(ctx, cols, startDate, theme);
+      break;
+
+    case 3:
+      drawYearsOnTop(ctx, startDate, dayOfYear, theme);
+      drawQuartersInMiddle(ctx, cols, startDate, theme);
+      drawMonthsOnBottom(ctx, cols, startDate, theme);
       break;
     // case 2:
     //   drawZoom2MonthsOnTop(ctx, cols, startDate, theme);

@@ -7,7 +7,7 @@ export const prefixId = "reactSchedulerOutsideWrapper";
 export const GlobalStyle = createGlobalStyle`
 
   #${prefixId} {
-    font-family: 'font-awesome','Arial', sans-serif;
+    font-family: 'Proxima Nova','Arial', sans-serif;
     box-sizing: border-box;
     line-height: 1.15;
     -webkit-text-size-adjust: 100%;
@@ -103,7 +103,7 @@ export const darkTheme: Theme = {
 };
 
 export const marginPaddingReset = `
-margin: 0;
+margin: 0px;
 padding: 0;
 `;
 

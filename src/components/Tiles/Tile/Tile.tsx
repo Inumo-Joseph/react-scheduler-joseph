@@ -10,6 +10,7 @@ import { getTileTextColor } from "@/utils/getTileTextColor";
 import { Day, SchedulerProjectData, TooltipData, ZoomLevel } from "@/types/global";
 import { getTooltipData } from "@/utils/getTooltipData";
 import { usePagination } from "@/hooks/usePagination";
+import { headerHeight } from "@/constants";
 import { drawArrow } from "@/utils/drawArrows";
 import UsersIcon from "../../../../src/components/UserIcon";
 import { TileProps } from "./types";
@@ -172,7 +173,7 @@ const Tile: FC<TileProps> = ({
 
       reportPosition?.(data.id, {
         x: tileRect.left - canvasRect.left,
-        y: tileRect.top - canvasRect.top,
+        y: tileRect.top - canvasRect.top + headerHeight + 15,
         width: tileRect.width,
         height: tileRect.height
       });
@@ -290,8 +291,8 @@ const Tile: FC<TileProps> = ({
                       form: form,
                       task: data
                     })}
-                    <StyledText
-                      bold
+
+                    <div
                       style={{
                         color: "black",
                         ...(!truncateText && {
@@ -301,7 +302,7 @@ const Tile: FC<TileProps> = ({
                         })
                       }}>
                       {data.name}
-                    </StyledText>
+                    </div>
                   </div>
                   {/* Subtitle and description below */}
                   <StyledText>{data.subtitle}</StyledText>

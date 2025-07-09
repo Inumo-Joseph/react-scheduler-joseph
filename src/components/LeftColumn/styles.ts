@@ -14,10 +14,10 @@ export const StyledWrapper = styled.div`
 `;
 
 export const StyledLeftColumnHeader = styled.div`
-  padding-bottom: 4px;
+  padding-bottom: 5px;
   position: sticky;
   top: 0;
-  height: 100px;
+  height: 58px;
   display: flex;
   flex-direction: column;
   justify-content: end;
@@ -41,7 +41,7 @@ export const StyledInput = styled.input`
 
 export const StyledInputWrapper = styled.div<StyledInputWrapperProps>`
   margin-left: 10px;
-  height: 36px;
+  height: 30px;
   width: calc(100% - 20px); //20px = 10px margin each side
   background-color: ${({ theme }) => theme.colors.primary};
   border: 1px solid

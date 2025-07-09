@@ -15,7 +15,6 @@ export function drawArrow(
 ) {
   const curve = options.arrowCurve;
   const padding = options.padding;
-  const zoomPadding = Math.min(zoom + 2, zoom);
   let startX = from.x + from.width;
   const svg = document.getElementById("svg-arrows");
 

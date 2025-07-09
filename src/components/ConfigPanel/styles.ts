@@ -6,7 +6,7 @@ type WrapperProps = {
 
 export const StyledWrapper = styled.div<WrapperProps>`
   box-sizing: border-box;
-  font-family: Inter;
+  font-family: Proxima Nova;
   padding: 0 0.5rem;
   height: 125px;
   position: fixed;

@@ -1,8 +1,8 @@
 import dayjs from "dayjs";
 import { Day } from "@/types/global";
-import { boxHeight, dayWidth } from "@/constants";
+import { boxHeight, dayWidth, singleDayWidth } from "@/constants";
 import { Theme } from "@/styles";
-import { getIsBusinessDay } from "../dates";
+import { getIsBusinessDay, parseDay } from "../dates";
 import { drawCell } from "./drawCell";
 
 export const drawDailyView = (
@@ -29,7 +29,8 @@ export const drawDailyView = (
         dayWidth,
         getIsBusinessDay(date),
         isCurrentDay,
-        theme
+        theme,
+        true
       );
     }
   }

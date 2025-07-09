@@ -14,12 +14,13 @@ import { Theme } from "@/styles";
 
 export const drawWeeksInMiddle = (
   ctx: CanvasRenderingContext2D,
+  cols: number,
   startDate: Day,
   weekLabel: string,
   theme: Theme
 ) => {
   const width = 7 * dayWidth;
-  const yPos = 5;
+  const yPos = 18;
 
   const weeksThreshold = ctx.canvas.width / width + width;
   const startWeek = startDate.weekOfYear;
@@ -42,7 +43,7 @@ export const drawWeeksInMiddle = (
         y: yPos,
         width,
         height: headerWeekHeight,
-        textYPos: topRowTextYPos,
+        textYPos: middleRowTextYPos - 13,
         label: `${weekLabel.toUpperCase()} ${weekIndex}`,
         font: fonts.middleRow
       },

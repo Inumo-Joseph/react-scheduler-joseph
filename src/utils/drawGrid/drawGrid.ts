@@ -5,6 +5,7 @@ import { drawWeeklyView } from "./drawWeeklyView";
 import { drawHourlyView } from "./drawHourlyView";
 import { drawQuarterlyView } from "./drawQuarterlyView";
 import { drawDailyView } from "./drawDailyView";
+import { drawMonthlyView } from "./drawMonthlyView";
 
 export const drawGrid = (
   ctx: CanvasRenderingContext2D,
@@ -28,8 +29,8 @@ export const drawGrid = (
     case 1:
       drawDailyView(ctx, rows, cols, parsedStartDate, theme);
       break;
-    // case 3:
-    //   drawHourlyView(ctx, rows, cols, parsedStartDate, theme);
+    case 3:
+      drawMonthlyView(ctx, rows, cols, parsedStartDate, theme);
     //   break;
   }
 };

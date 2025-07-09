@@ -25,7 +25,7 @@ function App() {
     yearsCovered: 0,
     startDate: undefined,
     maxRecordsPerPage: 50,
-    isFullscreen: false
+    isFullscreen: true
   });
 
   const { peopleCount, projectsPerYear, yearsCovered, isFullscreen, maxRecordsPerPage } = values;
@@ -52,6 +52,16 @@ function App() {
           name: "Task 1",
           startDate: new Date("2025-06-01"),
           dueDate: new Date("2025-06-05"),
+          occupancy: 100,
+          isCompleted: true,
+          isRecurring: false
+        },
+        {
+          cardId: "row-1",
+          id: "task-20",
+          name: "Task 20",
+          startDate: new Date("2025-06-01"),
+          dueDate: new Date("2025-08-05"),
           occupancy: 100,
           isCompleted: true,
           isRecurring: false
@@ -114,6 +124,18 @@ function App() {
           name: "  Emptying Locker",
           startDate: new Date("2025-05-28"),
           dueDate: new Date("2025-06-06"),
+          occupancy: 100,
+          parentTaskId: "task-7",
+          bgColor: "rgba(133, 193, 233, 0.83)",
+          isCompleted: false,
+          isRecurring: false
+        },
+        {
+          cardId: "row-2",
+          id: "task-16",
+          name: "Doin ya mom",
+          startDate: new Date("2025-07-03"),
+          dueDate: new Date("2025-08-06"),
           occupancy: 100,
           parentTaskId: "task-7",
           bgColor: "rgba(133, 193, 233, 0.83)",
@@ -239,7 +261,6 @@ function App() {
   const [schedulerSize, setSchedulerSize] = useState<any>(1);
   const handleGoTodayClick = () => {
     setTodayClicked((prev) => !prev);
-    console.log("In app sent down", todayClicked);
   };
 
   return (
@@ -273,6 +294,7 @@ function App() {
             <option value=""> DAYS, WEEKS, QUARTERS, YEAR </option>
             <option value={"1"}> DAYS</option>
             <option value={"0"}> WEEKS </option>
+            <option value={"3"}> MONTHS </option>
           </select>
         </Button>
         <Button onClick={() => setTruncateText(false)}> ---| </Button>
@@ -312,7 +334,11 @@ function App() {
           isLoading={false}
           onFilterData={handleFilterData}
           renderData={renderData()}
-          config={{ zoom: 1, maxRecordsPerPage: maxRecordsPerPage, showThemeToggle: false }}
+          config={{
+            zoom: schedulerZoom,
+            maxRecordsPerPage: maxRecordsPerPage,
+            showThemeToggle: false
+          }}
           onItemClick={(data) => console.log("clicked: ", data)}
           onAssignTask={onAssignTask}
           schedulerZoom={schedulerZoom}

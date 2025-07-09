@@ -25,6 +25,7 @@ const LeftColumnItem: FC<LeftColumnItemProps> = ({ id, item, rows, onItemClick }
             <Icon iconName="defaultAvatar" />
           )}
         </StyledImageWrapper> */}
+
         <StyledTextWrapper>
           <StyledText isMain>{item.title}</StyledText>
           <StyledText>{item.subtitle}</StyledText>

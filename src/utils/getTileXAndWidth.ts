@@ -10,6 +10,9 @@ export const getTileXAndWidth = (item: DatesRange, range: DatesRange, zoom: numb
     case 2:
       cellWidth = zoom2ColumnWidth;
       break;
+    case 3:
+      cellWidth = 3;
+      break;
     default:
       cellWidth = dayWidth;
   }

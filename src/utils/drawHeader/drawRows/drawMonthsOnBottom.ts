@@ -6,52 +6,61 @@ import {
   singleDayWidth,
   dayNumYOffset,
   headerMonthHeight,
-  headerWeekHeight
+  headerWeekHeight,
+  weekWidth,
+  monthWidth
 } from "@/constants";
 import { Theme } from "@/styles";
 import { Day } from "@/types/global";
 import { getDaysInMonths } from "@/utils/dates";
+import { getBoxFillStyle } from "@/utils/getBoxFillStyle";
+import { getTextStyle } from "@/utils/getTextStyle";
 import { drawRow } from "../../drawRow";
 
 export const drawMonthsOnBottom = (
   ctx: CanvasRenderingContext2D,
   cols: number,
   startDate: Day,
-  theme: Theme
+  theme: Theme,
+  monthLabel?: string
 ) => {
-  let xPos = -startDate.dayOfMonth;
-  const yPos = headerMonthHeight; // bottom row position
-  const monthIndex = startDate.month;
-  let index = monthIndex;
+  const dayNameYPos = headerHeight - headerDayHeight / 1.6;
+  const dayNumYPos = headerHeight - headerDayHeight / 4.5;
+  const yPos = 20;
+  let xPos = 0;
 
   for (let i = 0; i < cols; i++) {
-    if (index >= 12) index = 0;
+    const month = dayjs(`${startDate.year}-${startDate.month + 1}-${startDate.dayOfMonth}`).add(
+      i,
+      "months"
+    );
+    const isCurrMonth = month.isSame(dayjs(), "month");
     const daysInMonth = getDaysInMonths(startDate, i);
-    const width = daysInMonth * 3;
 
     drawRow(
       {
         ctx,
         x: xPos,
-        y: yPos,
-        width,
-        height: headerDayHeight,
-        textYPos: headerHeight - headerDayHeight / dayNumYOffset,
-        label: dayjs().month(index).format("MMMM").toUpperCase(),
-        font: fonts.bottomRow.name,
-        isBottomRow: true
+        y: yPos - 1,
+        width: monthWidth,
+        height: headerWeekHeight,
+        isBottomRow: true,
+        fillStyle: getBoxFillStyle({ isCurrent: isCurrMonth, variant: "yearView" }, theme),
+        topText: {
+          y: dayNameYPos + 5,
+          label: "", // "Jan", "Feb", etc.
+          font: fonts.bottomRow.name,
+          color: getTextStyle({ isCurrent: isCurrMonth }, theme)
+        },
+        bottomText: {
+          y: dayNumYPos,
+          label: month.format("MMM"),
+          font: fonts.middleRow,
+          color: getTextStyle({ isCurrent: isCurrMonth }, theme)
+        }
       },
       theme
     );
-
-    // Draw a dividing line at the end of each month
-    ctx.beginPath();
-    ctx.lineWidth = 1;
-    ctx.moveTo(xPos + width, yPos);
-    ctx.lineTo(xPos + width, yPos + headerDayHeight);
-    ctx.stroke();
-
-    xPos += width;
-    index++;
+    xPos += monthWidth;
   }
 };

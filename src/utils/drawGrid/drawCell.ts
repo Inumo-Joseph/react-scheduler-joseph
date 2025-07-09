@@ -1,3 +1,4 @@
+import { ChevronsLeftRightEllipsisIcon } from "lucide-react";
 import { boxHeight } from "@/constants";
 import { Theme } from "@/styles";
 
@@ -9,17 +10,34 @@ export const drawCell = (
   width: number,
   isBusinessDay: boolean,
   isCurrentDay: boolean,
-  theme: Theme
+  theme: Theme,
+  flag?: boolean
 ) => {
   ctx.strokeStyle = theme.colors.border;
-  if (isCurrentDay) {
-    ctx.fillStyle = theme.colors.secondary;
+  if (isCurrentDay && flag) {
+    const dayTheme = "black";
+
+    ctx.lineWidth = 1.85;
+    ctx.setLineDash([5, 5]);
+    ctx.strokeStyle = dayTheme;
+    ctx.beginPath();
+    ctx.moveTo(x + 0.5, 0.5);
+    ctx.lineTo(x + 0.5, innerWidth + 0.5);
+
+    ctx.stroke();
+    ctx.strokeStyle = theme.colors.border;
+    ctx.beginPath();
+    ctx.setLineDash([]);
+    ctx.strokeRect(x + 0.5, y, width, boxHeight * 2);
   } else if (isBusinessDay) {
     ctx.fillStyle = "transparent";
+    ctx.beginPath();
+    ctx.setLineDash([]);
+    ctx.strokeRect(x + 0.5, y, width, boxHeight * 2);
   } else {
     ctx.fillStyle = theme.colors.primary;
+    ctx.beginPath();
+    ctx.setLineDash([]);
+    ctx.strokeRect(x + 0.5, y, width, boxHeight * 2);
   }
-  ctx.beginPath();
-  ctx.setLineDash([]);
-  ctx.strokeRect(x + 0.5, y, width, boxHeight * 2);
 };

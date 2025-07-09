@@ -26,7 +26,7 @@ export const drawDaysOnBottom = (
   theme: Theme
 ) => {
   let xPos = -25;
-  const yPos = headerMonthHeight + headerWeekHeight;
+  const yPos = headerMonthHeight - 15;
 
   for (let i = 0; i < cols; i++) {
     const day = parseDay(
@@ -52,7 +52,7 @@ export const drawDaysOnBottom = (
     // Optional: Center text in column
     const textWidth = ctx.measureText(dayLabel).width;
     const textX = xPos + (dayWidth - textWidth) / 2;
-    const lineStartY = yPos;
+    const lineStartY = yPos + 7;
     let lineEndY = 1000; // Use provided height or default
     // Draw the text
     if (isToday) {
@@ -61,18 +61,14 @@ export const drawDaysOnBottom = (
       const ovalHeight = headerDayHeight / 2; // Thinner vertically
       const ovalWidth = dayWidth; // Leave some padding on sides
 
-      const circleCenterY = yPos - headerDayHeight / 4; // Position circle above text
+      const circleCenterY = yPos - headerDayHeight / 3; // Position circle above text
       ctx.beginPath();
       ctx.roundRect(xPos, circleCenterY, ovalWidth, ovalHeight, ovalHeight / 2);
       ctx.fillStyle = "green";
       ctx.fill();
       ctx.fillStyle = "white";
 
-      const lineX = xPos + dayWidth / 2;
-
-      // Save current line style
-      const originalStrokeStyle = ctx.strokeStyle;
-      const originalLineWidth = ctx.lineWidth;
+      const lineX = xPos + 1 + dayWidth / 2;
 
       //  drawDashedLine(ctx, lineX, cols , originalStrokeStyle)
       // Set dashed line style
@@ -81,13 +77,13 @@ export const drawDaysOnBottom = (
 
       // Set dashed line style
       for (let i = 0; i < 12; i++) {
-        ctx.strokeStyle = "green";
-        ctx.lineWidth = 2;
-        ctx.setLineDash([5, 5]); // 5px dash, 5px gap
+        ctx.strokeStyle = "black";
+        ctx.lineWidth = 1.75;
+        ctx.setLineDash([5, 5]);
 
         ctx.beginPath();
         ctx.moveTo(lineX, lineStartY);
-        ctx.lineTo(lineX, lineEndY);
+        ctx.lineTo(lineX, 38);
         ctx.stroke();
         lineEndY += 120;
       }
@@ -103,12 +99,6 @@ export const drawDaysOnBottom = (
       ctx.fillStyle = "white";
       ctx.fill();
       ctx.fillStyle = "black";
-
-      const lineX = xPos + dayWidth / 2;
-
-      // Save current line style
-      const originalStrokeStyle = ctx.strokeStyle;
-      const originalLineWidth = ctx.lineWidth;
     }
 
     ctx.fillText(dayLabel, textX, yPos);

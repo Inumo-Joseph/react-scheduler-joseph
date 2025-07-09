@@ -8,6 +8,8 @@ import { outsideWrapperId } from "@/constants";
 import { UsePaginationData } from "./types";
 
 export const usePagination = (data: SchedulerData): UsePaginationData => {
+  console.log("usePagination input data:", data);
+
   const { recordsThreshold } = useCalendar();
   const [startIndex, setStartIndex] = useState(0);
   const [pageNum, setPage] = useState(0);
@@ -18,10 +20,13 @@ export const usePagination = (data: SchedulerData): UsePaginationData => {
   }, []);
 
   const { projectsPerPerson, rowsPerPerson } = useMemo(() => projectsOnGrid(data), [data]);
+
   const pages = useMemo(
     () => splitToPages(data, projectsPerPerson, rowsPerPerson, recordsThreshold),
+
     [data, projectsPerPerson, recordsThreshold, rowsPerPerson]
   );
+  console.log("pages:", pages, "pageNum:", pageNum);
 
   const next = useCallback(() => {
     if (pages[pageNum].length && outsideWrapper.current) {
@@ -44,7 +49,7 @@ export const usePagination = (data: SchedulerData): UsePaginationData => {
     setPage(0);
   }, []);
 
-  const end = startIndex + pages[pageNum].length;
+  const end = startIndex + (pages[pageNum]?.length ?? 0);
 
   const rowsPerItem = useMemo(() => {
     return rowsPerPerson.slice(startIndex, end);
@@ -56,20 +61,21 @@ export const usePagination = (data: SchedulerData): UsePaginationData => {
   );
 
   // console.log("Pages", pages)
-  //   console.log("pagesAmount", pageNum)
-  //   console.log("projectsPerPerson", projectsPerPerson)
-  //  console.log("rowsPerItem", rowsPerItem)
-  //  console.log("totalRowsPerPage",  getTotalRowsPerPage(pages[pageNum]),
+  // console.log("pages[pageNum].length", pages[pageNum].length,)
+  // console.log("projectsPerPerson", projectsPerPerson)
+
   //   next,
   //   previous,
   //   reset)
+  const safePage = pages[pageNum] ?? [];
+  const totalRowsPerPage = getTotalRowsPerPage(safePage);
   return {
-    page: pages[pageNum],
+    page: safePage,
     currentPageNum: pageNum,
     pagesAmount: pages.length,
     projectsPerPerson: projectsPerPage,
     rowsPerItem,
-    totalRowsPerPage: getTotalRowsPerPage(pages[pageNum]),
+    totalRowsPerPage,
     next,
     previous,
     reset

@@ -34,6 +34,7 @@ const Scheduler = ({
   schedulerSize
 }: SchedulerProps) => {
   // eslint-disable-next-line
+
   const appConfig: Config = React.useMemo(
     () => ({
       zoom: 0,

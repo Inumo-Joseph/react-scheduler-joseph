@@ -5,7 +5,8 @@ import {
   headerWeekHeight,
   middleRowTextYPos,
   monthsInYear,
-  singleDayWidth
+  singleDayWidth,
+  topRowTextYPos
 } from "@/constants";
 import { Day } from "@/types/global";
 import { getDaysInMonths } from "@/utils/dates";
@@ -19,7 +20,7 @@ export const drawMonthsInMiddle = (
   theme: Theme
 ) => {
   let xPos = -(startDate.dayOfMonth - 1) * singleDayWidth;
-  const yPos = headerMonthHeight;
+  const yPos = 0;
   const monthIndex = startDate.month;
   let index = monthIndex;
 
@@ -34,7 +35,7 @@ export const drawMonthsInMiddle = (
         y: yPos,
         width,
         height: headerWeekHeight,
-        textYPos: middleRowTextYPos,
+        textYPos: topRowTextYPos - 5,
         label: dayjs().month(index).format("MMMM").toUpperCase(),
         font: fonts.bottomRow.number
       },

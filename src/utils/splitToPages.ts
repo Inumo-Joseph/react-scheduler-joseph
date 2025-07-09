@@ -12,7 +12,6 @@ export const splitToPages = (
   recordsThreshold: number
 ) => {
   const pages: PaginatedSchedulerData[] = [];
-
   let leftIndex = 0;
   let singlePage: PaginatedSchedulerRow[] = [];
   let pageRecords = 0;

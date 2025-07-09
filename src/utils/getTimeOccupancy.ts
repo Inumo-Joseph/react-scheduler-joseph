@@ -1,4 +1,4 @@
-import { maxHoursPerDay, maxHoursPerWeek, minutesInHour } from "@/constants";
+import { maxHoursPerDay, maxHoursPerMonth, maxHoursPerWeek, minutesInHour } from "@/constants";
 import { OccupancyData, TimeUnits } from "@/types/global";
 
 export const getTimeOccupancy = (
@@ -15,6 +15,9 @@ export const getTimeOccupancy = (
       break;
     case 2:
       maxHours = 1;
+      break;
+    case 3:
+      maxHours = maxHoursPerMonth;
       break;
   }
 

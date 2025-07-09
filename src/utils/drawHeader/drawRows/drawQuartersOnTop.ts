@@ -48,7 +48,7 @@ export const drawQuartersOnTop = (
           x: xPos,
           y: yPos,
           width: 13 * weekWidth,
-          height: headerMonthHeight + 10,
+          height: headerMonthHeight,
           textYPos: topRowTextYPos,
           label: quarterLabel,
           font: fonts.topRow

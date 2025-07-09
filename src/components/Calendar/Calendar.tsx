@@ -14,7 +14,6 @@ import { getTooltipData } from "@/utils/getTooltipData";
 import { usePagination } from "@/hooks/usePagination";
 import EmptyBox from "../EmptyBox";
 import { Grid, Header, LeftColumn, Tooltip } from "..";
-import UsersIcon from "../UserIcon";
 import { CalendarProps } from "./types";
 import { StyledOuterWrapper, StyledInnerWrapper, StyledEmptyBoxWrapper } from "./styles";
 
@@ -47,7 +46,6 @@ export const Calendar: FC<CalendarProps> = ({
   calendarScale
 }) => {
   const [tooltipData, setTooltipData] = useState<TooltipData>(initialTooltipData);
-  const [filteredData, setFilteredData] = useState(data);
   const [isVisible, setIsVisible] = useState(false);
   const [searchPhrase, setSearchPhrase] = useState("");
   const {
@@ -68,6 +66,7 @@ export const Calendar: FC<CalendarProps> = ({
     setHoveredTileData(data);
     setHoveredTileRef(ref);
   };
+  const [filteredData, setFilteredData] = useState(data);
 
   const {
     page,
@@ -113,7 +112,6 @@ export const Calendar: FC<CalendarProps> = ({
       300
     )
   );
-
   const debouncedFilterData = useRef(
     debounce((dataToFilter: SchedulerData, enteredSearchPhrase: string) => {
       reset();
@@ -170,25 +168,6 @@ export const Calendar: FC<CalendarProps> = ({
     setGridScale(calendarScale ?? 1);
   }, [calendarScale]);
 
-  let z = schedulerZoom;
-  switch (schedulerZoom) {
-    case "":
-      z = zoom;
-      break;
-
-    case "0":
-      z = 0;
-      break;
-
-    case "1":
-      z = 1;
-      break;
-
-    default:
-      z = zoom;
-      break;
-  }
-
   return (
     <div
       style={{
@@ -196,6 +175,17 @@ export const Calendar: FC<CalendarProps> = ({
         transformOrigin: "center",
         width: "max-content"
       }}>
+      <div
+        style={{
+          paddingLeft: "10px",
+          position: "absolute",
+          top: "650px", // Adjust based on where your left column appears
+          left: "100px", // Adjust based on your left column width/position
+          zIndex: 10
+        }}>
+        {addTaskButton}
+      </div>
+
       <StyledOuterWrapper>
         <LeftColumn
           data={page}

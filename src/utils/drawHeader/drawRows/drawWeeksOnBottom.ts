@@ -22,7 +22,7 @@ export const drawWeeksOnBottom = (
 ) => {
   const dayNameYPos = headerHeight - headerDayHeight / 1.6;
   const dayNumYPos = headerHeight - headerDayHeight / 4.5;
-  const yPos = headerMonthHeight + headerWeekHeight;
+  const yPos = 20;
   let xPos = 0;
 
   for (let i = 0; i < cols; i++) {
@@ -36,23 +36,23 @@ export const drawWeeksOnBottom = (
       {
         ctx,
         x: xPos,
-        y: yPos,
+        y: yPos - 1,
         width: weekWidth,
-        height: headerDayHeight,
+        height: headerWeekHeight,
         isBottomRow: true,
 
         fillStyle: getBoxFillStyle({ isCurrent: isCurrWeek, variant: "yearView" }, theme),
         topText: {
           y: dayNameYPos,
-          label: week.isoWeek().toString(),
+          label: ``,
           font: fonts.bottomRow.name,
-          color: getTextStyle({ isCurrent: isCurrWeek }, theme)
+          color: theme.colors.placeholder
         },
         bottomText: {
           y: dayNumYPos,
-          label: weekLabel.toUpperCase(),
+          label: ` ${weekLabel.toUpperCase()} ${week.isoWeek().toString()} `,
           font: fonts.middleRow,
-          color: theme.colors.placeholder
+          color: getTextStyle({ isCurrent: isCurrWeek }, theme)
         }
       },
       theme

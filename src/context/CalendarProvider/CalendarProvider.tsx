@@ -58,6 +58,10 @@ const CalendarProvider = ({
         z = 1;
         break;
 
+      case "3":
+        z = 3;
+        break;
+
       default:
         z = configZoom;
         break;
@@ -79,7 +83,6 @@ const CalendarProvider = ({
   const parsedStartDate = parseDay(startDate);
   const outsideWrapper = useRef<HTMLElement | null>(null);
   const [tilesCoords, setTilesCoords] = useState<Coords[]>([{ x: 0, y: 0 }]);
-
   const moveHorizontalScroll = useCallback(
     (direction: Direction, behavior: ScrollBehavior = "auto") => {
       const canvasWidth = getCanvasWidth();
@@ -131,6 +134,9 @@ const CalendarProvider = ({
           break;
         case 2:
           offset = Math.ceil(cols / hoursInDay);
+          break;
+        case 3:
+          offset = cols * 30;
           break;
       }
       const load = debounce(() => {
@@ -190,7 +196,6 @@ const CalendarProvider = ({
   const handleGoNext = () => {
     if (isLoading) return;
 
-    console.log("HandleGo next is being used");
     setDate((prev) =>
       zoom === 2 ? prev.add(zoom2ButtonJump, "hours") : prev.add(buttonWeeksJump, "weeks")
     );
@@ -224,7 +229,6 @@ const CalendarProvider = ({
   }, [isInitialized, isLoading, loadMore, moveHorizontalScroll]);
 
   const goToToday = useCallback(() => {
-    console.log("handleToday clicked and loading is: ", isLoading);
     if (isLoading) return;
     loadMore("middle");
     debounce(() => {
@@ -256,7 +260,7 @@ const CalendarProvider = ({
         handleScrollNext,
         handleGoPrev,
         handleScrollPrev,
-        handleGoToday: goToToday, // ✅ pass your internal function here
+        handleGoToday: goToToday,
         zoomIn,
         zoomOut,
         zoom,

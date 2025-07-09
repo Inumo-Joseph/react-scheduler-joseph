@@ -15,8 +15,7 @@ export const StyledTileWrapper = styled.div`
 `;
 
 export const StyledTextWrapper = styled.div`
-  margin: 5px;
-  position: relative;
+  margin: 2px;
   display: flex;
   font-size: 11.5px;
   letter-spacing: 0.5px;
@@ -30,8 +29,7 @@ export const StyledText = styled.p<StyledTextProps>`
   font-weight: ${({ bold }) => (bold ? "600" : "400")};
   &:first-child {
     &::after {
-      content: "|";
-      margin: 0 2px;
+      margin: 0px 2px;
     }
   }
 `;
@@ -43,7 +41,7 @@ export const StyledDescription = styled.p<{ $allowOverflow?: boolean }>`
 
 export const StyledStickyWrapper = styled.div<{ $allowOverflow?: boolean }>`
   position: sticky;
-  left: ${leftColumnWidth + 16}px;
+  left: ${leftColumnWidth + 50}px;
   ${({ $allowOverflow }) =>
     !$allowOverflow &&
     `

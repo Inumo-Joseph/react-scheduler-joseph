@@ -27,7 +27,7 @@ export const getTooltipData = (
       currBoxWidth = dayWidth;
       break;
     case 3:
-      timeUnit = "hours";
+      timeUnit = "months";
       currBoxWidth = zoom2ColumnWidth;
   }
   const column =
