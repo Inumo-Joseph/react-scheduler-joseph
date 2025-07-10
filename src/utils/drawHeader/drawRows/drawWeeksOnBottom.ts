@@ -46,7 +46,7 @@ export const drawWeeksOnBottom = (
           y: dayNameYPos,
           label: ``,
           font: fonts.bottomRow.name,
-          color: theme.colors.placeholder
+          color: "#F5F5F5"
         },
         bottomText: {
           y: dayNumYPos,

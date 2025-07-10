@@ -69,7 +69,7 @@ const Header: FC<HeaderProps> = ({
         showCompleted={showCompleted}
         setShowCompleted={setShowCompleted}
       /> */}
-      <div className="my-5"></div>
+      <div className="my-4"></div>
       <StyledWrapper id={canvasHeaderWrapperId}>
         <StyledCanvas ref={canvasRef} />
       </StyledWrapper>

@@ -1,8 +1,6 @@
 import { FC, useRef, useEffect, useLayoutEffect, useState, useCallback } from "react";
-import { useTheme } from "styled-components";
 import debounce from "lodash.debounce";
 import Button, { Popup } from "semantic-ui-react";
-import { Link, LinkIcon, Subscript, Trash2 } from "lucide-react";
 import { useCalendar } from "@/context/CalendarProvider";
 import { getDatesRange } from "@/utils/getDatesRange";
 import { getTileProperties } from "@/utils/getTileProperties";
@@ -11,8 +9,6 @@ import { Day, SchedulerProjectData, TooltipData, ZoomLevel } from "@/types/globa
 import { getTooltipData } from "@/utils/getTooltipData";
 import { usePagination } from "@/hooks/usePagination";
 import { headerHeight } from "@/constants";
-import { drawArrow } from "@/utils/drawArrows";
-import UsersIcon from "../../../../src/components/UserIcon";
 import { TileProps } from "./types";
 import {
   StyledDescription,

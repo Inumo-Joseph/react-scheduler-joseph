@@ -43,7 +43,7 @@ export const StyledTextWrapper = styled.div`
 export const StyledText = styled.p<StyledTextProps>`
   margin: 0;
   padding: 0;
-  font-size: ${({ isMain }) => (isMain ? 0.75 + "rem" : 0.625 + "rem")};
+  font-size: ${({ isMain }) => (isMain ? 1.5 + "rem" : 1.5 + "rem")};
   letter-spacing: ${({ isMain }) => (isMain ? 1 + "px" : 0.5 + "px")};
   line-height: ${({ isMain }) => (isMain ? 1.125 + "rem" : 0.75 + "rem")};
   color: ${({ isMain, theme }) => (isMain ? theme.colors.textPrimary : theme.colors.placeholder)};

@@ -8,8 +8,6 @@ import { outsideWrapperId } from "@/constants";
 import { UsePaginationData } from "./types";
 
 export const usePagination = (data: SchedulerData): UsePaginationData => {
-  console.log("usePagination input data:", data);
-
   const { recordsThreshold } = useCalendar();
   const [startIndex, setStartIndex] = useState(0);
   const [pageNum, setPage] = useState(0);
@@ -26,10 +24,9 @@ export const usePagination = (data: SchedulerData): UsePaginationData => {
 
     [data, projectsPerPerson, recordsThreshold, rowsPerPerson]
   );
-  console.log("pages:", pages, "pageNum:", pageNum);
 
   const next = useCallback(() => {
-    if (pages[pageNum].length && outsideWrapper.current) {
+    if (pages.length > 0 && pages[pageNum].length && outsideWrapper.current) {
       outsideWrapper.current.scroll({ top: 0 });
       setStartIndex((prev) => prev + pages[Math.max(pageNum, 0)].length);
       setPage((prev) => Math.min(prev + 1, pages.length - 1));
@@ -38,7 +35,7 @@ export const usePagination = (data: SchedulerData): UsePaginationData => {
   }, [pageNum, pages]);
 
   const previous = useCallback(() => {
-    if (pages[pageNum].length) {
+    if (pages.length > 0 && pages[pageNum].length) {
       setStartIndex((prev) => Math.max(prev - pages[pageNum - 1].length, 0));
       setPage((prev) => Math.max(prev - 1, 0));
     }
@@ -60,15 +57,21 @@ export const usePagination = (data: SchedulerData): UsePaginationData => {
     [end, projectsPerPerson, startIndex]
   );
 
-  // console.log("Pages", pages)
-  // console.log("pages[pageNum].length", pages[pageNum].length,)
-  // console.log("projectsPerPerson", projectsPerPerson)
-
   //   next,
   //   previous,
   //   reset)
   const safePage = pages[pageNum] ?? [];
+
   const totalRowsPerPage = getTotalRowsPerPage(safePage);
+  console.log("totalRowsPerPage", totalRowsPerPage);
+
+  console.log("Pages", safePage);
+  console.log("[pageNum]", pageNum);
+  console.log("pages amount", pages.length);
+  console.log("projectsPerPerson", projectsPerPerson);
+  console.log("rowsPerItem", rowsPerItem);
+  console.log("totalRowsPerPage", totalRowsPerPage);
+
   return {
     page: safePage,
     currentPageNum: pageNum,

@@ -52,7 +52,7 @@ export const theme: DefaultTheme = {
   navHeight: "44px",
   colors: {
     background: "#FFFFFF",
-    gridBackground: "#FFFFFF",
+    gridBackground: "#F5F5F5",
 
     primary: "#F8F8FD",
     secondary: "#E6F3FF",

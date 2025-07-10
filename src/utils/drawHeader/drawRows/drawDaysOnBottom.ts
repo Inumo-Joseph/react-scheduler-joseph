@@ -56,7 +56,7 @@ export const drawDaysOnBottom = (
     let lineEndY = 1000; // Use provided height or default
     // Draw the text
     if (isToday) {
-      // Draw vertical green line
+      // Draw vertical green linew
 
       const ovalHeight = headerDayHeight / 2; // Thinner vertically
       const ovalWidth = dayWidth; // Leave some padding on sides
@@ -64,11 +64,11 @@ export const drawDaysOnBottom = (
       const circleCenterY = yPos - headerDayHeight / 3; // Position circle above text
       ctx.beginPath();
       ctx.roundRect(xPos, circleCenterY, ovalWidth, ovalHeight, ovalHeight / 2);
-      ctx.fillStyle = "green";
+      ctx.fillStyle = "#5bb475";
       ctx.fill();
       ctx.fillStyle = "white";
 
-      const lineX = xPos + 1 + dayWidth / 2;
+      const lineX = xPos + 0.4 + dayWidth / 2;
 
       //  drawDashedLine(ctx, lineX, cols , originalStrokeStyle)
       // Set dashed line style
@@ -96,9 +96,9 @@ export const drawDaysOnBottom = (
       const circleCenterY = yPos - headerDayHeight / 4; // Position circle above text
       ctx.beginPath();
       ctx.rect(xPos, yPos, dayWidth, ovalHeight);
-      ctx.fillStyle = "white";
+      ctx.fillStyle = "#F5F5F5";
       ctx.fill();
-      ctx.fillStyle = "black";
+      ctx.fillStyle = "#607D8B";
     }
 
     ctx.fillText(dayLabel, textX, yPos);

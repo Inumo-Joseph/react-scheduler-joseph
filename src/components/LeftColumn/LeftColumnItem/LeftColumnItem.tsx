@@ -28,7 +28,6 @@ const LeftColumnItem: FC<LeftColumnItemProps> = ({ id, item, rows, onItemClick }
 
         <StyledTextWrapper>
           <StyledText isMain>{item.title}</StyledText>
-          <StyledText>{item.subtitle}</StyledText>
         </StyledTextWrapper>
       </StyledInnerWrapper>
     </StyledWrapper>

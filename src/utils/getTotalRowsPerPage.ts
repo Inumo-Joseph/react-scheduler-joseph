@@ -1,7 +1,7 @@
 import { PaginatedSchedulerData } from "@/types/global";
 
 export const getTotalRowsPerPage = (page: PaginatedSchedulerData) => {
-  return page
+  return page.length > 0
     ? page
         .flatMap((page) =>
           page.data

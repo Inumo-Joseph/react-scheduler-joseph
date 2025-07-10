@@ -47,8 +47,6 @@ const Scheduler = ({
     [config]
   );
 
-  const { handleGoToday } = useCalendar();
-
   const outsideWrapperRef = useRef<HTMLDivElement>(null);
   const [topBarWidth, setTopBarWidth] = useState(outsideWrapperRef.current?.clientWidth);
   const defaultStartDate = useMemo(() => dayjs(startDate), [startDate]);
@@ -91,6 +89,9 @@ const Scheduler = ({
   }
 
   if (!outsideWrapperRef.current) null;
+
+  console.log("DATA IN Scheduler", data);
+
   return (
     <>
       <GlobalStyle />

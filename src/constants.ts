@@ -23,8 +23,8 @@ export const fonts = {
   topRow: "600 14px Arial",
   middleRow: "400 13px Arial",
   bottomRow: {
-    name: "600 11px Arial",
-    number: "100 11px Arial"
+    name: "100 10.5px Arial",
+    number: "100 10.5px Arial"
   }
 };
 export const screenWidthMultiplier = 3;

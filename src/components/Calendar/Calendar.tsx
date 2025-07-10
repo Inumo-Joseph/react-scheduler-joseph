@@ -14,6 +14,7 @@ import { getTooltipData } from "@/utils/getTooltipData";
 import { usePagination } from "@/hooks/usePagination";
 import EmptyBox from "../EmptyBox";
 import { Grid, Header, LeftColumn, Tooltip } from "..";
+import { StyledInputWrapper, StyledLeftColumnHeader, StyledWrapper } from "../LeftColumn/styles";
 import { CalendarProps } from "./types";
 import { StyledOuterWrapper, StyledInnerWrapper, StyledEmptyBoxWrapper } from "./styles";
 
@@ -79,6 +80,7 @@ export const Calendar: FC<CalendarProps> = ({
     previous,
     reset
   } = usePagination(filteredData);
+  console.log("Page IN CALENDAR", page);
 
   const debouncedHandleMouseOver = useRef(
     debounce(
@@ -175,17 +177,6 @@ export const Calendar: FC<CalendarProps> = ({
         transformOrigin: "center",
         width: "max-content"
       }}>
-      <div
-        style={{
-          paddingLeft: "10px",
-          position: "absolute",
-          top: "650px", // Adjust based on where your left column appears
-          left: "100px", // Adjust based on your left column width/position
-          zIndex: 10
-        }}>
-        {addTaskButton}
-      </div>
-
       <StyledOuterWrapper>
         <LeftColumn
           data={page}
@@ -199,6 +190,7 @@ export const Calendar: FC<CalendarProps> = ({
           onItemClick={onItemClick}
           addTaskButton={addTaskButton}
         />
+
         <StyledInnerWrapper>
           <Header
             zoom={zoom}

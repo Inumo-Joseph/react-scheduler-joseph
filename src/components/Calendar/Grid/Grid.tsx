@@ -44,8 +44,6 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
     row.data.flatMap((projectsPerRow) => projectsPerRow)
   );
 
-  console.log("ALL PROJECTS IN GRID:", allProjects);
-
   const handleTilePosition = (
     id: string,
     pos: { x: number; y: number; width: number; height: number }

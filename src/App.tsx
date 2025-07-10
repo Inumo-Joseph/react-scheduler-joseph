@@ -25,7 +25,7 @@ function App() {
     yearsCovered: 0,
     startDate: undefined,
     maxRecordsPerPage: 50,
-    isFullscreen: true
+    isFullscreen: false
   });
 
   const { peopleCount, projectsPerYear, yearsCovered, isFullscreen, maxRecordsPerPage } = values;

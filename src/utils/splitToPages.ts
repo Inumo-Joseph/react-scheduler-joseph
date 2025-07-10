@@ -17,6 +17,11 @@ export const splitToPages = (
   let pageRecords = 0;
 
   if (projectsPerPerson.length > recordsThreshold) {
+    if (data.length === 0) {
+      console.log("DATA LENGTH 0 IN SPLTI PAGES", data);
+      return pages;
+    }
+
     projectsPerPerson.forEach((projects, i) => {
       const newItem = { id: data[i].id, label: data[i].label, data: projects };
 
@@ -47,12 +52,17 @@ export const splitToPages = (
 
     return pages;
   }
-  projectsPerPerson.forEach((projects, i) => {
-    const newItem = { id: data[i].id, label: data[i].label, data: projects };
-    singlePage.push(newItem);
-  });
 
-  pages.push(singlePage);
+  if (data.length === 0) {
+    return pages;
+  } else {
+    projectsPerPerson.forEach((projects, i) => {
+      const newItem = { id: data[i].id, label: data[i].label, data: projects };
+      singlePage.push(newItem);
+    });
 
-  return pages;
+    pages.push(singlePage);
+
+    return pages;
+  }
 };
