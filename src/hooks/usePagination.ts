@@ -63,14 +63,6 @@ export const usePagination = (data: SchedulerData): UsePaginationData => {
   const safePage = pages[pageNum] ?? [];
 
   const totalRowsPerPage = getTotalRowsPerPage(safePage);
-  console.log("totalRowsPerPage", totalRowsPerPage);
-
-  console.log("Pages", safePage);
-  console.log("[pageNum]", pageNum);
-  console.log("pages amount", pages.length);
-  console.log("projectsPerPerson", projectsPerPerson);
-  console.log("rowsPerItem", rowsPerItem);
-  console.log("totalRowsPerPage", totalRowsPerPage);
 
   return {
     page: safePage,

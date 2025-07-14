@@ -1,5 +1,6 @@
-import { forwardRef, useCallback, useEffect, useRef, useState } from "react";
+import { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTheme } from "styled-components";
+import dayjs from "dayjs";
 import { drawGrid } from "@/utils/drawGrid/drawGrid";
 import { boxHeight, canvasWrapperId, leftColumnWidth, outsideWrapperId } from "@/constants";
 import { Loader, Tiles } from "@/components";
@@ -28,7 +29,8 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
     setShowCompleted,
     onAssignTask,
     form,
-    calendarScale
+    calendarScale,
+    SchedulerRef
   },
   ref
 ) {
@@ -107,7 +109,10 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
       (e) => (e[0].isIntersecting ? handleScrollNext() : null),
       { root: document.getElementById(outsideWrapperId) }
     );
+    const canvas = canvasRef.current;
+
     observerRight.observe(refRight.current);
+
     return () => observerRight.disconnect();
   }, [handleScrollNext]);
 
@@ -120,6 +125,7 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
         rootMargin: `0px 0px 0px -${leftColumnWidth}px`
       }
     );
+
     observerLeft.observe(refLeft.current);
 
     return () => observerLeft.disconnect();

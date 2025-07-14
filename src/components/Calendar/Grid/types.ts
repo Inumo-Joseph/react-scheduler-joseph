@@ -23,6 +23,7 @@ export type GridProps = {
   onAssignTask?: (task: any, updatedTask: any) => void;
   form?: any;
   calendarScale?: any;
+  SchedulerRef?: React.RefObject<HTMLDivElement>;
 };
 
 export type StyledSpanProps = {

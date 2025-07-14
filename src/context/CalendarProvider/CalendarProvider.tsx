@@ -69,8 +69,6 @@ const CalendarProvider = ({
     changeZoom(z);
   }, [schedulerZoom]);
 
-  const parsedZoom =
-    typeof schedulerZoom === "string" ? parseInt(schedulerZoom, 10) : schedulerZoom;
   const [zoom, setZoom] = useState<ZoomLevel>(configZoom);
   const [date, setDate] = useState(dayjs());
   const [isInitialized, setIsInitialized] = useState(false);

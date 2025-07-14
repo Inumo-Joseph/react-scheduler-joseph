@@ -130,7 +130,7 @@ export type SchedulerProjectData = {
 
   recurring?: string;
 
-  isReurring?: boolean;
+  isRecurring?: boolean;
 
   isCompleted?: boolean;
 };

@@ -1,4 +1,5 @@
 import { FC, useCallback, useEffect, useRef, useState } from "react";
+import { SchedulerProjectData } from "@/types/global";
 import { Tile } from "..";
 import { PlacedTiles, TilesProps } from "./types";
 
@@ -21,71 +22,98 @@ const Tiles: FC<TilesProps> = ({
   onTileHover,
   tilePositions
 }) => {
+  const recurringMap = new Map<string, SchedulerProjectData[]>();
+
+  data.forEach((person) => {
+    person.data.forEach((projectsPerRow) => {
+      projectsPerRow.forEach((project) => {
+        const baseId = project.id.split("-recurring")[0];
+        if (!recurringMap.has(baseId)) recurringMap.set(baseId, []);
+        recurringMap.get(baseId)!.push(project);
+      });
+    });
+  });
+
   const placeTiles = useCallback((): PlacedTiles => {
     let globalRowIndex = 0;
+    const placedIds = new Set<string>(); // ✅ track rendered IDs
 
     return data
-      .map((person, personIndex) => {
-        const personData = !showCompleted
-          ? person.data.map((projectsPerRow, rowIndex) =>
-              projectsPerRow.map((project) => {
-                const tile = (
-                  <Tile
-                    key={project.id}
-                    row={globalRowIndex} // Use unique global row index
-                    data={project}
-                    zoom={zoom}
-                    renderData={renderData}
-                    projectData={projectData}
-                    reportPosition={reportPosition}
-                    truncateText={truncateText}
-                    setTruncate={showToggle}
-                    parentChildTask={parentChildTask}
-                    alarmClock={alarmClock}
-                    Users={Users}
-                    hideCheckedItems={hideCheckedItems}
-                    onAssignTask={onAssignTask}
-                    form={form}
-                    tilePositions={tilePositions}
-                  />
-                );
-                globalRowIndex++; // Increment for each tile
-                return tile;
-              })
-            )
-          : person.data.map((projectsPerRow, rowIndex) =>
-              projectsPerRow
-                .filter((projects) => !projects.isCompleted)
-                .map((project) => {
-                  const tile = (
-                    <Tile
-                      key={project.id}
-                      row={globalRowIndex} // Use unique global row index
-                      data={project}
-                      zoom={zoom}
-                      renderData={renderData}
-                      projectData={projectData}
-                      reportPosition={reportPosition}
-                      truncateText={truncateText}
-                      setTruncate={showToggle}
-                      parentChildTask={parentChildTask}
-                      alarmClock={alarmClock}
-                      Users={Users}
-                      hideCheckedItems={hideCheckedItems}
-                      onAssignTask={onAssignTask}
-                      form={form}
-                      tilePositions={tilePositions}
-                    />
-                  );
-                  globalRowIndex++; // Increment for each tile
+      .map((person) => {
+        return person.data.map((projectsPerRow) => {
+          return projectsPerRow.flatMap((project) => {
+            const baseId = project.id.split("-recurring")[0];
 
-                  return tile;
-                })
-            );
+            // Check if this is the first time we're seeing this recurring group
+            if (project.isRecurring && !placedIds.has(baseId)) {
+              const group = recurringMap.get(baseId) ?? [];
+              placedIds.add(baseId);
 
-        return personData;
+              console.log(
+                "Rendering recurring group",
+                group.map((p) => p.id),
+                "at row",
+                globalRowIndex
+              );
+              group.forEach((task) => placedIds.add(task.id)); // mark all as placed
+
+              const tiles = group.map((task) => (
+                <Tile
+                  key={task.id}
+                  row={globalRowIndex}
+                  data={task}
+                  zoom={zoom}
+                  renderData={renderData}
+                  projectData={projectData}
+                  reportPosition={reportPosition}
+                  truncateText={truncateText}
+                  setTruncate={showToggle}
+                  parentChildTask={parentChildTask}
+                  alarmClock={alarmClock}
+                  Users={Users}
+                  hideCheckedItems={hideCheckedItems}
+                  onAssignTask={onAssignTask}
+                  form={form}
+                  tilePositions={tilePositions}
+                />
+              ));
+              globalRowIndex++; // only once for the whole group
+              return tiles;
+            }
+
+            // if this task is not part of recurring or we already handled it
+            if (!placedIds.has(project.id)) {
+              placedIds.add(project.id);
+              const tile = (
+                <Tile
+                  key={project.id}
+                  row={globalRowIndex}
+                  data={project}
+                  zoom={zoom}
+                  renderData={renderData}
+                  projectData={projectData}
+                  reportPosition={reportPosition}
+                  truncateText={truncateText}
+                  setTruncate={showToggle}
+                  parentChildTask={parentChildTask}
+                  alarmClock={alarmClock}
+                  Users={Users}
+                  hideCheckedItems={hideCheckedItems}
+                  onAssignTask={onAssignTask}
+                  form={form}
+                  tilePositions={tilePositions}
+                />
+              );
+              globalRowIndex++;
+              return tile;
+            }
+
+            return null; // skip duplicates
+          });
+        });
       })
-      .flat(2);
+      .flat(2)
+      .filter(Boolean) as React.ReactElement[]; // remove nulls;dr
   }, [data, onTileClick, zoom, renderData, showCompleted]);
 
   return <>{placeTiles()}</>;

@@ -1,4 +1,5 @@
 import { FC, useRef, useEffect, useLayoutEffect, useState, useCallback } from "react";
+import { useTheme } from "styled-components";
 import debounce from "lodash.debounce";
 import Button, { Popup } from "semantic-ui-react";
 import { useCalendar } from "@/context/CalendarProvider";

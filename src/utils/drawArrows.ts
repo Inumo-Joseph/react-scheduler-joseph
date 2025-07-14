@@ -16,7 +16,6 @@ export function drawArrow(
   const curve = options.arrowCurve;
   const padding = options.padding;
   let startX = from.x + from.width;
-  const svg = document.getElementById("svg-arrows");
 
   // Adjust startX left if overlapping
   const condition = () => to.x < startX + padding && startX > from.x + padding;

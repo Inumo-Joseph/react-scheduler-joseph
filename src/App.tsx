@@ -75,7 +75,8 @@ function App() {
           occupancy: 100,
           users: [],
           isCompleted: false,
-          isRecurring: false
+          isRecurring: true,
+          recurring: "weekly"
         },
         {
           cardId: "row-1",
@@ -99,7 +100,8 @@ function App() {
           users: ["Colby"],
           parentTaskId: "task-5",
           isCompleted: false,
-          isRecurring: false
+          isRecurring: true,
+          recurring: "monthly"
         },
         {
           cardId: "row-1",

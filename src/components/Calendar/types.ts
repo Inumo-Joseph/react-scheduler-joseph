@@ -19,6 +19,7 @@ export type CalendarProps = {
   schedulerZoom?: any;
   schedulerTruncateText?: boolean;
   calendarScale?: number; // 0.5 = 50%, 1 = 100%, etc.
+  SchedulerRef?: React.RefObject<HTMLDivElement>;
 };
 
 export type StyledSpanProps = {

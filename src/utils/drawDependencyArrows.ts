@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { SchedulerProjectData } from "@/types/global";
 import { drawArrow } from "./drawArrows";
 
@@ -12,7 +13,8 @@ export function drawDependencyArrows(
   tilePositions: TilePositionMap,
   zoom: number,
   scale?: number,
-  showHideChecked?: boolean
+  showHideChecked?: boolean,
+  SchedulerRef?: React.RefObject<HTMLDivElement>
 ) {
   data.forEach((task) => {
     const to = tilePositions[task.parentTaskId ?? ""];
@@ -39,7 +41,6 @@ export function drawDependencyArrows(
     drawArrow(
       ctx,
       zoom,
-
       { x: fromx, y: fromy, width: fromWidth, height: fromheight, _index: index },
       { x: tox, y: toy, width: toWidth, height: toHeight, _index: index2 }
     );

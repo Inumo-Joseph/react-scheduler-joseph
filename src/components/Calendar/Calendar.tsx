@@ -1,6 +1,16 @@
-import React, { ChangeEvent, FC, useCallback, useEffect, useRef, useState, Dispatch } from "react";
+import React, {
+  ChangeEvent,
+  FC,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  Dispatch,
+  useMemo
+} from "react";
 import debounce from "lodash.debounce";
 import { ChevronsLeftRightEllipsisIcon } from "lucide-react";
+import dayjs from "dayjs";
 import { useCalendar } from "@/context/CalendarProvider";
 import {
   Day,
@@ -42,9 +52,9 @@ export const Calendar: FC<CalendarProps> = ({
   onAssignTask,
   form,
   addTaskButton,
-  schedulerZoom,
   schedulerTruncateText,
-  calendarScale
+  calendarScale,
+  SchedulerRef
 }) => {
   const [tooltipData, setTooltipData] = useState<TooltipData>(initialTooltipData);
   const [isVisible, setIsVisible] = useState(false);
@@ -67,7 +77,59 @@ export const Calendar: FC<CalendarProps> = ({
     setHoveredTileData(data);
     setHoveredTileRef(ref);
   };
+
   const [filteredData, setFilteredData] = useState(data);
+
+  const expandedFilteredData = useMemo(() => {
+    return filteredData.map((row) => {
+      const expandedTasks: SchedulerProjectData[] = [];
+
+      row.data.forEach((task) => {
+        expandedTasks.push(task); // original
+
+        if (task.isRecurring && task.recurring) {
+          let nextDate = dayjs(task.startDate);
+          let endDate = dayjs(task.dueDate);
+          for (let i = 1; i <= 3; i++) {
+            // e.g., 3 future recurrences
+            switch (task.recurring) {
+              case "daily":
+                nextDate = nextDate.add(1, "day");
+                endDate = endDate.add(1, "day");
+                break;
+              case "weekly":
+                nextDate = nextDate.add(1, "week");
+                endDate = endDate.add(1, "week");
+                break;
+              case "monthly":
+                nextDate = nextDate.add(1, "month");
+                endDate = endDate.add(1, "month");
+                break;
+              case "yearly":
+                nextDate = nextDate.add(1, "year");
+                endDate = endDate.add(1, "year");
+                break;
+              default:
+                break;
+            }
+
+            expandedTasks.push({
+              ...task,
+              id: `${task.id}-recurring-${i}`,
+              startDate: nextDate.toDate(),
+              dueDate: endDate.toDate()
+            });
+            console.log("Expanded Task", expandedTasks);
+          }
+        }
+      });
+
+      return {
+        ...row,
+        data: expandedTasks
+      };
+    });
+  }, [filteredData]);
 
   const {
     page,
@@ -79,8 +141,7 @@ export const Calendar: FC<CalendarProps> = ({
     next,
     previous,
     reset
-  } = usePagination(filteredData);
-  console.log("Page IN CALENDAR", page);
+  } = usePagination(expandedFilteredData);
 
   const debouncedHandleMouseOver = useRef(
     debounce(
@@ -114,6 +175,7 @@ export const Calendar: FC<CalendarProps> = ({
       300
     )
   );
+
   const debouncedFilterData = useRef(
     debounce((dataToFilter: SchedulerData, enteredSearchPhrase: string) => {
       reset();
@@ -224,6 +286,7 @@ export const Calendar: FC<CalendarProps> = ({
                 onAssignTask={onAssignTask}
                 form={form}
                 calendarScale={calendarScale}
+                SchedulerRef={SchedulerRef}
               />
             </div>
           ) : (
