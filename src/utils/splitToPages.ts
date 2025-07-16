@@ -18,7 +18,6 @@ export const splitToPages = (
 
   if (projectsPerPerson.length > recordsThreshold) {
     if (data.length === 0) {
-      console.log("DATA LENGTH 0 IN SPLTI PAGES", data);
       return pages;
     }
 

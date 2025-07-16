@@ -26,7 +26,7 @@ export const StyledLeftColumnHeader = styled.div`
   padding-bottom: 0px;
   position: sticky;
   top: 0;
-  height: 58px;
+  height: 53px;
   display: flex;
   flex-direction: column;
   justify-content: end;

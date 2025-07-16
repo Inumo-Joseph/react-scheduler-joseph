@@ -11,7 +11,8 @@ export function drawArrow(
     arrowCurve: 1,
     barHeight: 7,
     headerHeight: 30
-  }
+  },
+  scrollOffset?: { scrollTop: number; scrollLeft: number }
 ) {
   const curve = options.arrowCurve;
   const padding = options.padding;
@@ -82,11 +83,11 @@ export function drawArrow(
   }
 
   ctx.strokeStyle = "black";
-  ctx.lineWidth = 3;
+  ctx.lineWidth = 1;
   ctx.stroke();
 
   // Draw arrowhead
-  const headlen = 8;
+  const headlen = 5;
   const angle = Math.atan2(endY - startY, endX);
   ctx.beginPath();
   ctx.moveTo(endX + 3, endY);

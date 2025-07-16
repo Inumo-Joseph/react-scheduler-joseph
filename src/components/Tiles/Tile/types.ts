@@ -1,5 +1,6 @@
 import { Dispatch, Ref } from "react";
 import { AnyAction } from "redux";
+import { DragEndEvent } from "@dnd-kit/core";
 import { SchedulerData, SchedulerProjectData } from "@/types/global";
 
 type AddParentChildTaskProps = {
@@ -33,6 +34,7 @@ type AlarmClockProps = {
   setSelectedTask?: any;
   selectedParentTask?: any;
 };
+
 export type TileProps = {
   row: number;
   data: SchedulerProjectData;
@@ -42,11 +44,13 @@ export type TileProps = {
   parentChildTask?: (props: AddParentChildTaskProps) => React.ReactNode;
   alarmClock?: (props: AlarmClockProps) => React.ReactNode;
   Users?: (props: UsersProps) => React.ReactNode;
+  reccuringIcon?: React.ReactNode;
   hideCheckedItems?: any;
   reportPosition?: (
     id: string,
     pos: { x: number; y: number; width: number; height: number }
   ) => void;
+  handleDragEnd?: (event: DragEndEvent) => void;
   truncateText?: boolean;
   setTruncate?: React.Dispatch<React.SetStateAction<boolean>>;
   projectData: SchedulerData;
@@ -56,6 +60,7 @@ export type TileProps = {
   form?: any;
   tilePositions?: Record<string, { x: number; y: number; width: number; height: number }>;
   onTileHover?: (data: SchedulerProjectData, ref: React.RefObject<HTMLButtonElement>) => void;
+  canvasRef?: React.RefObject<HTMLCanvasElement>;
 };
 
 export type StyledTextProps = {

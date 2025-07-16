@@ -5,11 +5,11 @@ import { PaginatedSchedulerData, SchedulerData, SchedulerProjectData } from "@/t
 export type GridProps = {
   zoom: number;
   rows: number;
-  schedulerRef: React.RefObject<HTMLDivElement>;
   data: PaginatedSchedulerData;
   tasks?: any;
   parentChildTask?: any;
   alarmClock?: any;
+  reccuringIcon?: any;
   Users?: any;
   hideCheckedItems?: any;
   onTileClick?: (data: SchedulerProjectData) => void;
@@ -24,6 +24,7 @@ export type GridProps = {
   form?: any;
   calendarScale?: any;
   SchedulerRef?: React.RefObject<HTMLDivElement>;
+  handleDragEnd?: (event: any) => void;
 };
 
 export type StyledSpanProps = {

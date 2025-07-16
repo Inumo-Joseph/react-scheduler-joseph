@@ -19,6 +19,7 @@ export type SchedulerProps = {
   tasks?: any;
   parentChildTask?: any;
   alarmClock?: any;
+  reccuringIcon?: any;
   Users?: any;
   hideCheckedItems?: any;
   onRangeChange?: (range: ParsedDatesRange) => void;

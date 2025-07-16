@@ -2,6 +2,8 @@ import { FC, useRef, useEffect, useLayoutEffect, useState, useCallback } from "r
 import { useTheme } from "styled-components";
 import debounce from "lodash.debounce";
 import Button, { Popup } from "semantic-ui-react";
+import { DndContext, DragEndEvent, useDraggable, useDroppable } from "@dnd-kit/core";
+import { CombineIcon } from "lucide-react";
 import { useCalendar } from "@/context/CalendarProvider";
 import { getDatesRange } from "@/utils/getDatesRange";
 import { getTileProperties } from "@/utils/getTileProperties";
@@ -10,6 +12,7 @@ import { Day, SchedulerProjectData, TooltipData, ZoomLevel } from "@/types/globa
 import { getTooltipData } from "@/utils/getTooltipData";
 import { usePagination } from "@/hooks/usePagination";
 import { headerHeight } from "@/constants";
+import { getStatus } from "@/utils/getStatus";
 import { TileProps } from "./types";
 import {
   StyledDescription,
@@ -25,22 +28,25 @@ const Tile: FC<TileProps> = ({
   data,
   renderData,
   reportPosition,
+  tilePositions,
+  handleDragEnd,
   projectData,
   truncateText,
   parentChildTask,
   alarmClock,
   Users,
-  hideCheckedItems,
   onAssignTask,
   form,
-  tilePositions,
-  onTileHover
+  reccuringIcon,
+  onTileHover,
+  canvasRef
 }) => {
   const { date } = useCalendar();
-  const tileRef = useRef<HTMLDivElement>(null);
+  let tileRef = useRef<HTMLDivElement>(null);
+
   const [popupOpen, setPopupOpen] = useState(false);
   const [selectedTask, setSelectedTask] = useState<any>({});
-
+  const [tileNode, setTileNode] = useState<HTMLDivElement | null>(null);
   const {
     zoom,
     startDate,
@@ -61,10 +67,32 @@ const Tile: FC<TileProps> = ({
   const [isVisible, setIsVisible] = useState(false);
   const [addTaskMonth, setAddTaskMonth] = useState<Date | undefined>(new Date());
   const [isHidden, setIsHidden] = useState(false);
+
   const endDate = new Date(data.dueDate);
   const now = new Date();
   const isPast = endDate < now;
   let effectiveIsHidden = false;
+
+  const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
+    id: `${data.id}`,
+    data: data
+  });
+
+  const { setNodeRef: setDroppableRef, isOver } = useDroppable({
+    id: `${data.id}`,
+    data: data
+  });
+
+  const combinedRef = useCallback(
+    (node: any) => {
+      // Set all three refs to the same DOM node
+      setTileNode(node); // This replaces tileRef.current
+      tileRef = node; // Add this line
+      setNodeRef(node);
+      setDroppableRef(node);
+    },
+    [setNodeRef, setDroppableRef]
+  );
 
   const setHoursToDate = (date: string | number | Date, hours: any) => {
     const newDate = new Date(date);
@@ -80,7 +108,6 @@ const Tile: FC<TileProps> = ({
   );
 
   const selectedParentTasks = null;
-  const ctx = CanvasRenderingContext2D;
 
   const {
     page,
@@ -103,8 +130,8 @@ const Tile: FC<TileProps> = ({
         projectsPerPerson: SchedulerProjectData[][][],
         zoom: ZoomLevel
       ) => {
-        if (!tileRef?.current) return;
-        const { left, top } = tileRef.current.getBoundingClientRect();
+        if (!tileNode) return;
+        const { left, top } = tileNode.getBoundingClientRect();
         const tooltipCoords = { x: e.clientX - left, y: e.clientY - top };
         const {
           coords: { x, y }
@@ -149,7 +176,8 @@ const Tile: FC<TileProps> = ({
 
     const handleMouseOver = (e: MouseEvent) =>
       debouncedHandleMouseOver.current(e, startDate, rowsPerItem, projectsPerPerson, zoom);
-    const gridArea = tileRef?.current;
+    const gridArea = tileNode;
+
     if (!gridArea) return;
     gridArea.addEventListener("mousemove", handleMouseOver);
     gridArea.addEventListener("mouseleave", handleMouseLeave);
@@ -161,11 +189,12 @@ const Tile: FC<TileProps> = ({
   }, [debouncedHandleMouseOver, handleMouseLeave, projectsPerPerson, rowsPerItem, startDate, zoom]);
 
   useLayoutEffect(() => {
-    if (tileRef?.current) {
-      const tileRect = tileRef.current.getBoundingClientRect();
+    if (tileNode) {
+      const tileRect = tileNode.getBoundingClientRect();
 
       const canvas = document.querySelector("canvas");
       if (!canvas) return;
+
       const canvasRect = canvas.getBoundingClientRect();
 
       reportPosition?.(data.id, {
@@ -245,6 +274,15 @@ const Tile: FC<TileProps> = ({
                 })}
               </div>
 
+              {data.recurring && (
+                <div
+                  className="relative flex text-[white] w-[40px] h-[21px] px-1 items-center justify-between rounded-[4px]"
+                  style={{ backgroundColor: getStatus(data).background }}>
+                  {reccuringIcon}
+                  <p>{data.recurring?.[0]}</p>
+                </div>
+              )}
+
               {alarmClock?.({
                 form: form,
                 task: data,
@@ -270,15 +308,25 @@ const Tile: FC<TileProps> = ({
         }}
         trigger={
           <StyledTileWrapper
+            ref={combinedRef}
+            {...attributes}
+            {...listeners}
             style={{
               left: `${x}px`,
               top: `${y}px`,
               backgroundColor: `${data.bgColor ?? "#ffcc4d"}`,
-              opacity: effectiveIsHidden ? "0.4" : "1",
+              opacity: isDragging ? 0.5 : effectiveIsHidden ? "0.4" : "1", // Add isDragging opacity
               width: `${width}px`,
-              color: getTileTextColor(data.bgColor ?? "")
+              color: getTileTextColor(data.bgColor ?? ""),
+              transform: transform
+                ? `translate3d(${transform.x}px, ${transform.y}px, 0)`
+                : undefined, // Add transform
+              border: isOver ? "2px solid blue" : undefined // Add drop indicator
             }}
-            ref={tileRef}>
+            onMouseEnter={() => {
+              setPopupOpen(true);
+              handleTileHover;
+            }}>
             <StyledTextWrapper>
               <StyledStickyWrapper $allowOverflow={truncateText}>
                 <>

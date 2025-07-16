@@ -12,8 +12,8 @@ export const StyledWrapper = styled.div`
   height: ${headerHeight}px;
   padding-top: 5px
   display: block;
-    background: #F5F5F5;
-
+  
+  background: #F5F5F5;
 `;
 
 export const StyledCanvas = styled.canvas``;

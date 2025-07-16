@@ -44,7 +44,6 @@ export const Calendar: FC<CalendarProps> = ({
   toggleTheme,
   topBarWidth,
   renderData,
-  schedulerRef,
   parentChildTask,
   alarmClock,
   Users,
@@ -54,6 +53,7 @@ export const Calendar: FC<CalendarProps> = ({
   addTaskButton,
   schedulerTruncateText,
   calendarScale,
+  reccuringIcon,
   SchedulerRef
 }) => {
   const [tooltipData, setTooltipData] = useState<TooltipData>(initialTooltipData);
@@ -119,7 +119,6 @@ export const Calendar: FC<CalendarProps> = ({
               startDate: nextDate.toDate(),
               dueDate: endDate.toDate()
             });
-            console.log("Expanded Task", expandedTasks);
           }
         }
       });
@@ -271,7 +270,6 @@ export const Calendar: FC<CalendarProps> = ({
                 zoom={zoom}
                 rows={totalRowsPerPage}
                 ref={gridRef}
-                schedulerRef={schedulerRef}
                 onTileHover={handleTileHover}
                 projectData={data}
                 truncateText={schedulerTruncateText}
@@ -287,6 +285,7 @@ export const Calendar: FC<CalendarProps> = ({
                 form={form}
                 calendarScale={calendarScale}
                 SchedulerRef={SchedulerRef}
+                reccuringIcon={reccuringIcon}
               />
             </div>
           ) : (

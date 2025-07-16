@@ -17,12 +17,12 @@ export const drawCell = (
   if (isCurrentDay && flag) {
     const dayTheme = "black";
 
-    ctx.lineWidth = 1.85;
+    ctx.lineWidth = 0.15;
     ctx.setLineDash([5, 5]);
     ctx.strokeStyle = dayTheme;
     ctx.beginPath();
     ctx.moveTo(x + 0.5, 0.5);
-    ctx.lineTo(x + 0.5, innerWidth + 0.5);
+    ctx.lineTo(x + 0.5, innerWidth);
 
     ctx.stroke();
     ctx.strokeStyle = theme.colors.border;
@@ -30,6 +30,8 @@ export const drawCell = (
     ctx.setLineDash([]);
     ctx.strokeRect(x + 0.5, y, width, boxHeight * 2);
   } else if (isBusinessDay) {
+    ctx.lineWidth = 0.15;
+
     ctx.fillStyle = "transparent";
     ctx.beginPath();
     ctx.setLineDash([]);

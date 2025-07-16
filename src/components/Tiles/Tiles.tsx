@@ -20,7 +20,10 @@ const Tiles: FC<TilesProps> = ({
   onAssignTask,
   form,
   onTileHover,
-  tilePositions
+  tilePositions,
+  reccuringIcon,
+  canvasRef,
+  handleDragEnd
 }) => {
   const recurringMap = new Map<string, SchedulerProjectData[]>();
 
@@ -44,17 +47,10 @@ const Tiles: FC<TilesProps> = ({
           return projectsPerRow.flatMap((project) => {
             const baseId = project.id.split("-recurring")[0];
 
-            // Check if this is the first time we're seeing this recurring group
             if (project.isRecurring && !placedIds.has(baseId)) {
               const group = recurringMap.get(baseId) ?? [];
               placedIds.add(baseId);
 
-              console.log(
-                "Rendering recurring group",
-                group.map((p) => p.id),
-                "at row",
-                globalRowIndex
-              );
               group.forEach((task) => placedIds.add(task.id)); // mark all as placed
 
               const tiles = group.map((task) => (
@@ -75,6 +71,8 @@ const Tiles: FC<TilesProps> = ({
                   onAssignTask={onAssignTask}
                   form={form}
                   tilePositions={tilePositions}
+                  canvasRef={canvasRef}
+                  handleDragEnd={handleDragEnd}
                 />
               ));
               globalRowIndex++; // only once for the whole group
@@ -101,7 +99,9 @@ const Tiles: FC<TilesProps> = ({
                   hideCheckedItems={hideCheckedItems}
                   onAssignTask={onAssignTask}
                   form={form}
+                  reccuringIcon={reccuringIcon}
                   tilePositions={tilePositions}
+                  handleDragEnd={handleDragEnd}
                 />
               );
               globalRowIndex++;

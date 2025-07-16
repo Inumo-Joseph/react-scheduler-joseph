@@ -12,10 +12,10 @@ export type CalendarContextType = {
   zoomIn: () => void;
   zoomOut: () => void;
   handleFilterData: () => void;
-  updateTilesCoords: (coords: Coords[]) => void;
+  updateTilesCoords: (coords: TilePositionMap) => void;
+
   onClearFilterData?: () => void;
   data?: SchedulerData;
-  tilesCoords: Coords[];
   zoom: ZoomLevel;
   isNextZoom: boolean;
   isPrevZoom: boolean;
@@ -27,6 +27,8 @@ export type CalendarContextType = {
   recordsThreshold: number;
   config: Config;
 };
+
+type TilePositionMap = Record<string, { x: number; y: number; width: number; height: number }>;
 
 export type CalendarProviderProps = {
   children: ReactNode;

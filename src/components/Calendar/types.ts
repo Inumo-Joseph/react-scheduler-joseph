@@ -5,10 +5,10 @@ export type CalendarProps = {
   data: SchedulerData;
   topBarWidth: number;
   renderData: React.ReactNode;
-  schedulerRef: React.RefObject<HTMLDivElement>;
   tasks?: any;
   parentChildTask?: any;
   alarmClock?: any;
+  reccuringIcon?: any;
   Users?: any;
   hideCheckedItems?: any;
   addTaskButton?: React.ReactNode;

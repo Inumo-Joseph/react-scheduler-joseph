@@ -1,5 +1,7 @@
 import { useEffect } from "react";
+import { cornersOfRectangle } from "@dnd-kit/core/dist/utilities/algorithms/helpers";
 import { SchedulerProjectData } from "@/types/global";
+import { headerHeight } from "@/constants";
 import { drawArrow } from "./drawArrows";
 
 type TilePositionMap = Record<string, { x: number; y: number; width: number; height: number }>;
@@ -14,11 +16,12 @@ export function drawDependencyArrows(
   zoom: number,
   scale?: number,
   showHideChecked?: boolean,
-  SchedulerRef?: React.RefObject<HTMLDivElement>
+  scrollOffset?: { scrollTop: number; scrollLeft: number }
 ) {
   data.forEach((task) => {
     const to = tilePositions[task.parentTaskId ?? ""];
     const from = tilePositions[task.id];
+
     if (!from || !to) return;
 
     const index = data.indexOf(task);
@@ -28,13 +31,25 @@ export function drawDependencyArrows(
       if (index2 === -1) return;
     }
 
+    const canvas = document.querySelector("canvas");
+    if (!canvas) return;
+    const canvasRect = canvas.getBoundingClientRect();
+
+    let yoffset = 0;
+
+    if (scrollOffset?.scrollTop || 0 > 0) {
+      yoffset = scrollOffset?.scrollTop || 0;
+    }
+
+    const xoffset = canvasRect.top + headerHeight + 15;
+
     const fromx = (scale ?? 1) * from.x;
-    const fromy = (scale ?? 1) * from.y;
+    const fromy = (scale ?? 1) * from.y + yoffset;
     const fromWidth = (scale ?? 1) * from.width;
     const fromheight = (scale ?? 1) * from.height;
 
     const tox = (scale ?? 1) * to.x;
-    const toy = (scale ?? 1) * to.y;
+    const toy = (scale ?? 1) * to.y + yoffset;
     const toWidth = (scale ?? 1) * to.width;
     const toHeight = (scale ?? 1) * to.height;
 

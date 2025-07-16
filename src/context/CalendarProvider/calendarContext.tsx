@@ -2,6 +2,8 @@ import { createContext } from "react";
 import dayjs from "dayjs";
 import { CalendarContextType } from "./types";
 
+type TilePositionMap = Record<string, { x: number; y: number; width: number; height: number }>;
+
 export const calendarContext = createContext<CalendarContextType>({
   handleGoNext: () => {},
   handleScrollNext: () => {},
@@ -12,7 +14,6 @@ export const calendarContext = createContext<CalendarContextType>({
   zoomOut: () => {},
   handleFilterData: () => {},
   updateTilesCoords: () => {},
-  tilesCoords: [],
   zoom: 0,
   isNextZoom: false,
   isPrevZoom: false,

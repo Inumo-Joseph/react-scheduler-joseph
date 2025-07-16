@@ -32,7 +32,7 @@ export const drawDaysOnBottom = (
     const day = parseDay(
       dayjs(`${startDate.year}-${startDate.month + 1}-${startDate.dayOfMonth}`).add(i, "days")
     );
-    const dayLabel = `${day.dayName.toUpperCase()} ${day.dayOfMonth}`;
+    const dayLabel = `${day.dayName}${day.dayOfMonth}`;
 
     const isToday = day.isCurrentDay;
 
@@ -58,17 +58,17 @@ export const drawDaysOnBottom = (
     if (isToday) {
       // Draw vertical green linew
 
-      const ovalHeight = headerDayHeight / 2; // Thinner vertically
+      const ovalHeight = headerDayHeight / 2.5; // Thinner vertically
       const ovalWidth = dayWidth; // Leave some padding on sides
 
-      const circleCenterY = yPos - headerDayHeight / 3; // Position circle above text
+      const circleCenterY = yPos - headerDayHeight / 3.5; // Position circle above text
       ctx.beginPath();
       ctx.roundRect(xPos, circleCenterY, ovalWidth, ovalHeight, ovalHeight / 2);
       ctx.fillStyle = "#5bb475";
       ctx.fill();
       ctx.fillStyle = "white";
 
-      const lineX = xPos + 0.4 + dayWidth / 2;
+      const lineX = xPos + 1 + dayWidth / 2;
 
       //  drawDashedLine(ctx, lineX, cols , originalStrokeStyle)
       // Set dashed line style
@@ -78,7 +78,7 @@ export const drawDaysOnBottom = (
       // Set dashed line style
       for (let i = 0; i < 12; i++) {
         ctx.strokeStyle = "black";
-        ctx.lineWidth = 1.75;
+        ctx.lineWidth = 0.1;
         ctx.setLineDash([5, 5]);
 
         ctx.beginPath();
@@ -91,9 +91,7 @@ export const drawDaysOnBottom = (
       // Restore original line style
     } else {
       const ovalHeight = headerDayHeight / 2; // Thinner vertically
-      const ovalWidth = dayWidth; // Leave some padding on sides
 
-      const circleCenterY = yPos - headerDayHeight / 4; // Position circle above text
       ctx.beginPath();
       ctx.rect(xPos, yPos, dayWidth, ovalHeight);
       ctx.fillStyle = "#F5F5F5";

@@ -30,7 +30,8 @@ const Scheduler = ({
   schedulerZoom,
   schedulerTruncate,
   todayClicked,
-  schedulerSize
+  schedulerSize,
+  reccuringIcon
 }: SchedulerProps) => {
   // eslint-disable-next-line
 
@@ -71,7 +72,7 @@ const Scheduler = ({
     };
 
     handleResize();
-
+    console.log("Handling Resize");
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
@@ -88,8 +89,6 @@ const Scheduler = ({
   }
 
   if (!outsideWrapperRef.current) null;
-
-  console.log("DATA IN Scheduler", data);
 
   return (
     <>
@@ -117,7 +116,6 @@ const Scheduler = ({
                   topBarWidth={topBarWidth ?? 0}
                   onItemClick={onItemClick}
                   toggleTheme={toggleTheme}
-                  schedulerRef={outsideWrapperRef}
                   parentChildTask={parentChildTask}
                   alarmClock={alarmClock}
                   Users={Users}
@@ -129,6 +127,7 @@ const Scheduler = ({
                   addTaskButton={addTaskButton}
                   calendarScale={schedulerSize}
                   SchedulerRef={outsideWrapperRef}
+                  reccuringIcon={reccuringIcon}
                 />
               </StyledInnerWrapper>
             </StyledOutsideWrapper>

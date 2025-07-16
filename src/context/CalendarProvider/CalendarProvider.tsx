@@ -1,4 +1,12 @@
-import { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import {
+  SetStateAction,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState
+} from "react";
 import dayjs from "dayjs";
 import weekOfYear from "dayjs/plugin/weekOfYear";
 import dayOfYear from "dayjs/plugin/dayOfYear";
@@ -80,10 +88,13 @@ const CalendarProvider = ({
   const dayOfYear = dayjs(startDate).dayOfYear();
   const parsedStartDate = parseDay(startDate);
   const outsideWrapper = useRef<HTMLElement | null>(null);
-  const [tilesCoords, setTilesCoords] = useState<Coords[]>([{ x: 0, y: 0 }]);
+  type TilePositionMap = Record<string, { x: number; y: number; width: number; height: number }>;
+  const [tilesCoords, setTilesCoords] = useState<TilePositionMap>({});
+
   const moveHorizontalScroll = useCallback(
     (direction: Direction, behavior: ScrollBehavior = "auto") => {
       const canvasWidth = getCanvasWidth();
+
       switch (direction) {
         case "back":
           return outsideWrapper.current?.scrollTo({
@@ -115,7 +126,7 @@ const CalendarProvider = ({
     []
   );
 
-  const updateTilesCoords = (coords: Coords[]) => {
+  const updateTilesCoords = (coords: TilePositionMap) => {
     setTilesCoords(coords);
   };
 
@@ -137,6 +148,7 @@ const CalendarProvider = ({
           offset = cols * 30;
           break;
       }
+      console.log("loading more");
       const load = debounce(() => {
         switch (direction) {
           case "back":
@@ -270,7 +282,6 @@ const CalendarProvider = ({
         startDate: parsedStartDate,
         dayOfYear,
         handleFilterData,
-        tilesCoords,
         updateTilesCoords,
         recordsThreshold: maxRecordsPerPage,
         onClearFilterData

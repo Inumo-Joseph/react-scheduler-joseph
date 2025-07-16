@@ -43,7 +43,7 @@ const LeftColumn: FC<LeftColumnProps> = ({
           <Icon iconName="search" />
         </StyledInputWrapper>
 
-        <StyledFloatingButtonWrapper>{addTaskButton}</StyledFloatingButtonWrapper>
+        <StyledFloatingButtonWrapper></StyledFloatingButtonWrapper>
       </StyledLeftColumnHeader>
 
       {data.map((item, index) => (

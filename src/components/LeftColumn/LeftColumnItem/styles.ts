@@ -8,7 +8,7 @@ export const StyledWrapper = styled.div<StyledLeftColumnItemWrapperProps>`
   padding: 0.813rem 0 0.813rem 1rem;
   width: 100%;
   min-height: ${boxHeight}px;
-  height: calc(${boxHeight}px * ${({ rows }) => rows});
+  height: calc(${boxHeight}px * ${({ rows }) => rows} / 2);
   border-top: 1px solid ${({ theme }) => theme.colors.border};
   transition: 0.5s ease;
   cursor: ${({ clickable }) => (clickable ? "pointer" : "auto")};
@@ -51,4 +51,6 @@ export const StyledText = styled.p<StyledTextProps>`
   max-width: 144px;
   width: 100%;
   white-space: nowrap;
+  overflow: hidden;
+  textoverflow: ellipsis;
 `;

@@ -1,6 +1,7 @@
 import { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTheme } from "styled-components";
 import dayjs from "dayjs";
+import { DndContext, DragEndEvent } from "@dnd-kit/core";
 import { drawGrid } from "@/utils/drawGrid/drawGrid";
 import { boxHeight, canvasWrapperId, leftColumnWidth, outsideWrapperId } from "@/constants";
 import { Loader, Tiles } from "@/components";
@@ -30,11 +31,20 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
     onAssignTask,
     form,
     calendarScale,
-    SchedulerRef
+    SchedulerRef,
+    reccuringIcon
   },
   ref
 ) {
-  const { handleScrollNext, handleScrollPrev, date, isLoading, cols, startDate } = useCalendar();
+  const {
+    handleScrollNext,
+    handleScrollPrev,
+    date,
+    isLoading,
+    cols,
+    startDate,
+    updateTilesCoords
+  } = useCalendar();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const refRight = useRef<HTMLSpanElement>(null);
   const refLeft = useRef<HTMLSpanElement>(null);
@@ -56,6 +66,26 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
     }));
   };
 
+  // const handleDragEnd = (event: DragEndEvent) => {
+  //   console.log("DRAGGABEL EVENT TI")
+  //   const {active, over} = event;
+  //   if (active && over && active.id !== over.id) {
+  //     const draggedTask = allProjects.find(task=> task.id===active.id)
+  //     const targetTask = allProjects.find(task=> task.id===over.id)
+
+  //     console.log("Dragged", draggedTask, "target", targetTask)
+
+  //     // check dates etc.
+  //     if (draggedTask && targetTask && draggedTask.startDate > targetTask.startDate) {
+  //       // update parentTaskId etc.
+  //       onAssignTask?.(draggedTask.id, {
+  //         ...draggedTask,
+  //         parentTaskId: targetTask.id
+  //       });
+  //     }
+  //   }
+  // };
+
   const handleResize = useCallback(
     (ctx: CanvasRenderingContext2D) => {
       const width = getCanvasWidth();
@@ -74,34 +104,81 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
     const onResize = () => handleResize(ctx);
 
     window.addEventListener("resize", onResize);
-    drawDependencyArrows(
-      ctx,
-      data.flatMap((paginatedRow) => {
-        return paginatedRow.data.flatMap((doubleArray) => {
-          return doubleArray;
-        });
-      }),
-      tilePositions,
-      zoom
-    );
+    // drawDependencyArrows(
+    //   ctx,
+    //   data.flatMap((paginatedRow) => {
+    //     return paginatedRow.data.flatMap((doubleArray) => {
+    //       return doubleArray;
+    //     });
+    //   }),
+    //   tilePositions,
+    //   zoom
+    // );
 
     return () => window.removeEventListener("resize", onResize);
   }, [handleResize]);
 
   useEffect(() => {
+    const schedulerContainer = SchedulerRef?.current;
+    if (!schedulerContainer) return;
+
     const canvas = canvasRef.current;
     if (!canvas) return;
     canvas.style.letterSpacing = "1px";
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    handleResize(ctx); // draw grid first
+    const scrollOffset = {
+      scrollTop: SchedulerRef?.current?.scrollTop || 0,
+      scrollLeft: SchedulerRef?.current?.scrollLeft || 0
+    };
 
-    drawDependencyArrows(ctx, allProjects, tilePositions, zoom, calendarScale, hideCheckedItems);
+    const handleScroll = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      handleResize(ctx); // draw grid first
 
-    // draw arrows over grid
+      drawDependencyArrows(
+        ctx,
+        allProjects,
+        tilePositions,
+        zoom,
+        calendarScale,
+        hideCheckedItems,
+        scrollOffset
+      );
+    };
+    schedulerContainer.addEventListener("scroll", handleScroll);
+    return () => schedulerContainer.removeEventListener("scroll", handleScroll);
   }, [date, rows, zoom, handleResize, tilePositions, truncateText, hideCheckedItems]);
+
+  //   useEffect(() => {
+  //   const schedulerContainer = SchedulerRef?.current;
+  //   if (!schedulerContainer) return;
+
+  //   const handleScroll = () => {
+  //     const canvas = canvasRef.current;
+  //     if (!canvas) return;
+  //     const ctx = canvas.getContext("2d");
+  //     if (!ctx) return;
+
+  //     ctx.clearRect(0, 0, canvas.width, canvas.height);
+  //     handleResize(ctx);
+
+  //     const scrollOffset = schedulerContainer.scrollTop;
+  //     drawDependencyArrows(
+  //       ctx,
+  //       allProjects,
+  //       tilePositions,
+  //       zoom,
+  //       calendarScale,
+  //       hideCheckedItems,
+  //       scrollOffset
+  //     );
+  //   };
+
+  //   schedulerContainer.addEventListener('scroll', handleScroll);
+  //   return () => schedulerContainer.removeEventListener('scroll', handleScroll);
+  // }, [allProjects, tilePositions, zoom, calendarScale, hideCheckedItems, handleResize]);
 
   useEffect(() => {
     if (!refRight.current) return;
@@ -144,32 +221,58 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
     ctx.stroke();
   }, []);
 
+  const handleDragEnd = (event: DragEndEvent) => {
+    console.log("DRAGGABEL EVENT TRIGGERED");
+    const { active, over } = event;
+
+    if (active && over && active.id !== over.id) {
+      const draggedTask = allProjects.find((task) => task.id === active.id);
+      const targetTask = allProjects.find((task) => task.id === over.id);
+
+      // check dates etc.
+      const flag = draggedTask?.cardId === targetTask?.cardId;
+      if (draggedTask && targetTask && flag && draggedTask.dueDate < targetTask.dueDate) {
+        // update parentTaskId etc.
+        onAssignTask?.(draggedTask.id, {
+          ...draggedTask,
+          parentTaskId: targetTask.id
+        });
+      }
+    }
+  };
+
   return (
     <StyledWrapper id={canvasWrapperId}>
       <StyledInnerWrapper ref={ref}>
         <StyledSpan position="left" ref={refLeft} />
         <Loader isLoading={isLoading} position="left" />
 
+        <DndContext onDragEnd={handleDragEnd}>
+          <Tiles
+            data={data}
+            tilePositions={tilePositions}
+            projectData={projectData}
+            zoom={zoom}
+            renderData={renderData}
+            reportPosition={handleTilePosition}
+            truncateText={truncateText}
+            showToggle={showToggle}
+            parentChildTask={parentChildTask}
+            alarmClock={alarmClock}
+            Users={Users}
+            hideCheckedItems={hideCheckedItems}
+            onTileHover={onTileHover}
+            showCompleted={hideCheckedItems}
+            setShowCompleted={setShowCompleted}
+            onAssignTask={onAssignTask}
+            form={form}
+            reccuringIcon={reccuringIcon}
+            handleDragEnd={handleDragEnd}
+            canvasRef={canvasRef}
+          />
+        </DndContext>
         <StyledCanvas ref={canvasRef} />
-        <Tiles
-          data={data}
-          projectData={projectData}
-          zoom={zoom}
-          renderData={renderData}
-          reportPosition={handleTilePosition}
-          truncateText={truncateText}
-          showToggle={showToggle}
-          parentChildTask={parentChildTask}
-          alarmClock={alarmClock}
-          Users={Users}
-          hideCheckedItems={hideCheckedItems}
-          onTileHover={onTileHover}
-          showCompleted={hideCheckedItems}
-          setShowCompleted={setShowCompleted}
-          onAssignTask={onAssignTask}
-          form={form}
-          tilePositions={tilePositions}
-        />
+
         <StyledSpan ref={refRight} position="right" />
         <Loader isLoading={isLoading} position="right" />
       </StyledInnerWrapper>

@@ -59,7 +59,13 @@ const Header: FC<HeaderProps> = ({
   }, [date, zoom, handleResize]);
 
   return (
-    <StyledOuterWrapper>
+    <div
+      style={{
+        position: "sticky",
+        top: "0px",
+        backgroundColor: "#f5f5f5",
+        zIndex: "0"
+      }}>
       {/* <Topbar
         width={topBarWidth}
         showThemeToggle={showThemeToggle}
@@ -69,11 +75,11 @@ const Header: FC<HeaderProps> = ({
         showCompleted={showCompleted}
         setShowCompleted={setShowCompleted}
       /> */}
-      <div className="my-4"></div>
+
       <StyledWrapper id={canvasHeaderWrapperId}>
         <StyledCanvas ref={canvasRef} />
       </StyledWrapper>
-    </StyledOuterWrapper>
+    </div>
   );
 };
 

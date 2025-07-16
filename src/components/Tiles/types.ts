@@ -1,5 +1,4 @@
-import { Dispatch } from "react";
-import { AnyAction } from "redux";
+import { DragEndEvent } from "@dnd-kit/core";
 import { PaginatedSchedulerData, SchedulerData, SchedulerProjectData } from "@/types/global";
 
 export type TilesProps = {
@@ -9,6 +8,7 @@ export type TilesProps = {
   parentChildTask?: any;
   alarmClock?: any;
   Users?: any;
+  reccuringIcon?: any;
   hideCheckedItems?: any;
   onTileClick?: (data: SchedulerProjectData) => void;
   onTileHover?: (data: SchedulerProjectData, ref: React.RefObject<HTMLButtonElement>) => void;
@@ -26,6 +26,8 @@ export type TilesProps = {
   setShowCompleted: React.Dispatch<React.SetStateAction<boolean>>;
   onAssignTask?: (task: any, updatedTask: any) => void;
   form?: any;
+  canvasRef?: React.RefObject<HTMLCanvasElement>;
+  handleDragEnd?: (event: DragEndEvent) => void;
 };
 
 export type PlacedTiles = JSX.Element[];
