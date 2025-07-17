@@ -10,9 +10,11 @@ import { resizeCanvas } from "@/utils/resizeCanvas";
 import { getCanvasWidth } from "@/utils/getCanvasWidth";
 import { drawDependencyArrows } from "@/utils/drawDependencyArrows";
 import { SchedulerProjectData } from "@/types/global";
-import { GridProps } from "./types";
+import { getDatesRange } from "@/utils/getDatesRange";
+import { getTimeOccupancy } from "@/utils/getTimeOccupancy";
+import { parseDay } from "@/utils/dates";
 import { StyledCanvas, StyledInnerWrapper, StyledSpan, StyledWrapper } from "./styles";
-
+import { GridProps } from "./types";
 const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
   {
     zoom,
@@ -32,7 +34,9 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
     form,
     calendarScale,
     SchedulerRef,
-    reccuringIcon
+    reccuringIcon,
+    setShowAddTaskModal,
+    setSelectedDate
   },
   ref
 ) {
@@ -89,7 +93,7 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
   const handleResize = useCallback(
     (ctx: CanvasRenderingContext2D) => {
       const width = getCanvasWidth();
-      const height = rows * boxHeight + 1;
+      const height = rows * boxHeight;
       resizeCanvas(ctx, width, height);
       drawGrid(ctx, zoom, rows, cols, startDate, theme);
     },
@@ -104,16 +108,16 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
     const onResize = () => handleResize(ctx);
 
     window.addEventListener("resize", onResize);
-    // drawDependencyArrows(
-    //   ctx,
-    //   data.flatMap((paginatedRow) => {
-    //     return paginatedRow.data.flatMap((doubleArray) => {
-    //       return doubleArray;
-    //     });
-    //   }),
-    //   tilePositions,
-    //   zoom
-    // );
+    drawDependencyArrows(
+      ctx,
+      data.flatMap((paginatedRow) => {
+        return paginatedRow.data.flatMap((doubleArray) => {
+          return doubleArray;
+        });
+      }),
+      tilePositions,
+      zoom
+    );
 
     return () => window.removeEventListener("resize", onResize);
   }, [handleResize]);
@@ -222,7 +226,6 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
   }, []);
 
   const handleDragEnd = (event: DragEndEvent) => {
-    console.log("DRAGGABEL EVENT TRIGGERED");
     const { active, over } = event;
 
     if (active && over && active.id !== over.id) {
@@ -230,19 +233,99 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
       const targetTask = allProjects.find((task) => task.id === over.id);
 
       // check dates etc.
-      const flag = draggedTask?.cardId === targetTask?.cardId;
-      if (draggedTask && targetTask && flag && draggedTask.dueDate < targetTask.dueDate) {
+
+      let reason = "";
+
+      if (draggedTask?.cardId !== targetTask?.cardId) {
+        reason = "Cannot assign two tasks of different cards";
+      }
+
+      if (!draggedTask || !targetTask) {
+        reason = "Error assigning tasks";
+      }
+
+      if (draggedTask && targetTask && draggedTask.dueDate > targetTask.dueDate) {
+        reason = "cannot assign to task with earlier due date ";
+      }
+
+      const flag = reason;
+
+      if (
+        draggedTask &&
+        targetTask &&
+        draggedTask?.cardId === targetTask?.cardId &&
+        draggedTask.dueDate < targetTask.dueDate
+      ) {
         // update parentTaskId etc.
-        onAssignTask?.(draggedTask.id, {
-          ...draggedTask,
-          parentTaskId: targetTask.id
-        });
+        onAssignTask?.(
+          draggedTask.id,
+          {
+            ...draggedTask,
+            parentTaskId: targetTask.id
+          },
+          null
+        );
+      } else {
+        onAssignTask?.(
+          draggedTask?.id,
+          {
+            ...draggedTask
+          },
+          flag
+        );
       }
     }
   };
 
+  const handleRightClick = (e: React.MouseEvent) => {
+    e.preventDefault(); // Prevent default context menu
+
+    // Get the mouse position relative to the grid
+    const gridRect = canvasRef.current?.getBoundingClientRect();
+    if (!gridRect) return;
+
+    const mouseX = e.clientX - gridRect.left;
+
+    let divider = 0;
+    switch (zoom) {
+      case 0:
+        divider = 1.3333333;
+        break;
+
+      case 3:
+        divider = 2;
+        break;
+
+      default:
+        divider = 1;
+        break;
+    }
+
+    const gridWidth = gridRect.width;
+    const columnWidth = gridWidth / cols;
+    const clickedColumn = Math.floor(mouseX / columnWidth);
+    // Calculate which date was clicked
+
+    const clickedDate = getDateFromColumn(clickedColumn, divider);
+
+    // Show your add-task form/modal with this date
+    setShowAddTaskModal?.(true);
+    setSelectedDate?.(clickedDate);
+  };
+
+  const getDateFromColumn = (clickedColumn: number, divider: number) => {
+    const day = parseDay(
+      dayjs(`${startDate.year}-${startDate.month + 1}-${startDate.dayOfMonth}`).add(
+        clickedColumn,
+        "days"
+      )
+    );
+
+    return new Date(day.year, day.month, day.dayOfMonth);
+  };
+
   return (
-    <StyledWrapper id={canvasWrapperId}>
+    <StyledWrapper id={canvasWrapperId} onContextMenu={handleRightClick}>
       <StyledInnerWrapper ref={ref}>
         <StyledSpan position="left" ref={refLeft} />
         <Loader isLoading={isLoading} position="left" />

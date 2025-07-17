@@ -108,7 +108,7 @@ const Tile: FC<TileProps> = ({
   );
 
   const selectedParentTasks = null;
-
+  console.log("recurring", data.recurring);
   const {
     page,
     projectsPerPerson,
@@ -258,7 +258,7 @@ const Tile: FC<TileProps> = ({
                       ...data,
                       isCompleted: newVal
                     };
-                    onAssignTask?.(data.id, updatedTask);
+                    onAssignTask?.(data.id, updatedTask, null);
                     return newVal;
                   });
                 }}>

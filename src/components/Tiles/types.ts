@@ -24,7 +24,7 @@ export type TilesProps = {
   truncateText?: boolean;
   showCompleted?: boolean;
   setShowCompleted: React.Dispatch<React.SetStateAction<boolean>>;
-  onAssignTask?: (task: any, updatedTask: any) => void;
+  onAssignTask?: (task: any, updatedTask: any, flag: any) => void;
   form?: any;
   canvasRef?: React.RefObject<HTMLCanvasElement>;
   handleDragEnd?: (event: DragEndEvent) => void;

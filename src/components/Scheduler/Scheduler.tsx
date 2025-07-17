@@ -31,7 +31,9 @@ const Scheduler = ({
   schedulerTruncate,
   todayClicked,
   schedulerSize,
-  reccuringIcon
+  reccuringIcon,
+  setShowAddTaskModal,
+  setSelectedDate
 }: SchedulerProps) => {
   // eslint-disable-next-line
 
@@ -72,7 +74,6 @@ const Scheduler = ({
     };
 
     handleResize();
-    console.log("Handling Resize");
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
@@ -128,6 +129,8 @@ const Scheduler = ({
                   calendarScale={schedulerSize}
                   SchedulerRef={outsideWrapperRef}
                   reccuringIcon={reccuringIcon}
+                  setShowAddTaskModal={setShowAddTaskModal}
+                  setSelectedDate={setSelectedDate}
                 />
               </StyledInnerWrapper>
             </StyledOutsideWrapper>

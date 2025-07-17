@@ -13,17 +13,8 @@ export const StyledWrapper = styled.div`
   z-index: 2;
 `;
 
-export const StyledFloatingButtonWrapper = styled.div`
-  position: sticky; // keeps it visible on scroll
-  top: 60px; // adjust: how far from top of column
-  z-index: 4; // above the cards
-  display: flex;
-  justify-content: center; // center horizontally
-  padding: 5px 0;
-`;
-
 export const StyledLeftColumnHeader = styled.div`
-  padding-bottom: 0px;
+  padding-bottom: 10px;
   position: sticky;
   top: 0;
   height: 53px;

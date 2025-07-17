@@ -54,7 +54,9 @@ export const Calendar: FC<CalendarProps> = ({
   schedulerTruncateText,
   calendarScale,
   reccuringIcon,
-  SchedulerRef
+  SchedulerRef,
+  setShowAddTaskModal,
+  setSelectedDate
 }) => {
   const [tooltipData, setTooltipData] = useState<TooltipData>(initialTooltipData);
   const [isVisible, setIsVisible] = useState(false);
@@ -135,6 +137,7 @@ export const Calendar: FC<CalendarProps> = ({
     projectsPerPerson,
     totalRowsPerPage,
     rowsPerItem,
+    rowsPerPerson,
     currentPageNum,
     pagesAmount,
     next,
@@ -263,6 +266,7 @@ export const Calendar: FC<CalendarProps> = ({
             showCompleted={showCompleted}
             setShowCompleted={setShowCompleted}
           />
+
           {data.length ? (
             <div>
               <Grid
@@ -286,6 +290,8 @@ export const Calendar: FC<CalendarProps> = ({
                 calendarScale={calendarScale}
                 SchedulerRef={SchedulerRef}
                 reccuringIcon={reccuringIcon}
+                setShowAddTaskModal={setShowAddTaskModal}
+                setSelectedDate={setSelectedDate}
               />
             </div>
           ) : (

@@ -6,10 +6,16 @@ type ProjectsData = [projectsPerPerson: SchedulerProjectData[][][], rowsPerPerso
 export const projectsOnGrid = (data: SchedulerData) => {
   const initialProjectsData: ProjectsData = [[], []];
   const [projectsPerPerson, rowsPerPerson] = data.reduce((acc, curr) => {
+    // Keep all tasks for rendering
     const projectsInRows = setProjectsInRows(curr.data);
     acc[0].push(projectsInRows);
-    acc[1].push(Math.max(projectsInRows.flatMap((project) => project).length, 1));
+
+    // But only count non-recurring tasks for row calculation
+    const nonRecurringTasks = curr.data.filter((task) => !task.id.includes("-recurring-"));
+    acc[1].push(Math.max(nonRecurringTasks.length, 1));
+
     return acc;
   }, initialProjectsData);
+
   return { projectsPerPerson, rowsPerPerson };
 };

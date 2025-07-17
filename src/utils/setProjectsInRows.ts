@@ -24,6 +24,7 @@ export const setProjectsInRows = (projects: SchedulerProjectData[]): SchedulerPr
             break;
           }
         }
+
         if (!isColliding) {
           row.push(project);
           isAdded = true;
@@ -35,5 +36,6 @@ export const setProjectsInRows = (projects: SchedulerProjectData[]): SchedulerPr
       rows.push([project]);
     }
   }
+
   return rows;
 };

@@ -148,7 +148,6 @@ const CalendarProvider = ({
           offset = cols * 30;
           break;
       }
-      console.log("loading more");
       const load = debounce(() => {
         switch (direction) {
           case "back":

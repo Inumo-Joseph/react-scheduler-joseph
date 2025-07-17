@@ -69,6 +69,7 @@ export const usePagination = (data: SchedulerData): UsePaginationData => {
     currentPageNum: pageNum,
     pagesAmount: pages.length,
     projectsPerPerson: projectsPerPage,
+    rowsPerPerson,
     rowsPerItem,
     totalRowsPerPage,
     next,

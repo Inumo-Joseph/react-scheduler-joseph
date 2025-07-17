@@ -30,11 +30,6 @@ function App() {
 
   const { peopleCount, projectsPerYear, yearsCovered, isFullscreen, maxRecordsPerPage } = values;
 
-  const mocked = useMemo(
-    () => createMockData(+peopleCount, +yearsCovered, +projectsPerYear),
-    [peopleCount, projectsPerYear, yearsCovered]
-  );
-
   const renderData = () => {
     return <div></div>;
   };
@@ -86,7 +81,6 @@ function App() {
           startDate: new Date("2025-07-07"),
           dueDate: new Date("2025-07-06"),
           occupancy: 100,
-          parentTaskId: "task-2", // depends on Task 1
           users: ["Fran"],
           isCompleted: false,
           isRecurring: false
@@ -222,8 +216,19 @@ function App() {
     }
   ];
 
-  const onAssignTask = (taskId: any, updatedTask: any) => {
-    console.log("onAssign called", taskId, "upDatedTask", updatedTask); // <-- confirm this shows
+  const onAssignTask = (taskId: any, updatedTask: any, flag = null) => {
+    if (flag) {
+      alert(`${flag}`);
+    }
+
+    dummyData.flatMap((row) =>
+      row.data.flatMap((task) => {
+        if (task.id === updatedTask.id) {
+          task = updatedTask;
+          console.log(task);
+        }
+      })
+    );
   };
 
   const renderPopup = () => {
@@ -233,6 +238,7 @@ function App() {
         style={{ color: "white", display: "flex", flexDirection: "row" }}></div>
     );
   };
+
   const [range, setRange] = useState<ParsedDatesRange>({
     startDate: new Date(),
     endDate: new Date()
@@ -242,29 +248,22 @@ function App() {
     setRange(range);
   }, []);
 
-  // const filteredData = useMemo(
-  //   () =>
-  //     dummyData.map((person) => ({
-  //       ...person,
-  //       data: person.data.filter(
-  //         (project: any) =>
-  //           dayjs(project.startDate).isBetween(range.startDate, range.endDate) ||
-  //           dayjs(project.dueDate).isBetween(range.startDate, range.endDate) ||
-  //           (dayjs(project.startDate).isBefore(range.startDate, "day") && dayjs(project.dueDate).isAfter(range.endDate, "day")))
-  //     })),
-
-  //   [mocked, range.endDate, range.startDate]
-  // );
-
   const handleFilterData = () => console.log(`Filters button was clicked.`);
   const [schedulerZoom, setSchedulerZoom] = useState<any>("1");
   const [truncateText, setTruncateText] = useState<boolean>();
   const [showChecked, setShowChecked] = useState<boolean>();
   const [todayClicked, setTodayClicked] = useState(false);
   const [schedulerSize, setSchedulerSize] = useState<any>(1);
+  const [addTaskModak, setShowAddTaskModal] = useState<boolean>(false);
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>();
+
   const handleGoTodayClick = () => {
     setTodayClicked((prev) => !prev);
   };
+
+  if (selectedDate) {
+    // alert(`Set selected Date ${selectedDate}`)
+  }
 
   return (
     <>
@@ -354,6 +353,8 @@ function App() {
           }
           todayClicked={todayClicked}
           schedulerSize={schedulerSize}
+          setShowAddTaskModal={setShowAddTaskModal}
+          setSelectedDate={setSelectedDate}
         />
       ) : (
         <StyledSchedulerFrame>
@@ -383,6 +384,8 @@ function App() {
               </div>
             }
             schedulerSize={schedulerSize}
+            setShowAddTaskModal={setShowAddTaskModal}
+            setSelectedDate={setSelectedDate}
           />
         </StyledSchedulerFrame>
       )}

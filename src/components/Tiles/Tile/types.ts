@@ -56,7 +56,7 @@ export type TileProps = {
   projectData: SchedulerData;
   tileRef?: React.RefObject<HTMLButtonElement>;
   onHover?: React.ReactNode;
-  onAssignTask?: (task: any, updatedTask: any) => void;
+  onAssignTask?: (task: any, updatedTask: any, flag: any) => void;
   form?: any;
   tilePositions?: Record<string, { x: number; y: number; width: number; height: number }>;
   onTileHover?: (data: SchedulerProjectData, ref: React.RefObject<HTMLButtonElement>) => void;

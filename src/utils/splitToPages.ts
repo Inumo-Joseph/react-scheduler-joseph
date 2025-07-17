@@ -22,7 +22,13 @@ export const splitToPages = (
     }
 
     projectsPerPerson.forEach((projects, i) => {
-      const newItem = { id: data[i].id, label: data[i].label, data: projects };
+      const newItem = {
+        id: data[i].id,
+        label: data[i].label,
+        data: projects.map((projectArray) =>
+          projectArray.filter((task) => !task.id.includes("-recurring-"))
+        )
+      };
 
       if (pageRecords >= recordsThreshold) {
         pages.push(singlePage);
@@ -41,7 +47,9 @@ export const splitToPages = (
         const newItem = {
           id: data[i + leftIndex].id,
           label: data[i + leftIndex].label,
-          data: projects
+          data: projects.map((projectArray) =>
+            projectArray.filter((task) => !task.id.includes("-recurring-"))
+          )
         };
         singlePage.push(newItem);
 
@@ -56,7 +64,13 @@ export const splitToPages = (
     return pages;
   } else {
     projectsPerPerson.forEach((projects, i) => {
-      const newItem = { id: data[i].id, label: data[i].label, data: projects };
+      const newItem = {
+        id: data[i].id,
+        label: data[i].label,
+        data: projects.map((projectArray) =>
+          projectArray.filter((task) => !task.id.includes("-recurring-"))
+        )
+      };
       singlePage.push(newItem);
     });
 

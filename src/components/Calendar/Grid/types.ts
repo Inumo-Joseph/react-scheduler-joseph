@@ -20,10 +20,12 @@ export type GridProps = {
   showToggle: React.Dispatch<React.SetStateAction<boolean>>;
   showCompleted?: boolean;
   setShowCompleted: React.Dispatch<React.SetStateAction<boolean>>;
-  onAssignTask?: (task: any, updatedTask: any) => void;
+  onAssignTask?: (task: any, updatedTask: any, flag: any) => void;
   form?: any;
   calendarScale?: any;
   SchedulerRef?: React.RefObject<HTMLDivElement>;
+  setShowAddTaskModal?: React.Dispatch<React.SetStateAction<boolean>>;
+  setSelectedDate?: React.Dispatch<React.SetStateAction<Date | undefined>>;
   handleDragEnd?: (event: any) => void;
 };
 

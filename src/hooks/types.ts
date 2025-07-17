@@ -25,6 +25,8 @@ export type UsePaginationData = {
    * Total amount of rows displayed on current page
    */
   totalRowsPerPage: number;
+
+  rowsPerPerson?: number[];
   /**
    * Callback function to load next page
    */

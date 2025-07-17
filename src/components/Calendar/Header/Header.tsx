@@ -59,12 +59,12 @@ const Header: FC<HeaderProps> = ({
   }, [date, zoom, handleResize]);
 
   return (
-    <div
+    <StyledOuterWrapper
       style={{
         position: "sticky",
         top: "0px",
         backgroundColor: "#f5f5f5",
-        zIndex: "0"
+        zIndex: 0
       }}>
       {/* <Topbar
         width={topBarWidth}
@@ -79,7 +79,7 @@ const Header: FC<HeaderProps> = ({
       <StyledWrapper id={canvasHeaderWrapperId}>
         <StyledCanvas ref={canvasRef} />
       </StyledWrapper>
-    </div>
+    </StyledOuterWrapper>
   );
 };
 

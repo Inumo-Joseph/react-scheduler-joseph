@@ -20,6 +20,8 @@ export type CalendarProps = {
   schedulerTruncateText?: boolean;
   calendarScale?: number; // 0.5 = 50%, 1 = 100%, etc.
   SchedulerRef?: React.RefObject<HTMLDivElement>;
+  setShowAddTaskModal?: React.Dispatch<React.SetStateAction<boolean>>;
+  setSelectedDate?: React.Dispatch<React.SetStateAction<Date | undefined>>;
 };
 
 export type StyledSpanProps = {

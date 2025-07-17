@@ -34,6 +34,8 @@ export type SchedulerProps = {
   schedulerZoom?: any;
   schedulerTruncate?: boolean;
   schedulerSize?: number;
+  setShowAddTaskModal?: React.Dispatch<React.SetStateAction<boolean>>;
+  setSelectedDate?: React.Dispatch<React.SetStateAction<Date | undefined>>;
 };
 
 export type StyledOutsideWrapperProps = {

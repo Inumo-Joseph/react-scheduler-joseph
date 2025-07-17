@@ -2,13 +2,7 @@ import { FC, useState } from "react";
 import { useLanguage } from "@/context/LocaleProvider";
 import Icon from "../Icon";
 import PaginationButton from "../PaginationButton/PaginationButton";
-import {
-  StyledFloatingButtonWrapper,
-  StyledInput,
-  StyledInputWrapper,
-  StyledLeftColumnHeader,
-  StyledWrapper
-} from "./styles";
+import { StyledInput, StyledInputWrapper, StyledLeftColumnHeader, StyledWrapper } from "./styles";
 import { LeftColumnProps } from "./types";
 import LeftColumnItem from "./LeftColumnItem/LeftColumnItem";
 
@@ -28,7 +22,6 @@ const LeftColumn: FC<LeftColumnProps> = ({
   const { search } = useLanguage();
 
   const toggleFocus = () => setIsInputFocused((prev) => !prev);
-
   return (
     <StyledWrapper>
       <StyledLeftColumnHeader>
@@ -42,10 +35,7 @@ const LeftColumn: FC<LeftColumnProps> = ({
           />
           <Icon iconName="search" />
         </StyledInputWrapper>
-
-        <StyledFloatingButtonWrapper></StyledFloatingButtonWrapper>
       </StyledLeftColumnHeader>
-
       {data.map((item, index) => (
         <LeftColumnItem
           id={item.id}
@@ -55,7 +45,6 @@ const LeftColumn: FC<LeftColumnProps> = ({
           onItemClick={onItemClick}
         />
       ))}
-
       <PaginationButton
         intent="next"
         isVisible={pageNum !== pagesAmount - 1}
