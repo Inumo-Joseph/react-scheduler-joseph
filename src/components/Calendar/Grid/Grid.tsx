@@ -97,7 +97,7 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
       resizeCanvas(ctx, width, height);
       drawGrid(ctx, zoom, rows, cols, startDate, theme);
     },
-    [cols, startDate, rows, zoom, theme, truncateText]
+    [cols, startDate, rows, zoom, theme, truncateText, onAssignTask]
   );
 
   useEffect(() => {
@@ -137,23 +137,19 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
       scrollLeft: SchedulerRef?.current?.scrollLeft || 0
     };
 
-    const handleScroll = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      handleResize(ctx); // draw grid first
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    handleResize(ctx); // draw grid first
 
-      drawDependencyArrows(
-        ctx,
-        allProjects,
-        tilePositions,
-        zoom,
-        calendarScale,
-        hideCheckedItems,
-        scrollOffset
-      );
-    };
-    schedulerContainer.addEventListener("scroll", handleScroll);
-    return () => schedulerContainer.removeEventListener("scroll", handleScroll);
-  }, [date, rows, zoom, handleResize, tilePositions, truncateText, hideCheckedItems]);
+    drawDependencyArrows(
+      ctx,
+      allProjects,
+      tilePositions,
+      zoom,
+      calendarScale,
+      hideCheckedItems,
+      scrollOffset
+    );
+  }, [date, rows, zoom, handleResize, tilePositions, truncateText, hideCheckedItems, onAssignTask]);
 
   //   useEffect(() => {
   //   const schedulerContainer = SchedulerRef?.current;
@@ -325,7 +321,7 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
   };
 
   return (
-    <StyledWrapper id={canvasWrapperId} onContextMenu={handleRightClick}>
+    <StyledWrapper id={canvasWrapperId} onContextMenu={handleRightClick} style={{}}>
       <StyledInnerWrapper ref={ref}>
         <StyledSpan position="left" ref={refLeft} />
         <Loader isLoading={isLoading} position="left" />

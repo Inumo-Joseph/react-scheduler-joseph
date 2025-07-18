@@ -262,7 +262,7 @@ function App() {
   };
 
   if (selectedDate) {
-    // alert(`Set selected Date ${selectedDate}`)
+    //  console.log(`Set selected Date ${selectedDate}`)
   }
 
   return (

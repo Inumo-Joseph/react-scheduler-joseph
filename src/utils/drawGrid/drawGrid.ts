@@ -15,8 +15,9 @@ export const drawGrid = (
   parsedStartDate: Day,
   theme: Theme
 ) => {
-  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
   const canvasWrapper = document.getElementById(canvasWrapperId);
+  console.log("Draw Grid called", canvasWrapper);
+
   if (!canvasWrapper) return;
 
   switch (zoom) {

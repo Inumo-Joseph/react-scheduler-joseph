@@ -1,6 +1,7 @@
 import dayjs from "dayjs";
 import { Day } from "@/types/global";
 import {
+  boxHeight,
   dayNameYoffset,
   dayNumYOffset,
   dayWidth,
@@ -53,7 +54,7 @@ export const drawDaysOnBottom = (
     const textWidth = ctx.measureText(dayLabel).width;
     const textX = xPos + (dayWidth - textWidth) / 2;
     const lineStartY = yPos + 7;
-    let lineEndY = 1000; // Use provided height or default
+    let lineEndY = boxHeight * cols; // Use provided height or default
     // Draw the text
     if (isToday) {
       // Draw vertical green linew
@@ -68,7 +69,7 @@ export const drawDaysOnBottom = (
       ctx.fill();
       ctx.fillStyle = "white";
 
-      const lineX = xPos + 1 + dayWidth / 2;
+      const lineX = xPos + 0.5 + dayWidth / 2;
 
       //  drawDashedLine(ctx, lineX, cols , originalStrokeStyle)
       // Set dashed line style

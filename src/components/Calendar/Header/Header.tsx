@@ -64,7 +64,8 @@ const Header: FC<HeaderProps> = ({
         position: "sticky",
         top: "0px",
         backgroundColor: "#f5f5f5",
-        zIndex: 0
+        zIndex: 0,
+        borderColor: "red"
       }}>
       {/* <Topbar
         width={topBarWidth}

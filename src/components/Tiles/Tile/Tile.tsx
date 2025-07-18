@@ -28,8 +28,6 @@ const Tile: FC<TileProps> = ({
   data,
   renderData,
   reportPosition,
-  tilePositions,
-  handleDragEnd,
   projectData,
   truncateText,
   parentChildTask,
@@ -37,9 +35,7 @@ const Tile: FC<TileProps> = ({
   Users,
   onAssignTask,
   form,
-  reccuringIcon,
-  onTileHover,
-  canvasRef
+  reccuringIcon
 }) => {
   const { date } = useCalendar();
   let tileRef = useRef<HTMLDivElement>(null);
@@ -108,7 +104,7 @@ const Tile: FC<TileProps> = ({
   );
 
   const selectedParentTasks = null;
-  console.log("recurring", data.recurring);
+
   const {
     page,
     projectsPerPerson,
