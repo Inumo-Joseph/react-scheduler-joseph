@@ -6,6 +6,7 @@ import { drawGrid } from "@/utils/drawGrid/drawGrid";
 import {
   boxHeight,
   canvasWrapperId,
+  dayWidth,
   headerHeight,
   leftColumnWidth,
   outsideWrapperId
@@ -245,7 +246,7 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
 
     setMousePosition?.({ x: e.clientX, y: e.clientY });
 
-    const mouseX = e.clientX - gridRect.left;
+    const mouseX = e.clientX - gridRect.left - dayWidth;
     const mouseY = e.clientY - gridRect.top + headerHeight;
 
     const gridWidth = gridRect.width;
@@ -254,6 +255,8 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
     const rowHeight = gridHeight / rows;
     const columnWidth = gridWidth / cols;
 
+    console.log("MouseX", mouseX);
+    console.log("gridWith", gridWidth);
     const clickedColumn = Math.floor(mouseX / columnWidth);
     const clickedRows = Math.floor(mouseY / rowHeight);
 

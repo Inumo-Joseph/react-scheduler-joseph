@@ -146,7 +146,7 @@ const Tile: FC<TileProps> = ({
   );
 
   const handleTileHover = (data: SchedulerProjectData) => {};
-
+  const [tilePopup, setTilePopup] = useState<boolean>(false);
   const handleMouseLeave = useCallback(() => {
     debouncedHandleMouseOver.current.cancel();
     setIsVisible(false);
@@ -208,8 +208,8 @@ const Tile: FC<TileProps> = ({
     effectiveIsHidden = data.isCompleted ? true : isHidden;
   }
 
-  const isSelectedFrom = form.watch("from");
-  const isRecurringSelected = form.watch("isRecurring");
+  // const isSelectedFrom = form.watch("from");
+  // const isRecurringSelected = form.watch("isRecurring");
 
   return (
     <div
@@ -266,20 +266,21 @@ const Tile: FC<TileProps> = ({
                   task: data,
                   selectedParentTask: selectedParentTasks,
                   updateTaskMode: true,
-                  form: undefined
+                  form: undefined,
+                  setPopupOpen: setPopupOpen
                 })}
               </div>
 
-              {data.recurring && (
+              {/* {data.recurring && (
                 <div
                   className="relative flex text-[white] w-[40px] h-[21px] px-1 items-center justify-between rounded-[4px]"
                   style={{ backgroundColor: getStatus(data).background }}>
                   {reccuringIcon}
                   <p>{data.recurring?.[0]}</p>
                 </div>
-              )}
+              )} */}
 
-              {alarmClock?.({
+              {/* {alarmClock?.({
                 form: form,
                 task: data,
                 setAddTaskMonth: setAddTaskMonth,
@@ -288,15 +289,22 @@ const Tile: FC<TileProps> = ({
                 taskDueDate: data.dueDate,
                 setSelectedTask: setSelectedTask,
                 addTaskMonth: addTaskMonth,
-                addTaskDate: addTaskDate
-              })}
+                addTaskDate: addTaskDate,
+                  setPopupOpen: setPopupOpen
 
-              {Users?.({
+              })} */}
+
+              {/* {Users?.({
                 form: form,
-                task: data
-              })}
+                task: data,
+                setPopupOpen: setPopupOpen
 
-              <div style={{ color: "black", display: "flex" }} className=" pt-1 pl-1">
+              })} */}
+
+              <div
+                style={{ color: "black", display: "flex" }}
+                className=" pt-1 pl-1"
+                onClick={() => setPopupOpen(false)}>
                 {renderData}
               </div>
             </div>

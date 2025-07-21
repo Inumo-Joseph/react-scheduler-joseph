@@ -25,10 +25,10 @@ function App() {
     yearsCovered: 0,
     startDate: undefined,
     maxRecordsPerPage: 50,
-    isFullscreen: false
+    isFullscreen: true
   });
 
-  const { peopleCount, projectsPerYear, yearsCovered, isFullscreen, maxRecordsPerPage } = values;
+  const { isFullscreen, maxRecordsPerPage } = values;
 
   const renderData = () => {
     return <div></div>;
@@ -56,7 +56,7 @@ function App() {
           cardId: "row-1",
           id: "task-20",
           name: "Task 20",
-          startDate: new Date("2025-8-01"),
+          startDate: new Date("2025-7-21"),
           dueDate: new Date("2025-08-05"),
           occupancy: 100,
           isCompleted: true,
@@ -74,6 +74,7 @@ function App() {
           isRecurring: true,
           recurring: "weekly"
         },
+
         {
           cardId: "row-1",
           id: "task-3",

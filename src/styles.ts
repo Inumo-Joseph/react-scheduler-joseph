@@ -60,7 +60,7 @@ export const theme: DefaultTheme = {
 
     textPrimary: "#1C222F",
     textSecondary: "#FFFFFF",
-    placeholder: "#1C222F",
+    placeholder: "#607D8B",
 
     button: "#FFFFFF",
     border: "#D2D2D2",

@@ -101,6 +101,7 @@ const Tiles: FC<TilesProps> = ({
                   form={form}
                   reccuringIcon={reccuringIcon}
                   tilePositions={tilePositions}
+                  canvasRef={canvasRef}
                   handleDragEnd={handleDragEnd}
                 />
               );

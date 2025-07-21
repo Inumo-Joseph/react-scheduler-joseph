@@ -1,4 +1,11 @@
-import { dayWidth, minutesInHour, monthWidth, singleDayWidth, zoom2ColumnWidth } from "@/constants";
+import {
+  dayWidth,
+  minutesInHour,
+  monthWidth,
+  singleDayWidth,
+  tileDayWidth,
+  zoom2ColumnWidth
+} from "@/constants";
 import { DatesRange } from "./getDatesRange";
 
 export const getTileXAndWidth = (item: DatesRange, range: DatesRange, zoom: number) => {

@@ -92,6 +92,7 @@ export const Calendar: FC<CalendarProps> = ({
         expandedTasks.push(task); // original
 
         if (task.isRecurring && task.recurring) {
+          console.log("Creating recurring tasks for", task);
           let nextDate = dayjs(task.startDate);
           let endDate = dayjs(task.dueDate);
           for (let i = 1; i <= 3; i++) {

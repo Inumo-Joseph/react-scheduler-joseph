@@ -11,12 +11,14 @@ type AddParentChildTaskProps = {
   selectedParentTask: any;
   onAssignTask?: React.ReactNode;
   onCreateTask?: React.ReactNode;
+  setPopupOpen?: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 type UsersProps = {
   updateTaskMode?: boolean;
   form: any;
   task: any;
+  setPopupOpen?: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 type AlarmClockProps = {
@@ -33,6 +35,7 @@ type AlarmClockProps = {
   taskDueDate?: Date;
   setSelectedTask?: any;
   selectedParentTask?: any;
+  setPopupOpen?: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export type TileProps = {
