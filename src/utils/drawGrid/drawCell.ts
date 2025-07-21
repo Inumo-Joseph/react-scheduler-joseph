@@ -17,7 +17,7 @@ export const drawCell = (
   if (isCurrentDay && flag) {
     const dayTheme = "black";
 
-    ctx.lineWidth = 0.5;
+    ctx.lineWidth = 0.15;
     ctx.setLineDash([5, 5]);
     ctx.strokeStyle = dayTheme;
     ctx.beginPath();

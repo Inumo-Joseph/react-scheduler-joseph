@@ -51,7 +51,7 @@ const Tiles: FC<TilesProps> = ({
               const group = recurringMap.get(baseId) ?? [];
               placedIds.add(baseId);
 
-              group.forEach((task) => placedIds.add(task.id)); // mark all as placed
+              group.forEach((task) => placedIds.add(task.id));
 
               const tiles = group.map((task) => (
                 <Tile

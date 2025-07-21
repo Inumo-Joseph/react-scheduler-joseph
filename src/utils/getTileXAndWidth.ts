@@ -1,4 +1,4 @@
-import { dayWidth, minutesInHour, singleDayWidth, zoom2ColumnWidth } from "@/constants";
+import { dayWidth, minutesInHour, monthWidth, singleDayWidth, zoom2ColumnWidth } from "@/constants";
 import { DatesRange } from "./getDatesRange";
 
 export const getTileXAndWidth = (item: DatesRange, range: DatesRange, zoom: number) => {
@@ -11,7 +11,7 @@ export const getTileXAndWidth = (item: DatesRange, range: DatesRange, zoom: numb
       cellWidth = zoom2ColumnWidth;
       break;
     case 3:
-      cellWidth = 3;
+      cellWidth = monthWidth / 27.7;
       break;
     default:
       cellWidth = dayWidth;
@@ -24,8 +24,9 @@ export const getTileXAndWidth = (item: DatesRange, range: DatesRange, zoom: numb
           (item.startDate.diff(range.startDate, "minute") / minutesInHour + 1) * cellWidth -
           cellWidth / 2;
         break;
+
       default: {
-        position = (item.startDate.diff(range.startDate, "day") + 1) * cellWidth;
+        position = (item.startDate.diff(range.startDate, "day") + 2) * cellWidth;
       }
     }
     return Math.max(0, position);

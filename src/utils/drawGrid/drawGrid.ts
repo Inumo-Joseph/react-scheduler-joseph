@@ -16,7 +16,6 @@ export const drawGrid = (
   theme: Theme
 ) => {
   const canvasWrapper = document.getElementById(canvasWrapperId);
-  console.log("Draw Grid called", canvasWrapper);
 
   if (!canvasWrapper) return;
 

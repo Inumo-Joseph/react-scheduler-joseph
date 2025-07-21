@@ -10,10 +10,8 @@ export const projectsOnGrid = (data: SchedulerData) => {
     const projectsInRows = setProjectsInRows(curr.data);
     acc[0].push(projectsInRows);
 
-    // But only count non-recurring tasks for row calculation
     const nonRecurringTasks = curr.data.filter((task) => !task.id.includes("-recurring-"));
     acc[1].push(Math.max(nonRecurringTasks.length, 1));
-
     return acc;
   }, initialProjectsData);
 

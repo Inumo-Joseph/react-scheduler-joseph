@@ -17,7 +17,7 @@ export const StyledLeftColumnHeader = styled.div`
   padding-bottom: 10px;
   position: sticky;
   top: 0;
-  height: 53px;
+  height: 43px;
   display: flex;
   flex-direction: column;
   justify-content: end;
@@ -31,7 +31,7 @@ export const StyledInput = styled.input`
   width: calc(100% - 44px);
   background-color: transparent;
   color: ${({ theme }) => theme.colors.textPrimary};
-  padding: 7px 0 7px 12px;
+  padding: 7px 0 7px 7px;
   border: 0;
   outline: none;
   &::placeholder {

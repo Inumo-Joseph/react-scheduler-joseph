@@ -22,6 +22,8 @@ export type CalendarProps = {
   SchedulerRef?: React.RefObject<HTMLDivElement>;
   setShowAddTaskModal?: React.Dispatch<React.SetStateAction<boolean>>;
   setSelectedDate?: React.Dispatch<React.SetStateAction<Date | undefined>>;
+  setMousePosition?: React.Dispatch<React.SetStateAction<{ x: number; y: number } | undefined>>;
+  setSelectedCard?: React.Dispatch<React.SetStateAction<any>>;
 };
 
 export type StyledSpanProps = {

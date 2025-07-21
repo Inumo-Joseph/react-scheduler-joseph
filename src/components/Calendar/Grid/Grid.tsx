@@ -3,16 +3,23 @@ import { useTheme } from "styled-components";
 import dayjs from "dayjs";
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
 import { drawGrid } from "@/utils/drawGrid/drawGrid";
-import { boxHeight, canvasWrapperId, leftColumnWidth, outsideWrapperId } from "@/constants";
+import {
+  boxHeight,
+  canvasWrapperId,
+  headerHeight,
+  leftColumnWidth,
+  outsideWrapperId
+} from "@/constants";
 import { Loader, Tiles } from "@/components";
 import { useCalendar } from "@/context/CalendarProvider";
 import { resizeCanvas } from "@/utils/resizeCanvas";
 import { getCanvasWidth } from "@/utils/getCanvasWidth";
 import { drawDependencyArrows } from "@/utils/drawDependencyArrows";
-import { SchedulerProjectData } from "@/types/global";
+import { PaginatedSchedulerData, SchedulerProjectData } from "@/types/global";
 import { getDatesRange } from "@/utils/getDatesRange";
 import { getTimeOccupancy } from "@/utils/getTimeOccupancy";
 import { parseDay } from "@/utils/dates";
+import { usePagination } from "@/hooks/usePagination";
 import { StyledCanvas, StyledInnerWrapper, StyledSpan, StyledWrapper } from "./styles";
 import { GridProps } from "./types";
 const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
@@ -36,19 +43,17 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
     SchedulerRef,
     reccuringIcon,
     setShowAddTaskModal,
-    setSelectedDate
+    setSelectedDate,
+    setMousePosition,
+    setSelectedCard,
+    filteredData
   },
   ref
 ) {
-  const {
-    handleScrollNext,
-    handleScrollPrev,
-    date,
-    isLoading,
-    cols,
-    startDate,
-    updateTilesCoords
-  } = useCalendar();
+  const { handleScrollNext, handleScrollPrev, date, isLoading, cols, startDate } = useCalendar();
+
+  const { page, projectsPerPerson } = usePagination(projectData);
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const refRight = useRef<HTMLSpanElement>(null);
   const refLeft = useRef<HTMLSpanElement>(null);
@@ -69,26 +74,6 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
       [id]: pos
     }));
   };
-
-  // const handleDragEnd = (event: DragEndEvent) => {
-  //   console.log("DRAGGABEL EVENT TI")
-  //   const {active, over} = event;
-  //   if (active && over && active.id !== over.id) {
-  //     const draggedTask = allProjects.find(task=> task.id===active.id)
-  //     const targetTask = allProjects.find(task=> task.id===over.id)
-
-  //     console.log("Dragged", draggedTask, "target", targetTask)
-
-  //     // check dates etc.
-  //     if (draggedTask && targetTask && draggedTask.startDate > targetTask.startDate) {
-  //       // update parentTaskId etc.
-  //       onAssignTask?.(draggedTask.id, {
-  //         ...draggedTask,
-  //         parentTaskId: targetTask.id
-  //       });
-  //     }
-  //   }
-  // };
 
   const handleResize = useCallback(
     (ctx: CanvasRenderingContext2D) => {
@@ -151,35 +136,6 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
     );
   }, [date, rows, zoom, handleResize, tilePositions, truncateText, hideCheckedItems, onAssignTask]);
 
-  //   useEffect(() => {
-  //   const schedulerContainer = SchedulerRef?.current;
-  //   if (!schedulerContainer) return;
-
-  //   const handleScroll = () => {
-  //     const canvas = canvasRef.current;
-  //     if (!canvas) return;
-  //     const ctx = canvas.getContext("2d");
-  //     if (!ctx) return;
-
-  //     ctx.clearRect(0, 0, canvas.width, canvas.height);
-  //     handleResize(ctx);
-
-  //     const scrollOffset = schedulerContainer.scrollTop;
-  //     drawDependencyArrows(
-  //       ctx,
-  //       allProjects,
-  //       tilePositions,
-  //       zoom,
-  //       calendarScale,
-  //       hideCheckedItems,
-  //       scrollOffset
-  //     );
-  //   };
-
-  //   schedulerContainer.addEventListener('scroll', handleScroll);
-  //   return () => schedulerContainer.removeEventListener('scroll', handleScroll);
-  // }, [allProjects, tilePositions, zoom, calendarScale, hideCheckedItems, handleResize]);
-
   useEffect(() => {
     if (!refRight.current) return;
     const observerRight = new IntersectionObserver(
@@ -228,20 +184,27 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
       const draggedTask = allProjects.find((task) => task.id === active.id);
       const targetTask = allProjects.find((task) => task.id === over.id);
 
-      // check dates etc.
-
       let reason = "";
 
-      if (draggedTask?.cardId !== targetTask?.cardId) {
-        reason = "Cannot assign two tasks of different cards";
-      }
+      if (draggedTask && targetTask) {
+        const name1 =
+          draggedTask?.name.length > 10
+            ? draggedTask?.name.substring(0, 10).concat("...")
+            : draggedTask?.name;
+        const name2 =
+          targetTask?.name.length > 10
+            ? targetTask?.name.substring(0, 10).concat("...")
+            : targetTask?.name;
 
-      if (!draggedTask || !targetTask) {
-        reason = "Error assigning tasks";
-      }
+        if (draggedTask?.cardId !== targetTask?.cardId) {
+          reason = `Cannot assign ${name1} to ${name2} - Different cards`;
+        }
 
-      if (draggedTask && targetTask && draggedTask.dueDate > targetTask.dueDate) {
-        reason = "cannot assign to task with earlier due date ";
+        if (draggedTask && targetTask && draggedTask.dueDate > targetTask.dueDate) {
+          reason = `Cannot assign ${name1} to ${name2} - Due Date issue `;
+        }
+      } else {
+        reason = `Error Cannot assign Tasks`;
       }
 
       const flag = reason;
@@ -280,36 +243,31 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
     const gridRect = canvasRef.current?.getBoundingClientRect();
     if (!gridRect) return;
 
+    setMousePosition?.({ x: e.clientX, y: e.clientY });
+
     const mouseX = e.clientX - gridRect.left;
-
-    let divider = 0;
-    switch (zoom) {
-      case 0:
-        divider = 1.3333333;
-        break;
-
-      case 3:
-        divider = 2;
-        break;
-
-      default:
-        divider = 1;
-        break;
-    }
+    const mouseY = e.clientY - gridRect.top + headerHeight;
 
     const gridWidth = gridRect.width;
-    const columnWidth = gridWidth / cols;
-    const clickedColumn = Math.floor(mouseX / columnWidth);
-    // Calculate which date was clicked
+    const gridHeight = gridRect.height;
 
-    const clickedDate = getDateFromColumn(clickedColumn, divider);
+    const rowHeight = gridHeight / rows;
+    const columnWidth = gridWidth / cols;
+
+    const clickedColumn = Math.floor(mouseX / columnWidth);
+    const clickedRows = Math.floor(mouseY / rowHeight);
+
+    const selectedRow = getCardFromRowClick(clickedRows, filteredData);
+
+    const clickedDate = getDateFromColumn(clickedColumn);
 
     // Show your add-task form/modal with this date
     setShowAddTaskModal?.(true);
     setSelectedDate?.(clickedDate);
+    setSelectedCard?.(selectedRow?.card.id);
   };
 
-  const getDateFromColumn = (clickedColumn: number, divider: number) => {
+  const getDateFromColumn = (clickedColumn: number) => {
     const day = parseDay(
       dayjs(`${startDate.year}-${startDate.month + 1}-${startDate.dayOfMonth}`).add(
         clickedColumn,
@@ -318,6 +276,34 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
     );
 
     return new Date(day.year, day.month, day.dayOfMonth);
+  };
+
+  const getCardFromRowClick = (clickedRowNumber: number, cardsData: PaginatedSchedulerData) => {
+    let currentRowStart = 1;
+
+    for (const card of cardsData) {
+      // Flatten the nested data arrays to get total task count
+      const allTasks = card.data.flat().filter((task) => !task.id.includes("-recurring"));
+      const taskCount = allTasks.length;
+      const rowEnd = currentRowStart + taskCount - 1;
+
+      // Check if the clicked row falls within this card's range
+      if (clickedRowNumber >= currentRowStart && clickedRowNumber <= rowEnd) {
+        const taskIndex = clickedRowNumber - currentRowStart;
+
+        return {
+          card: card,
+          task: allTasks[taskIndex], // The specific task object
+          taskIndex: taskIndex, // Overall index in flattened array
+          rowRange: `${currentRowStart}-${rowEnd}`,
+          allTasks: allTasks // All flattened tasks for this card
+        };
+      }
+
+      currentRowStart = rowEnd + 1;
+    }
+
+    return null; // Row number not found
   };
 
   return (

@@ -9,7 +9,7 @@ import {
   UsersIcon,
   ArrowRightFromLineIcon
 } from "lucide-react";
-import { Button, Label, StepTitle } from "semantic-ui-react";
+import { Button, Label, StepTitle, Popup, PopupContent, PopupHeader } from "semantic-ui-react";
 import { createMockData } from "./mock/appMock";
 import { ParsedDatesRange } from "./utils/getDatesRange";
 import { ConfigFormValues, SchedulerProjectData } from "./types/global";
@@ -182,7 +182,7 @@ function App() {
           id: "task-10",
           name: "Task 5th shift",
           startDate: new Date("2025-07-6"),
-          dueDate: new Date("2025-07-020"),
+          dueDate: new Date("2025-06-020"),
           occupancy: 100,
           bgColor: "rgba(133, 193, 233, 0.83)",
           isCompleted: false,
@@ -198,7 +198,8 @@ function App() {
           users: ["Colby"],
           bgColor: "rgba(133, 193, 233, 0.83)",
           isCompleted: true,
-          isRecurring: false
+          isRecurring: true,
+          recurring: "daily"
         },
         {
           cardId: "row-2",
@@ -254,14 +255,27 @@ function App() {
   const [showChecked, setShowChecked] = useState<boolean>();
   const [todayClicked, setTodayClicked] = useState(false);
   const [schedulerSize, setSchedulerSize] = useState<any>(1);
-  const [addTaskModak, setShowAddTaskModal] = useState<boolean>(false);
+  const [addTaskModal, setShowAddTaskModal] = useState<boolean>(false);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
+  const [mousePosition, setMousePosition] = useState<{ x: number; y: number }>();
+  const [selectedCard, setSelectedCard] = useState<any>();
 
   const handleGoTodayClick = () => {
     setTodayClicked((prev) => !prev);
   };
 
-  if (selectedDate) {
+  if (selectedDate || addTaskModal) {
+    return (
+      <Popup.Header>
+        ADD TASK
+        <Popup.Content>
+          {selectedDate?.getDate()}
+          {`At position ${mousePosition?.x} : ${mousePosition?.y}`}
+          {`AND with card, ${selectedCard}`}
+        </Popup.Content>
+      </Popup.Header>
+    );
+
     //  console.log(`Set selected Date ${selectedDate}`)
   }
 
@@ -355,6 +369,8 @@ function App() {
           schedulerSize={schedulerSize}
           setShowAddTaskModal={setShowAddTaskModal}
           setSelectedDate={setSelectedDate}
+          setMousePosition={setMousePosition}
+          setSelectedCard={setSelectedCard}
         />
       ) : (
         <StyledSchedulerFrame>
@@ -386,6 +402,8 @@ function App() {
             schedulerSize={schedulerSize}
             setShowAddTaskModal={setShowAddTaskModal}
             setSelectedDate={setSelectedDate}
+            setMousePosition={setMousePosition}
+            setSelectedCard={setSelectedCard}
           />
         </StyledSchedulerFrame>
       )}

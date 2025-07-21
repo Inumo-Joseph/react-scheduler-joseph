@@ -12,23 +12,14 @@ export const splitToPages = (
   recordsThreshold: number
 ) => {
   const pages: PaginatedSchedulerData[] = [];
+
   let leftIndex = 0;
   let singlePage: PaginatedSchedulerRow[] = [];
   let pageRecords = 0;
 
   if (projectsPerPerson.length > recordsThreshold) {
-    if (data.length === 0) {
-      return pages;
-    }
-
     projectsPerPerson.forEach((projects, i) => {
-      const newItem = {
-        id: data[i].id,
-        label: data[i].label,
-        data: projects.map((projectArray) =>
-          projectArray.filter((task) => !task.id.includes("-recurring-"))
-        )
-      };
+      const newItem = { id: data[i].id, label: data[i].label, data: projects };
 
       if (pageRecords >= recordsThreshold) {
         pages.push(singlePage);
@@ -47,9 +38,7 @@ export const splitToPages = (
         const newItem = {
           id: data[i + leftIndex].id,
           label: data[i + leftIndex].label,
-          data: projects.map((projectArray) =>
-            projectArray.filter((task) => !task.id.includes("-recurring-"))
-          )
+          data: projects
         };
         singlePage.push(newItem);
 
@@ -59,23 +48,12 @@ export const splitToPages = (
 
     return pages;
   }
+  projectsPerPerson.forEach((projects, i) => {
+    const newItem = { id: data[i].id, label: data[i].label, data: projects };
+    singlePage.push(newItem);
+  });
 
-  if (data.length === 0) {
-    return pages;
-  } else {
-    projectsPerPerson.forEach((projects, i) => {
-      const newItem = {
-        id: data[i].id,
-        label: data[i].label,
-        data: projects.map((projectArray) =>
-          projectArray.filter((task) => !task.id.includes("-recurring-"))
-        )
-      };
-      singlePage.push(newItem);
-    });
+  pages.push(singlePage);
 
-    pages.push(singlePage);
-
-    return pages;
-  }
+  return pages;
 };

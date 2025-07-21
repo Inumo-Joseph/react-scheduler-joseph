@@ -56,7 +56,9 @@ export const Calendar: FC<CalendarProps> = ({
   reccuringIcon,
   SchedulerRef,
   setShowAddTaskModal,
-  setSelectedDate
+  setSelectedDate,
+  setMousePosition,
+  setSelectedCard
 }) => {
   const [tooltipData, setTooltipData] = useState<TooltipData>(initialTooltipData);
   const [isVisible, setIsVisible] = useState(false);
@@ -93,7 +95,6 @@ export const Calendar: FC<CalendarProps> = ({
           let nextDate = dayjs(task.startDate);
           let endDate = dayjs(task.dueDate);
           for (let i = 1; i <= 3; i++) {
-            // e.g., 3 future recurrences
             switch (task.recurring) {
               case "daily":
                 nextDate = nextDate.add(1, "day");
@@ -218,6 +219,7 @@ export const Calendar: FC<CalendarProps> = ({
     debouncedHandleMouseOver,
     handleMouseLeave,
     projectsPerPerson,
+    totalRowsPerPage,
     rowsPerItem,
     startDate,
     zoom,
@@ -272,7 +274,7 @@ export const Calendar: FC<CalendarProps> = ({
               <Grid
                 data={page}
                 zoom={zoom}
-                rows={totalRowsPerPage}
+                rows={rowsPerPerson?.reduce((acc, value) => acc + value, 0) || totalRowsPerPage}
                 ref={gridRef}
                 onTileHover={handleTileHover}
                 projectData={data}
@@ -292,6 +294,9 @@ export const Calendar: FC<CalendarProps> = ({
                 reccuringIcon={reccuringIcon}
                 setShowAddTaskModal={setShowAddTaskModal}
                 setSelectedDate={setSelectedDate}
+                setMousePosition={setMousePosition}
+                setSelectedCard={setSelectedCard}
+                filteredData={page}
               />
             </div>
           ) : (

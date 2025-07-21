@@ -27,6 +27,9 @@ export type GridProps = {
   setShowAddTaskModal?: React.Dispatch<React.SetStateAction<boolean>>;
   setSelectedDate?: React.Dispatch<React.SetStateAction<Date | undefined>>;
   handleDragEnd?: (event: any) => void;
+  setMousePosition?: React.Dispatch<React.SetStateAction<{ x: number; y: number } | undefined>>;
+  setSelectedCard?: React.Dispatch<React.SetStateAction<any>>;
+  filteredData?: any;
 };
 
 export type StyledSpanProps = {
