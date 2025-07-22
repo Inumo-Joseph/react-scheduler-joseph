@@ -64,6 +64,7 @@ export type TileProps = {
   tilePositions?: Record<string, { x: number; y: number; width: number; height: number }>;
   onTileHover?: (data: SchedulerProjectData, ref: React.RefObject<HTMLButtonElement>) => void;
   canvasRef?: React.RefObject<HTMLCanvasElement>;
+  setClickedTask?: React.Dispatch<React.SetStateAction<any>>;
 };
 
 export type StyledTextProps = {

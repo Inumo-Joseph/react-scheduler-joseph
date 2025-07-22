@@ -58,7 +58,8 @@ export const Calendar: FC<CalendarProps> = ({
   setShowAddTaskModal,
   setSelectedDate,
   setMousePosition,
-  setSelectedCard
+  setSelectedCard,
+  setClickedTask
 }) => {
   const [tooltipData, setTooltipData] = useState<TooltipData>(initialTooltipData);
   const [isVisible, setIsVisible] = useState(false);
@@ -298,6 +299,7 @@ export const Calendar: FC<CalendarProps> = ({
                 setMousePosition={setMousePosition}
                 setSelectedCard={setSelectedCard}
                 filteredData={page}
+                setClickedTask={setClickedTask}
               />
             </div>
           ) : (

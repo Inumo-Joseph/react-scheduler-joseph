@@ -47,7 +47,8 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
     setSelectedDate,
     setMousePosition,
     setSelectedCard,
-    filteredData
+    filteredData,
+    setClickedTask
   },
   ref
 ) {
@@ -335,6 +336,7 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
             reccuringIcon={reccuringIcon}
             handleDragEnd={handleDragEnd}
             canvasRef={canvasRef}
+            setClickedTask={setClickedTask}
           />
         </DndContext>
         <StyledCanvas ref={canvasRef} />

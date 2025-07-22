@@ -35,7 +35,8 @@ const Scheduler = ({
   setShowAddTaskModal,
   setSelectedDate,
   setMousePosition,
-  setSelectedCard
+  setSelectedCard,
+  setClickedTask
 }: SchedulerProps) => {
   // eslint-disable-next-line
 
@@ -139,6 +140,7 @@ const Scheduler = ({
                   setSelectedDate={setSelectedDate}
                   setMousePosition={setMousePosition}
                   setSelectedCard={setSelectedCard}
+                  setClickedTask={setClickedTask}
                 />
               </StyledInnerWrapper>
             </StyledOutsideWrapper>

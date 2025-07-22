@@ -35,7 +35,8 @@ const Tile: FC<TileProps> = ({
   Users,
   onAssignTask,
   form,
-  reccuringIcon
+  reccuringIcon,
+  setClickedTask
 }) => {
   const { date } = useCalendar();
   let tileRef = useRef<HTMLDivElement>(null);
@@ -209,6 +210,18 @@ const Tile: FC<TileProps> = ({
     effectiveIsHidden = data.isCompleted ? true : isHidden;
   }
 
+  let actualTruncate = truncateText;
+  if (zoom === 3 || zoom === 0) {
+    if (
+      truncateText &&
+      data.isRecurring &&
+      data.recurring === "Daily" &&
+      data.id.includes("-recurring")
+    ) {
+      actualTruncate = false;
+    }
+  }
+
   const isSelectedFrom = form.watch("from");
   const isRecurringSelected = form.watch("isRecurring");
 
@@ -303,7 +316,10 @@ const Tile: FC<TileProps> = ({
               <div
                 style={{ color: "black", display: "flex" }}
                 className=" pt-1 pl-1"
-                onClick={() => setPopupOpen(false)}>
+                onClick={() => {
+                  setPopupOpen(false);
+                  setClickedTask?.(data);
+                }}>
                 {renderData}
               </div>
             </div>
@@ -331,7 +347,7 @@ const Tile: FC<TileProps> = ({
               handleTileHover;
             }}>
             <StyledTextWrapper>
-              <StyledStickyWrapper $allowOverflow={truncateText}>
+              <StyledStickyWrapper $allowOverflow={actualTruncate}>
                 <>
                   {/* UsersIcon and Title on the same line */}
                   <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
@@ -343,7 +359,7 @@ const Tile: FC<TileProps> = ({
                     <div
                       style={{
                         color: "black",
-                        ...(!truncateText && {
+                        ...(!actualTruncate && {
                           textOverflow: "ellipsis",
                           overflow: "hidden",
                           whiteSpace: "nowrap"
@@ -354,7 +370,7 @@ const Tile: FC<TileProps> = ({
                   </div>
                   {/* Subtitle and description below */}
                   <StyledText>{data.subtitle}</StyledText>
-                  <StyledDescription $allowOverflow={truncateText}>
+                  <StyledDescription $allowOverflow={actualTruncate}>
                     {data.description}
                   </StyledDescription>
                 </>

@@ -28,6 +28,7 @@ export type TilesProps = {
   form?: any;
   canvasRef?: React.RefObject<HTMLCanvasElement>;
   handleDragEnd?: (event: DragEndEvent) => void;
+  setClickedTask?: React.Dispatch<React.SetStateAction<any>>;
 };
 
 export type PlacedTiles = JSX.Element[];

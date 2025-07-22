@@ -23,7 +23,8 @@ const Tiles: FC<TilesProps> = ({
   tilePositions,
   reccuringIcon,
   canvasRef,
-  handleDragEnd
+  handleDragEnd,
+  setClickedTask
 }) => {
   const recurringMap = new Map<string, SchedulerProjectData[]>();
 
@@ -72,6 +73,7 @@ const Tiles: FC<TilesProps> = ({
                   tilePositions={tilePositions}
                   canvasRef={canvasRef}
                   handleDragEnd={handleDragEnd}
+                  setClickedTask={setClickedTask}
                 />
               ));
               globalRowIndex++; // only once for the whole group
@@ -102,6 +104,7 @@ const Tiles: FC<TilesProps> = ({
                   tilePositions={tilePositions}
                   canvasRef={canvasRef}
                   handleDragEnd={handleDragEnd}
+                  setClickedTask={setClickedTask}
                 />
               );
               globalRowIndex++;

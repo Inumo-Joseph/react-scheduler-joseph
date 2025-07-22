@@ -34,9 +34,10 @@ export const getTileXAndWidth = (item: DatesRange, range: DatesRange, zoom: numb
         break;
       case 3:
         position =
-          (item.startDate.startOf("month").diff(range.startDate.startOf("month"), "month") * 30 +
+          ((item.startDate.startOf("month").diff(range.startDate.startOf("month"), "month") * 30 +
             (item.startDate.date() - 1)) *
-          cellWidth;
+            cellWidth) /
+          3;
         break;
 
       default: {
