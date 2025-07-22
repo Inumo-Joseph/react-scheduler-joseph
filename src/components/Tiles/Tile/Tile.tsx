@@ -41,7 +41,6 @@ const Tile: FC<TileProps> = ({
   let tileRef = useRef<HTMLDivElement>(null);
 
   const [popupOpen, setPopupOpen] = useState(false);
-  const [selectedTask, setSelectedTask] = useState<any>({});
   const [tileNode, setTileNode] = useState<HTMLDivElement | null>(null);
   const {
     zoom,
@@ -50,6 +49,8 @@ const Tile: FC<TileProps> = ({
   } = useCalendar();
 
   const datesRange = getDatesRange(date, zoom);
+  // console.log("dateRange for", data, "with Date", date)
+
   const { y, x, width } = getTileProperties(
     row,
     datesRange.startDate,
@@ -146,7 +147,7 @@ const Tile: FC<TileProps> = ({
   );
 
   const handleTileHover = (data: SchedulerProjectData) => {};
-  const [tilePopup, setTilePopup] = useState<boolean>(false);
+  const [selectedTask, setSelectedTask] = useState<any | null>();
   const handleMouseLeave = useCallback(() => {
     debouncedHandleMouseOver.current.cancel();
     setIsVisible(false);
@@ -208,8 +209,8 @@ const Tile: FC<TileProps> = ({
     effectiveIsHidden = data.isCompleted ? true : isHidden;
   }
 
-  // const isSelectedFrom = form.watch("from");
-  // const isRecurringSelected = form.watch("isRecurring");
+  const isSelectedFrom = form.watch("from");
+  const isRecurringSelected = form.watch("isRecurring");
 
   return (
     <div
@@ -271,16 +272,16 @@ const Tile: FC<TileProps> = ({
                 })}
               </div>
 
-              {/* {data.recurring && (
+              {data.recurring && (
                 <div
                   className="relative flex text-[white] w-[40px] h-[21px] px-1 items-center justify-between rounded-[4px]"
                   style={{ backgroundColor: getStatus(data).background }}>
                   {reccuringIcon}
                   <p>{data.recurring?.[0]}</p>
                 </div>
-              )} */}
+              )}
 
-              {/* {alarmClock?.({
+              {alarmClock?.({
                 form: form,
                 task: data,
                 setAddTaskMonth: setAddTaskMonth,
@@ -290,16 +291,14 @@ const Tile: FC<TileProps> = ({
                 setSelectedTask: setSelectedTask,
                 addTaskMonth: addTaskMonth,
                 addTaskDate: addTaskDate,
-                  setPopupOpen: setPopupOpen
+                setPopupOpen: setPopupOpen
+              })}
 
-              })} */}
-
-              {/* {Users?.({
+              {Users?.({
                 form: form,
                 task: data,
                 setPopupOpen: setPopupOpen
-
-              })} */}
+              })}
 
               <div
                 style={{ color: "black", display: "flex" }}

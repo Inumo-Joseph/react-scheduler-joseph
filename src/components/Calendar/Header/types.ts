@@ -7,4 +7,5 @@ export type HeaderProps = {
   setTruncate?: React.Dispatch<React.SetStateAction<boolean>>;
   showCompleted?: boolean;
   setShowCompleted?: React.Dispatch<React.SetStateAction<boolean>>;
+  Rows?: number;
 };

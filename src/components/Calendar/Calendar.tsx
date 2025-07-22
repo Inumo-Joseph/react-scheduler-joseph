@@ -92,11 +92,10 @@ export const Calendar: FC<CalendarProps> = ({
         expandedTasks.push(task); // original
 
         if (task.isRecurring && task.recurring) {
-          console.log("Creating recurring tasks for", task);
           let nextDate = dayjs(task.startDate);
           let endDate = dayjs(task.dueDate);
           for (let i = 1; i <= 3; i++) {
-            switch (task.recurring) {
+            switch (task.recurring.toLowerCase()) {
               case "daily":
                 nextDate = nextDate.add(1, "day");
                 endDate = endDate.add(1, "day");
@@ -262,6 +261,7 @@ export const Calendar: FC<CalendarProps> = ({
           <Header
             zoom={zoom}
             topBarWidth={topBarWidth}
+            Rows={rowsPerPerson?.reduce((acc, value) => acc + value, 0) || totalRowsPerPage}
             showThemeToggle={showThemeToggle}
             toggleTheme={toggleTheme}
             truncateText={schedulerTruncateText}

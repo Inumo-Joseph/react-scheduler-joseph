@@ -21,7 +21,8 @@ export const drawHeader = (
   startDate: Day,
   weekLabel: string,
   dayOfYear: number,
-  theme: Theme
+  theme: Theme,
+  Rows?: number
 ) => {
   switch (zoom) {
     case 0:
@@ -30,7 +31,7 @@ export const drawHeader = (
       break;
 
     case 1:
-      drawDaysOnBottom(ctx, cols, startDate, theme);
+      drawDaysOnBottom(ctx, cols, startDate, theme, Rows);
       break;
 
     case 3:

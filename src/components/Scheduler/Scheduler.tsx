@@ -68,27 +68,31 @@ const Scheduler = ({
     }
   };
 
-  useEffect(() => {
-    const handleResize = () => {
-      if (outsideWrapperRef.current) {
-        setTopBarWidth(outsideWrapperRef.current.clientWidth);
-      }
-    };
+  const handleResize = () => {
+    if (outsideWrapperRef.current) {
+      setTopBarWidth(outsideWrapperRef.current.clientWidth);
+    }
+  };
 
+  useEffect(() => {
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  }, [handleResize]);
 
-  let filteredData = data;
+  const filteredData = useMemo(() => {
+    if (!hideCheckedItems) return data;
 
-  if (hideCheckedItems) {
-    filteredData = data
+    return data
       .map((row) => ({
         ...row,
         data: row.data.filter((task) => !task.isCompleted)
       }))
-      .filter((row) => row.data.length > 0); // remove rows with no completed tasks
+      .filter((row) => row.data.length > 0);
+  }, [data, hideCheckedItems]);
+
+  if (!data?.length && !isLoading) {
+    return null; // or a lightweight empty state component
   }
 
   if (!outsideWrapperRef.current) null;

@@ -24,11 +24,11 @@ export const drawDaysOnBottom = (
   ctx: CanvasRenderingContext2D,
   cols: number,
   startDate: Day,
-  theme: Theme
+  theme: Theme,
+  Rows?: number
 ) => {
   let xPos = -25;
   const yPos = headerMonthHeight - 15;
-
   for (let i = 0; i < cols; i++) {
     const day = parseDay(
       dayjs(`${startDate.year}-${startDate.month + 1}-${startDate.dayOfMonth}`).add(i, "days")
@@ -54,7 +54,8 @@ export const drawDaysOnBottom = (
     const textWidth = ctx.measureText(dayLabel).width;
     const textX = xPos + (dayWidth - textWidth) / 2;
     const lineStartY = yPos + 7;
-    let lineEndY = boxHeight * cols; // Use provided height or default
+    let lineEndY = boxHeight * cols;
+    Rows ? (lineEndY = boxHeight * Rows) : (lineEndY = boxHeight * cols); // Use provided height or default
     // Draw the text
     if (isToday) {
       // Draw vertical green linew

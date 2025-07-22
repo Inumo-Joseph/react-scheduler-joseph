@@ -52,107 +52,11 @@ const Topbar: FC<TopbarProps> = ({
   const { colors } = useTheme();
   const { filterButtonState = -1 } = config;
 
-  const handleClearFilters: MouseEventHandler<HTMLButtonElement> = (event) => {
-    event.stopPropagation();
-    onClearFilterData?.();
-  };
-
-  const toggleShowCompleted = () => {
-    // console.log("Changing showcompleted", showCompleted, "to", !showCompleted)
-    setShowCompleted?.(!showCompleted);
-  };
-
   return (
     <Wrapper width={width}>
-      <div className="" style={{ paddingTop: "1px" }}>
-        {/* <span
-          className=""
-          style={{
-            borderColor: "black",
-            borderRadius: "10px",
-            padding: "10px",
-            marginTop: "10px"
-          }}> */}
-        {/* <button className="">
-            <Zoom>
-              <IconButton
-                isDisabled={!isPrevZoom}
-                onClick={zoomOut}
-                isFullRounded
-                iconName="subtract"
-                width="14"
-              />
-
-              <span className=""> Months-Quarters, Days-Weeks </span>
-
-              <IconButton
-                isDisabled={!isNextZoom}
-                onClick={zoomIn}
-                isFullRounded
-                iconName="add"
-                width="14"
-              />
-            </Zoom>
-          </button>
-        </span>
-        <span className="" style={{ borderColor: "black", marginTop: "10px" }}>
-          <Button
-            className=""
-            onClick={() => {
-              setTruncate?.(!truncateText);
-            }}>
-            <ArrowRightToLineIcon
-              style={{
-                ...(truncateText && {
-                  color: "green"
-                })
-              }}></ArrowRightToLineIcon>
-          </Button>
-        </span>
-
-        <Button className=" " onClick={toggleShowCompleted}>
-          {" "}
-          <CheckSquare2Icon
-            style={{
-              ...(showCompleted && {
-                color: "green"
-              })
-            }}></CheckSquare2Icon>
-        </Button>
-
-        <span style={{ paddingTop: "10px" }}>
-          <Button onClick={handleGoToday}>
-            <Calendar width={"25"}> </Calendar>
-          </Button>
-        </span>
-
-        <Button disabled={!data?.length} style={{ cursor: "" }}>
-          <ArrowLeftCircleIcon onClick={handleGoPrev}>{topbar.prev}</ArrowLeftCircleIcon>
-        </Button>
-        <Button disabled={!data?.length} style={{ cursor: "" }}>
-          <ArrowRightCircleIcon onClick={handleGoNext}>{topbar.next}</ArrowRightCircleIcon>
-        </Button> */}
-      </div>
+      <div className="" style={{ paddingTop: "1px" }}></div>
 
       <NavigationWrapper></NavigationWrapper>
-
-      {/* <Filters>
-        {filterButtonState >= 0 && (
-          <IconButton
-            variant={filterButtonState ? "filled" : "outlined"}
-            iconName="filter"
-            width="16"
-            height="16"
-            onClick={handleFilterData}>
-            {topbar.filters}
-            {!!filterButtonState && (
-              <span onClick={handleClearFilters}>
-                <Icon iconName="close" height="16" width="16" fill={colors.textSecondary} />
-              </span>
-            )}
-          </IconButton>
-        )}
-      </Filters> */}
 
       <OptionsContainer>{showThemeToggle && <Toggle toggleTheme={toggleTheme} />}</OptionsContainer>
     </Wrapper>

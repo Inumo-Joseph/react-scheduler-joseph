@@ -255,8 +255,6 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
     const rowHeight = gridHeight / rows;
     const columnWidth = gridWidth / cols;
 
-    console.log("MouseX", mouseX);
-    console.log("gridWith", gridWidth);
     const clickedColumn = Math.floor(mouseX / columnWidth);
     const clickedRows = Math.floor(mouseY / rowHeight);
 

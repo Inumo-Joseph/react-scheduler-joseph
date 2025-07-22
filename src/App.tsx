@@ -25,7 +25,7 @@ function App() {
     yearsCovered: 0,
     startDate: undefined,
     maxRecordsPerPage: 50,
-    isFullscreen: true
+    isFullscreen: false
   });
 
   const { isFullscreen, maxRecordsPerPage } = values;
@@ -218,6 +218,8 @@ function App() {
     }
   ];
 
+  console.log("Dummy Data", dummyData);
+
   const onAssignTask = (taskId: any, updatedTask: any, flag = null) => {
     if (flag) {
       alert(`${flag}`);
@@ -230,14 +232,6 @@ function App() {
           console.log(task);
         }
       })
-    );
-  };
-
-  const renderPopup = () => {
-    return (
-      <div
-        className="flex flex-col items-start "
-        style={{ color: "white", display: "flex", flexDirection: "row" }}></div>
     );
   };
 
@@ -302,7 +296,6 @@ function App() {
             </div>
           </div>
         </Button>{" "}
-        {/* This is supposed to triggger a function that goes to the current day */}
         <Button>
           <select
             name="select"

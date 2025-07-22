@@ -12,8 +12,6 @@ export type CalendarContextType = {
   zoomIn: () => void;
   zoomOut: () => void;
   handleFilterData: () => void;
-  updateTilesCoords: (coords: TilePositionMap) => void;
-
   onClearFilterData?: () => void;
   data?: SchedulerData;
   zoom: ZoomLevel;

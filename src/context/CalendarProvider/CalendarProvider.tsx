@@ -89,7 +89,6 @@ const CalendarProvider = ({
   const parsedStartDate = parseDay(startDate);
   const outsideWrapper = useRef<HTMLElement | null>(null);
   type TilePositionMap = Record<string, { x: number; y: number; width: number; height: number }>;
-  const [tilesCoords, setTilesCoords] = useState<TilePositionMap>({});
 
   const moveHorizontalScroll = useCallback(
     (direction: Direction, behavior: ScrollBehavior = "auto") => {
@@ -125,10 +124,6 @@ const CalendarProvider = ({
     },
     []
   );
-
-  const updateTilesCoords = (coords: TilePositionMap) => {
-    setTilesCoords(coords);
-  };
 
   const loadMore = useCallback(
     (direction: Direction) => {
@@ -281,7 +276,6 @@ const CalendarProvider = ({
         startDate: parsedStartDate,
         dayOfYear,
         handleFilterData,
-        updateTilesCoords,
         recordsThreshold: maxRecordsPerPage,
         onClearFilterData
       }}>

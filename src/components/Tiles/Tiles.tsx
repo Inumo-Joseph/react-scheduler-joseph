@@ -46,7 +46,6 @@ const Tiles: FC<TilesProps> = ({
         return person.data.map((projectsPerRow) => {
           return projectsPerRow.flatMap((project) => {
             const baseId = project.id.split("-recurring")[0];
-
             if (project.isRecurring && !placedIds.has(baseId)) {
               const group = recurringMap.get(baseId) ?? [];
               placedIds.add(baseId);

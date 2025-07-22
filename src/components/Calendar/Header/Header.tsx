@@ -19,7 +19,8 @@ const Header: FC<HeaderProps> = ({
   setTruncate,
   truncateText,
   showCompleted,
-  setShowCompleted
+  setShowCompleted,
+  Rows
 }) => {
   const { week } = useLanguage();
   const { date, cols, dayOfYear, startDate } = useCalendar();
@@ -33,7 +34,7 @@ const Header: FC<HeaderProps> = ({
       const height = currentHeaderHeight + 1;
       resizeCanvas(ctx, width, height);
 
-      drawHeader(ctx, zoom, cols, startDate, week, dayOfYear, theme);
+      drawHeader(ctx, zoom, cols, startDate, week, dayOfYear, theme, Rows);
     },
     [cols, dayOfYear, startDate, week, zoom, theme]
   );

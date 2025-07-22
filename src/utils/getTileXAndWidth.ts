@@ -18,22 +18,29 @@ export const getTileXAndWidth = (item: DatesRange, range: DatesRange, zoom: numb
       cellWidth = zoom2ColumnWidth;
       break;
     case 3:
-      cellWidth = monthWidth / 27.7;
+      cellWidth = 3;
       break;
     default:
       cellWidth = dayWidth;
   }
   const getX = () => {
     let position;
+
     switch (zoom) {
       case 2:
         position =
           (item.startDate.diff(range.startDate, "minute") / minutesInHour + 1) * cellWidth -
           cellWidth / 2;
         break;
+      case 3:
+        position =
+          (item.startDate.startOf("month").diff(range.startDate.startOf("month"), "month") * 30 +
+            (item.startDate.date() - 1)) *
+          cellWidth;
+        break;
 
       default: {
-        position = (item.startDate.diff(range.startDate, "day") + 2) * cellWidth;
+        position = item.startDate.diff(range.startDate, "day") * cellWidth;
       }
     }
     return Math.max(0, position);
