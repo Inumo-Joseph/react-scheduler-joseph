@@ -147,7 +147,6 @@ const Tile: FC<TileProps> = ({
     )
   );
 
-  const handleTileHover = (data: SchedulerProjectData) => {};
   const [selectedTask, setSelectedTask] = useState<any | null>();
   const handleMouseLeave = useCallback(() => {
     debouncedHandleMouseOver.current.cancel();
@@ -170,8 +169,6 @@ const Tile: FC<TileProps> = ({
   }, [form, selectedTask]);
 
   useEffect(() => {
-    handleTileHover(data);
-
     const handleMouseOver = (e: MouseEvent) =>
       debouncedHandleMouseOver.current(e, startDate, rowsPerItem, projectsPerPerson, zoom);
     const gridArea = tileNode;
@@ -215,7 +212,7 @@ const Tile: FC<TileProps> = ({
     if (
       truncateText &&
       data.isRecurring &&
-      data.recurring === "Daily" &&
+      data.recurring?.toLocaleLowerCase() === "daily" &&
       data.id.includes("-recurring")
     ) {
       actualTruncate = false;
@@ -229,7 +226,6 @@ const Tile: FC<TileProps> = ({
     <div
       onMouseEnter={() => {
         setPopupOpen(true);
-        handleTileHover;
       }}
       onMouseLeave={() => setPopupOpen(false)}>
       <Popup
@@ -290,7 +286,7 @@ const Tile: FC<TileProps> = ({
                   className="relative flex text-[white] w-[40px] h-[21px] px-1 items-center justify-between rounded-[4px]"
                   style={{ backgroundColor: getStatus(data).background }}>
                   {reccuringIcon}
-                  <p>{data.recurring?.[0]}</p>
+                  <p>{data.recurring?.[0].toUpperCase()}</p>
                 </div>
               )}
 
@@ -317,7 +313,6 @@ const Tile: FC<TileProps> = ({
                 style={{ color: "black", display: "flex" }}
                 className=" pt-1 pl-1"
                 onClick={() => {
-                  setPopupOpen(false);
                   setClickedTask?.(data);
                 }}>
                 {renderData}
@@ -333,6 +328,8 @@ const Tile: FC<TileProps> = ({
             style={{
               left: `${x}px`,
               top: `${y}px`,
+              overflow: actualTruncate ? "hidden" : "visible",
+
               backgroundColor: `${data.bgColor ?? "#ffcc4d"}`,
               opacity: isDragging ? 0.5 : effectiveIsHidden ? "0.4" : "1", // Add isDragging opacity
               width: `${width}px`,
@@ -344,7 +341,6 @@ const Tile: FC<TileProps> = ({
             }}
             onMouseEnter={() => {
               setPopupOpen(true);
-              handleTileHover;
             }}>
             <StyledTextWrapper>
               <StyledStickyWrapper $allowOverflow={actualTruncate}>
@@ -359,11 +355,16 @@ const Tile: FC<TileProps> = ({
                     <div
                       style={{
                         color: "black",
-                        ...(!actualTruncate && {
-                          textOverflow: "ellipsis",
-                          overflow: "hidden",
-                          whiteSpace: "nowrap"
-                        })
+                        ...(actualTruncate
+                          ? {
+                              textOverflow: "ellipsis",
+                              overflow: "hidden",
+                              whiteSpace: "nowrap"
+                            }
+                          : {
+                              overflow: "visible",
+                              whiteSpace: "normal"
+                            })
                       }}>
                       {data.name}
                     </div>

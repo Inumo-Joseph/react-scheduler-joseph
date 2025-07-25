@@ -30,13 +30,9 @@ const Scheduler = ({
   schedulerZoom,
   schedulerTruncate,
   todayClicked,
-  schedulerSize,
   reccuringIcon,
-  setShowAddTaskModal,
-  setSelectedDate,
-  setMousePosition,
-  setSelectedCard,
-  setClickedTask
+  setClickedTask,
+  taskInteractionProps
 }: SchedulerProps) => {
   // eslint-disable-next-line
 
@@ -83,7 +79,6 @@ const Scheduler = ({
 
   const filteredData = useMemo(() => {
     if (!hideCheckedItems) return data;
-
     return data
       .map((row) => ({
         ...row,
@@ -93,7 +88,7 @@ const Scheduler = ({
   }, [data, hideCheckedItems]);
 
   if (!data?.length && !isLoading) {
-    return null; // or a lightweight empty state component
+    return null;
   }
 
   if (!outsideWrapperRef.current) null;
@@ -133,13 +128,9 @@ const Scheduler = ({
                   schedulerZoom={schedulerZoom}
                   schedulerTruncateText={schedulerTruncate}
                   addTaskButton={addTaskButton}
-                  calendarScale={schedulerSize}
                   SchedulerRef={outsideWrapperRef}
                   reccuringIcon={reccuringIcon}
-                  setShowAddTaskModal={setShowAddTaskModal}
-                  setSelectedDate={setSelectedDate}
-                  setMousePosition={setMousePosition}
-                  setSelectedCard={setSelectedCard}
+                  taskInteractionProps={taskInteractionProps}
                   setClickedTask={setClickedTask}
                 />
               </StyledInnerWrapper>

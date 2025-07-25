@@ -24,14 +24,18 @@ export type GridProps = {
   form?: any;
   calendarScale?: any;
   SchedulerRef?: React.RefObject<HTMLDivElement>;
-  setShowAddTaskModal?: React.Dispatch<React.SetStateAction<boolean>>;
-  setSelectedDate?: React.Dispatch<React.SetStateAction<Date | undefined>>;
   handleDragEnd?: (event: any) => void;
-  setMousePosition?: React.Dispatch<React.SetStateAction<{ x: number; y: number } | undefined>>;
-  setSelectedCard?: React.Dispatch<React.SetStateAction<any>>;
   filteredData?: any;
   setClickedTask?: React.Dispatch<React.SetStateAction<any>>;
+  taskInteractionProps?: TaskInteractionHandlers;
 };
+
+export interface TaskInteractionHandlers {
+  setMousePosition?: React.Dispatch<React.SetStateAction<{ x: number; y: number } | undefined>>;
+  setSelectedDate?: React.Dispatch<React.SetStateAction<Date | undefined>>;
+  setShowAddTaskModal?: React.Dispatch<React.SetStateAction<boolean>>;
+  setSelectedCard?: React.Dispatch<React.SetStateAction<any>>;
+}
 
 export type StyledSpanProps = {
   position: "left" | "right";

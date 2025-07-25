@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useRef, useState } from "react";
+import { FC, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { SchedulerProjectData } from "@/types/global";
 import { Tile } from "..";
 import { PlacedTiles, TilesProps } from "./types";

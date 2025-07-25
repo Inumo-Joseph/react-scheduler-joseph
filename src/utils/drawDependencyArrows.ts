@@ -14,7 +14,6 @@ export function drawDependencyArrows(
   data: SchedulerProjectData[],
   tilePositions: TilePositionMap,
   zoom: number,
-  scale?: number,
   showHideChecked?: boolean,
   scrollOffset?: { scrollTop: number; scrollLeft: number }
 ) {
@@ -43,15 +42,15 @@ export function drawDependencyArrows(
 
     const xoffset = canvasRect.top + headerHeight + 15;
 
-    const fromx = (scale ?? 1) * from.x;
-    const fromy = (scale ?? 1) * from.y + yoffset;
-    const fromWidth = (scale ?? 1) * from.width;
-    const fromheight = (scale ?? 1) * from.height;
+    const fromx = from.x;
+    const fromy = from.y + yoffset;
+    const fromWidth = from.width;
+    const fromheight = from.height;
 
-    const tox = (scale ?? 1) * to.x;
-    const toy = (scale ?? 1) * to.y + yoffset;
-    const toWidth = (scale ?? 1) * to.width;
-    const toHeight = (scale ?? 1) * to.height;
+    const tox = to.x;
+    const toy = to.y + yoffset;
+    const toWidth = to.width;
+    const toHeight = to.height;
 
     drawArrow(
       ctx,

@@ -34,8 +34,6 @@ function App() {
     return <div></div>;
   };
 
-  const [isHidden, setIsHidden] = useState(false);
-
   const dummyData = [
     {
       id: "row-1",
@@ -215,10 +213,112 @@ function App() {
           isRecurring: false
         }
       ]
+    },
+
+    {
+      id: "row-3",
+      label: { icon: "📁", title: "Project Cee", subtitle: "Phase 1" },
+      data: [
+        {
+          cardId: "row-3",
+          id: "task-21",
+          name: "  Emptying Locker Looeivill",
+          startDate: new Date("2025-07-28"),
+          dueDate: new Date("2025-07-06"),
+          occupancy: 100,
+          parentTaskId: "task-23",
+          bgColor: "rgba(133, 193, 233, 0.83)",
+          isCompleted: false,
+          isRecurring: false
+        },
+        {
+          cardId: "row-3",
+          id: "task-22",
+          name: "Doin ya dad",
+          startDate: new Date("2025-08-03"),
+          dueDate: new Date("2025-09-06"),
+          occupancy: 100,
+          bgColor: "rgba(133, 193, 233, 0.83)",
+          isCompleted: false,
+          isRecurring: false
+        },
+        {
+          cardId: "row-3",
+          id: "task-23",
+          name: "This a long sentence made to test out the text truncating capabailities of the tile",
+          startDate: new Date("2025-08-03"),
+          dueDate: new Date("2025-08-03"),
+          occupancy: 100,
+          users: ["Rob"],
+          bgColor: "rgba(133, 193, 233, 0.83)",
+          isCompleted: false,
+          isRecurring: false
+        },
+        {
+          cardId: "row-3",
+          id: "task-24",
+          name: "Meet with new CM Orlando",
+          startDate: new Date("2025-07-20"),
+          dueDate: new Date("2025-07-027"),
+          occupancy: 100,
+          users: ["Fran"],
+          bgColor: "rgba(133, 193, 233, 0.83)",
+          isCompleted: false,
+          isRecurring: false
+        },
+        {
+          cardId: "row-3",
+          id: "task-25",
+          name: "Creatign a new task again for new card",
+          startDate: new Date("2025-07-10"),
+          dueDate: new Date("2025-07-013"),
+          occupancy: 100,
+          users: ["Colby"],
+          parentTaskId: "task-3",
+          bgColor: "rgba(133, 193, 233, 0.83)",
+          isCompleted: false,
+          isRecurring: false
+        },
+        {
+          cardId: "row-3",
+          id: "task-26",
+          name: "Task 5th shift",
+          startDate: new Date("2025-07-6"),
+          dueDate: new Date("2025-07-6"),
+          occupancy: 100,
+          bgColor: "rgba(133, 193, 233, 0.83)",
+          isCompleted: false,
+          isRecurring: true,
+          recurring: "daily"
+        },
+        {
+          cardId: "row-3",
+          id: "task-27",
+          name: "TASK 27",
+          startDate: new Date("2025-07-10"),
+          dueDate: new Date("2025-07-013"),
+          occupancy: 100,
+          users: ["Colby"],
+          bgColor: "rgba(133, 193, 233, 0.83)",
+          isCompleted: true,
+          isRecurring: true,
+          recurring: "Weekly"
+        },
+        {
+          cardId: "row-3",
+          id: "task-28",
+          name: "Something Something Yada yada makre sure Brrand Ambassadors have been paid",
+          startDate: new Date("2025-7-05"),
+          dueDate: new Date("2025-07-010"),
+          users: ["Dev"],
+          occupancy: 100,
+          bgColor: "rgba(133, 193, 233, 0.83)",
+          isCompleted: false,
+          isRecurring: false
+        }
+      ]
     }
   ];
-
-  console.log("Dummy Data", dummyData);
 
   const onAssignTask = (taskId: any, updatedTask: any, flag = null) => {
     if (flag) {
@@ -229,7 +329,6 @@ function App() {
       row.data.flatMap((task) => {
         if (task.id === updatedTask.id) {
           task = updatedTask;
-          console.log(task);
         }
       })
     );
@@ -255,6 +354,16 @@ function App() {
   const [mousePosition, setMousePosition] = useState<{ x: number; y: number }>();
   const [selectedCard, setSelectedCard] = useState<any>();
 
+  const taskInteractionProps = useMemo(
+    () => ({
+      setMousePosition,
+      setSelectedDate,
+      setShowAddTaskModal,
+      setSelectedCard
+    }),
+    [setMousePosition, setSelectedDate, setShowAddTaskModal, setSelectedCard]
+  );
+
   const handleGoTodayClick = () => {
     setTodayClicked((prev) => !prev);
   };
@@ -264,7 +373,7 @@ function App() {
       <Popup.Header>
         ADD TASK
         <Popup.Content>
-          {selectedDate?.getDate()}
+          {selectedDate?.toDateString()}
           {`At position ${mousePosition?.x} : ${mousePosition?.y}`}
           {`AND with card, ${selectedCard}`}
         </Popup.Content>
@@ -361,10 +470,7 @@ function App() {
           }
           todayClicked={todayClicked}
           schedulerSize={schedulerSize}
-          setShowAddTaskModal={setShowAddTaskModal}
-          setSelectedDate={setSelectedDate}
-          setMousePosition={setMousePosition}
-          setSelectedCard={setSelectedCard}
+          taskInteractionProps={taskInteractionProps}
         />
       ) : (
         <StyledSchedulerFrame>
@@ -384,6 +490,11 @@ function App() {
             onFilterData={handleFilterData}
             schedulerZoom={schedulerZoom}
             schedulerTruncate={truncateText}
+            config={{
+              zoom: schedulerZoom,
+              maxRecordsPerPage: maxRecordsPerPage,
+              showThemeToggle: false
+            }}
             hideCheckedItems={showChecked}
             onItemClick={(data) => console.log("clicked: ", data)}
             onAssignTask={onAssignTask}
@@ -394,10 +505,7 @@ function App() {
               </div>
             }
             schedulerSize={schedulerSize}
-            setShowAddTaskModal={setShowAddTaskModal}
-            setSelectedDate={setSelectedDate}
-            setMousePosition={setMousePosition}
-            setSelectedCard={setSelectedCard}
+            taskInteractionProps={taskInteractionProps}
           />
         </StyledSchedulerFrame>
       )}

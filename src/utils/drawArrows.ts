@@ -11,8 +11,7 @@ export function drawArrow(
     arrowCurve: 1,
     barHeight: 7,
     headerHeight: 30
-  },
-  scrollOffset?: { scrollTop: number; scrollLeft: number }
+  }
 ) {
   const curve = options.arrowCurve;
   const padding = options.padding;

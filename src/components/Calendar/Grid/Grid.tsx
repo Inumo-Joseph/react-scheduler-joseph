@@ -9,6 +9,7 @@ import {
   dayWidth,
   headerHeight,
   leftColumnWidth,
+  monthWidth,
   outsideWrapperId
 } from "@/constants";
 import { Loader, Tiles } from "@/components";
@@ -17,10 +18,8 @@ import { resizeCanvas } from "@/utils/resizeCanvas";
 import { getCanvasWidth } from "@/utils/getCanvasWidth";
 import { drawDependencyArrows } from "@/utils/drawDependencyArrows";
 import { PaginatedSchedulerData, SchedulerProjectData } from "@/types/global";
-import { getDatesRange } from "@/utils/getDatesRange";
-import { getTimeOccupancy } from "@/utils/getTimeOccupancy";
 import { parseDay } from "@/utils/dates";
-import { usePagination } from "@/hooks/usePagination";
+
 import { StyledCanvas, StyledInnerWrapper, StyledSpan, StyledWrapper } from "./styles";
 import { GridProps } from "./types";
 const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
@@ -40,26 +39,19 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
     setShowCompleted,
     onAssignTask,
     form,
-    calendarScale,
     SchedulerRef,
     reccuringIcon,
-    setShowAddTaskModal,
-    setSelectedDate,
-    setMousePosition,
-    setSelectedCard,
     filteredData,
-    setClickedTask
+    setClickedTask,
+    taskInteractionProps
   },
   ref
 ) {
   const { handleScrollNext, handleScrollPrev, date, isLoading, cols, startDate } = useCalendar();
 
-  const { page, projectsPerPerson } = usePagination(projectData);
-
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const refRight = useRef<HTMLSpanElement>(null);
   const refLeft = useRef<HTMLSpanElement>(null);
-
   const theme = useTheme();
   type TilePositionMap = Record<string, { x: number; y: number; width: number; height: number }>;
   const [tilePositions, setTilePositions] = useState<TilePositionMap>({});
@@ -127,15 +119,7 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     handleResize(ctx); // draw grid first
 
-    drawDependencyArrows(
-      ctx,
-      allProjects,
-      tilePositions,
-      zoom,
-      calendarScale,
-      hideCheckedItems,
-      scrollOffset
-    );
+    drawDependencyArrows(ctx, allProjects, tilePositions, zoom, hideCheckedItems, scrollOffset);
   }, [date, rows, zoom, handleResize, tilePositions, truncateText, hideCheckedItems, onAssignTask]);
 
   useEffect(() => {
@@ -144,7 +128,6 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
       (e) => (e[0].isIntersecting ? handleScrollNext() : null),
       { root: document.getElementById(outsideWrapperId) }
     );
-    const canvas = canvasRef.current;
 
     observerRight.observe(refRight.current);
 
@@ -245,7 +228,7 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
     const gridRect = canvasRef.current?.getBoundingClientRect();
     if (!gridRect) return;
 
-    setMousePosition?.({ x: e.clientX, y: e.clientY });
+    taskInteractionProps?.setMousePosition?.({ x: e.clientX, y: e.clientY });
 
     const mouseX = e.clientX - gridRect.left - dayWidth;
     const mouseY = e.clientY - gridRect.top + headerHeight;
@@ -254,9 +237,19 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
     const gridHeight = gridRect.height;
 
     const rowHeight = gridHeight / rows;
-    const columnWidth = gridWidth / cols;
+    let columnWidth = gridWidth / cols;
 
-    const clickedColumn = Math.floor(mouseX / columnWidth);
+    switch (zoom) {
+      case 0:
+        columnWidth = Math.ceil(columnWidth / 7);
+        break;
+
+      case 3:
+        columnWidth = Math.ceil(columnWidth / 30);
+        break;
+    }
+
+    const clickedColumn = Math.ceil(mouseX / columnWidth);
     const clickedRows = Math.floor(mouseY / rowHeight);
 
     const selectedRow = getCardFromRowClick(clickedRows, filteredData);
@@ -264,9 +257,10 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
     const clickedDate = getDateFromColumn(clickedColumn);
 
     // Show your add-task form/modal with this date
-    setShowAddTaskModal?.(true);
-    setSelectedDate?.(clickedDate);
-    setSelectedCard?.(selectedRow?.card.id);
+
+    taskInteractionProps?.setSelectedDate?.(clickedDate);
+    taskInteractionProps?.setSelectedCard?.(selectedRow?.card.id);
+    taskInteractionProps?.setShowAddTaskModal?.(true);
   };
 
   const getDateFromColumn = (clickedColumn: number) => {

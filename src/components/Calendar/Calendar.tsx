@@ -42,6 +42,7 @@ export const Calendar: FC<CalendarProps> = ({
   data,
   onItemClick,
   toggleTheme,
+  schedulerZoom,
   topBarWidth,
   renderData,
   parentChildTask,
@@ -52,24 +53,17 @@ export const Calendar: FC<CalendarProps> = ({
   form,
   addTaskButton,
   schedulerTruncateText,
-  calendarScale,
   reccuringIcon,
   SchedulerRef,
-  setShowAddTaskModal,
-  setSelectedDate,
-  setMousePosition,
-  setSelectedCard,
-  setClickedTask
+  setClickedTask,
+  taskInteractionProps
 }) => {
-  const [tooltipData, setTooltipData] = useState<TooltipData>(initialTooltipData);
-  const [isVisible, setIsVisible] = useState(false);
   const [searchPhrase, setSearchPhrase] = useState("");
   const {
     zoom,
     startDate,
     config: { includeTakenHoursOnWeekendsInDayView, showTooltip, showThemeToggle }
   } = useCalendar();
-
   const gridRef = useRef<HTMLDivElement>(null);
   const [truncateText, setTruncateText] = useState(false);
   const [hoveredTileData, setHoveredTileData] = useState<SchedulerProjectData | null>(null);
@@ -90,7 +84,7 @@ export const Calendar: FC<CalendarProps> = ({
       const expandedTasks: SchedulerProjectData[] = [];
 
       row.data.forEach((task) => {
-        expandedTasks.push(task); // original
+        expandedTasks.push(task);
 
         if (task.isRecurring && task.recurring) {
           let nextDate = dayjs(task.startDate);
@@ -169,12 +163,9 @@ export const Calendar: FC<CalendarProps> = ({
           tooltipCoords,
           rowsPerItem,
           projectsPerPerson,
-          zoom,
+          schedulerZoom,
           includeTakenHoursOnWeekendsInDayView
         );
-
-        setTooltipData({ coords: { x, y }, resourceIndex, disposition });
-        setIsVisible(true);
       },
       300
     )
@@ -200,8 +191,6 @@ export const Calendar: FC<CalendarProps> = ({
 
   const handleMouseLeave = useCallback(() => {
     debouncedHandleMouseOver.current.cancel();
-    setIsVisible(false);
-    setTooltipData(initialTooltipData);
   }, []);
 
   useEffect(() => {
@@ -233,14 +222,9 @@ export const Calendar: FC<CalendarProps> = ({
     setFilteredData(data);
   }, [data, searchPhrase, hoveredTileData]);
 
-  useEffect(() => {
-    setGridScale(calendarScale ?? 1);
-  }, [calendarScale]);
-
   return (
     <div
       style={{
-        transform: `scale(${gridScale ?? 1})`,
         transformOrigin: "center",
         width: "max-content"
       }}>
@@ -276,7 +260,7 @@ export const Calendar: FC<CalendarProps> = ({
               <Grid
                 data={page}
                 zoom={zoom}
-                rows={rowsPerPerson?.reduce((acc, value) => acc + value, 0) || totalRowsPerPage}
+                rows={rowsPerItem?.reduce((acc, value) => acc + value, 0) || totalRowsPerPage}
                 ref={gridRef}
                 onTileHover={handleTileHover}
                 projectData={data}
@@ -291,13 +275,9 @@ export const Calendar: FC<CalendarProps> = ({
                 setShowCompleted={setShowCompleted}
                 onAssignTask={onAssignTask}
                 form={form}
-                calendarScale={calendarScale}
                 SchedulerRef={SchedulerRef}
                 reccuringIcon={reccuringIcon}
-                setShowAddTaskModal={setShowAddTaskModal}
-                setSelectedDate={setSelectedDate}
-                setMousePosition={setMousePosition}
-                setSelectedCard={setSelectedCard}
+                taskInteractionProps={taskInteractionProps}
                 filteredData={page}
                 setClickedTask={setClickedTask}
               />

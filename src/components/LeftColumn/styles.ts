@@ -14,10 +14,10 @@ export const StyledWrapper = styled.div`
 `;
 
 export const StyledLeftColumnHeader = styled.div`
-  padding-bottom: 8px;
+  padding-bottom: 1px;
   position: sticky;
   top: 0;
-  height: 43px;
+  height: 40=3px;
   display: flex;
   flex-direction: column;
   justify-content: end;
