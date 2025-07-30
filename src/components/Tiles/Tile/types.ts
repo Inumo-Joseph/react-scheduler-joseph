@@ -53,7 +53,7 @@ export type TileProps = {
     id: string,
     pos: { x: number; y: number; width: number; height: number }
   ) => void;
-  isDraggingGlobal?: boolean;
+  handleDragEnd?: (event: DragEndEvent) => void;
   truncateText?: boolean;
   setTruncate?: React.Dispatch<React.SetStateAction<boolean>>;
   projectData: SchedulerData;

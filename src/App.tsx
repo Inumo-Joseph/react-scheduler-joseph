@@ -9,7 +9,15 @@ import {
   UsersIcon,
   ArrowRightFromLineIcon
 } from "lucide-react";
-import { Button, Label, StepTitle, Popup, PopupContent, PopupHeader } from "semantic-ui-react";
+import {
+  Button,
+  Label,
+  StepTitle,
+  Popup,
+  PopupContent,
+  PopupHeader,
+  Modal
+} from "semantic-ui-react";
 import { createMockData } from "./mock/appMock";
 import { ParsedDatesRange } from "./utils/getDatesRange";
 import { ConfigFormValues, SchedulerProjectData } from "./types/global";
@@ -30,10 +38,6 @@ function App() {
 
   const { isFullscreen, maxRecordsPerPage } = values;
 
-  const renderData = () => {
-    return <div></div>;
-  };
-
   const dummyData = [
     {
       id: "row-1",
@@ -49,64 +53,64 @@ function App() {
           isCompleted: true,
           isRecurring: false,
           parentTaskId: "task-20"
-        }
-        // {
-        //   cardId: "row-1",
-        //   id: "task-20",
-        //   name: "Task 20",
-        //   startDate: new Date("2025-7-21"),
-        //   dueDate: new Date("2025-08-05"),
-        //   occupancy: 100,
-        //   isCompleted: true,
-        //   isRecurring: false
-        // },
-        // {
-        //   cardId: "row-1",
-        //   id: "task-2",
-        //   name: "Task 2",
-        //   startDate: new Date("2025-07-03"),
-        //   dueDate: new Date("2025-07-10"),
-        //   occupancy: 100,
-        //   users: [],
-        //   isCompleted: false,
-        //   isRecurring: true,
-        //   recurring: "weekly"
-        // },
+        },
+        {
+          cardId: "row-1",
+          id: "task-20",
+          name: "Task 20",
+          startDate: new Date("2025-7-21"),
+          dueDate: new Date("2025-08-05"),
+          occupancy: 100,
+          isCompleted: true,
+          isRecurring: false
+        },
+        {
+          cardId: "row-1",
+          id: "task-2",
+          name: "Task 2",
+          startDate: new Date("2025-07-03"),
+          dueDate: new Date("2025-07-10"),
+          occupancy: 100,
+          users: [],
+          isCompleted: false,
+          isRecurring: true,
+          recurring: "weekly"
+        },
 
-        // {
-        //   cardId: "row-1",
-        //   id: "task-3",
-        //   name: "Task 3",
-        //   startDate: new Date("2025-07-07"),
-        //   dueDate: new Date("2025-07-06"),
-        //   occupancy: 100,
-        //   users: ["Fran"],
-        //   isCompleted: false,
-        //   isRecurring: false
-        // },
-        // {
-        //   cardId: "row-1",
-        //   id: "task-4",
-        //   name: "Task 4",
-        //   startDate: new Date("2025-07-10"),
-        //   dueDate: new Date("2025-07-013"),
-        //   occupancy: 100,
-        //   users: ["Colby"],
-        //   parentTaskId: "task-5",
-        //   isCompleted: false,
-        //   isRecurring: true,
-        //   recurring: "monthly"
-        // },
-        // {
-        //   cardId: "row-1",
-        //   id: "task-5",
-        //   name: "Task 5",
-        //   startDate: new Date("2025-07-10"),
-        //   dueDate: new Date("2025-08-013"),
-        //   occupancy: 100,
-        //   isCompleted: true,
-        //   isRecurring: false
-        // }
+        {
+          cardId: "row-1",
+          id: "task-3",
+          name: "Task 3",
+          startDate: new Date("2025-07-07"),
+          dueDate: new Date("2025-07-06"),
+          occupancy: 100,
+          users: ["Fran"],
+          isCompleted: false,
+          isRecurring: false
+        },
+        {
+          cardId: "row-1",
+          id: "task-4",
+          name: "Task 4",
+          startDate: new Date("2025-07-10"),
+          dueDate: new Date("2025-07-013"),
+          occupancy: 100,
+          users: ["Colby"],
+          parentTaskId: "task-5",
+          isCompleted: false,
+          isRecurring: true,
+          recurring: "monthly"
+        },
+        {
+          cardId: "row-1",
+          id: "task-5",
+          name: "Task 5",
+          startDate: new Date("2025-07-10"),
+          dueDate: new Date("2025-08-013"),
+          occupancy: 100,
+          isCompleted: true,
+          isRecurring: false
+        }
       ]
     }
 
@@ -334,6 +338,22 @@ function App() {
     );
   };
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleTrashClick = useCallback(() => {
+    setIsModalOpen(true);
+  }, []);
+
+  const handleConfirmDelete = () => {
+    alert("Task deleted");
+    setIsModalOpen(false);
+  };
+
+  const handleCancelDelete = () => {
+    console.log("Modal closing");
+    setIsModalOpen(false);
+  };
+
   const [range, setRange] = useState<ParsedDatesRange>({
     startDate: new Date(),
     endDate: new Date()
@@ -353,7 +373,7 @@ function App() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
   const [mousePosition, setMousePosition] = useState<{ x: number; y: number }>();
   const [selectedCard, setSelectedCard] = useState<any>();
-
+  const [clickedTask, setClickedTask] = useState<any>(null);
   const taskInteractionProps = useMemo(
     () => ({
       setMousePosition,
@@ -383,6 +403,7 @@ function App() {
     //  console.log(`Set selected Date ${selectedDate}`)
   }
 
+  console.log("clickedTask", clickedTask);
   return (
     <>
       <div style={{ paddingLeft: "300px" }}>
@@ -452,7 +473,27 @@ function App() {
           data={dummyData}
           isLoading={false}
           onFilterData={handleFilterData}
-          renderData={renderData()}
+          renderData={
+            <div>
+              <button onClick={handleTrashClick}>
+                <Trash2 />
+              </button>
+              <Modal
+                open={isModalOpen}
+                size="mini"
+                onClose={handleCancelDelete}
+                closeOnDimmerClick={true}
+                dimmer={{ style: { backgroundColor: "rgba(0,0,0,0.1)" } }}>
+                <Modal.Content>{"Do you want to Delete?"}</Modal.Content>
+                <Modal.Actions>
+                  <Button onClick={() => handleCancelDelete}>No</Button>
+                  <Button negative onClick={handleConfirmDelete}>
+                    Yes
+                  </Button>
+                </Modal.Actions>
+              </Modal>
+            </div>
+          }
           config={{
             zoom: schedulerZoom,
             maxRecordsPerPage: maxRecordsPerPage,
@@ -469,6 +510,7 @@ function App() {
             </div>
           }
           todayClicked={todayClicked}
+          setClickedTask={setClickedTask}
           schedulerSize={schedulerSize}
           taskInteractionProps={taskInteractionProps}
         />
@@ -479,14 +521,6 @@ function App() {
             onRangeChange={handleRangeChange}
             isLoading={false}
             data={dummyData}
-            renderData={
-              <div>
-                <Link
-                  className={"!w-3 !h-3 stroke-gray-400 hover:stroke-gray-500 cursor-pointer"}
-                  stroke={"green"}
-                />
-              </div>
-            }
             onFilterData={handleFilterData}
             schedulerZoom={schedulerZoom}
             schedulerTruncate={truncateText}
@@ -504,7 +538,29 @@ function App() {
                 <button onClick={() => console.log("button clicked")}>ADD TASK</button>
               </div>
             }
+            renderData={
+              <div>
+                <button onClick={handleTrashClick}>
+                  <Trash2 />
+                </button>
+                <Modal
+                  open={isModalOpen}
+                  size="mini"
+                  onClose={handleCancelDelete}
+                  closeOnDimmerClick={true}
+                  dimmer={{ style: { backgroundColor: "rgba(0,0,0,0.1)" } }}>
+                  <Modal.Content>{"Do you want to Delete?"}</Modal.Content>
+                  <Modal.Actions>
+                    <Button onClick={handleCancelDelete}>No</Button>
+                    <Button negative onClick={handleConfirmDelete}>
+                      Yes
+                    </Button>
+                  </Modal.Actions>
+                </Modal>
+              </div>
+            }
             schedulerSize={schedulerSize}
+            setClickedTask={setClickedTask}
             taskInteractionProps={taskInteractionProps}
           />
         </StyledSchedulerFrame>

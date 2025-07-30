@@ -56,22 +56,17 @@ const Tile: FC<TileProps> = memo(
     } = useCalendar();
 
     // Memoize expensive calculations
-    const datesRange = useMemo(() => getDatesRange(date, zoom), [date, zoom]);
-
-    const tileProperties = useMemo(
-      () =>
-        getTileProperties(
-          row,
-          datesRange.startDate,
-          datesRange.endDate,
-          data.startDate,
-          data.dueDate,
-          zoom
-        ),
-      [row, datesRange.startDate, datesRange.endDate, data.startDate, data.dueDate, zoom]
+    const datesRange = getDatesRange(date, zoom);
+    const tileProperties = getTileProperties(
+      row,
+      datesRange.startDate,
+      datesRange.endDate,
+      data.startDate,
+      data.dueDate,
+      zoom
     );
-
     const { y, x, width } = tileProperties;
+
     const [hoveredTileData, setHoveredTileData] = useState<SchedulerProjectData | null>(null);
     const [addTaskMonth, setAddTaskMonth] = useState<Date | undefined>(new Date());
     const [isHidden, setIsHidden] = useState(false);
@@ -100,6 +95,7 @@ const Tile: FC<TileProps> = memo(
     const isSelectedFrom = form.watch("from");
     const isRecurringSelected = form.watch("isRecurring");
 
+    // Memoize the combined ref callback
     const combinedRef = useCallback(
       (node: any) => {
         // Set all three refs to the same DOM node
@@ -147,7 +143,6 @@ const Tile: FC<TileProps> = memo(
         debounce((e: MouseEvent) => {
           if (!tileNode) return;
           const { left, top } = tileNode.getBoundingClientRect();
-          const tooltipCoords = { x: e.clientX - left, y: e.clientY - top };
         }, 300),
       [tileNode, includeTakenHoursOnWeekendsInDayView]
     );
@@ -189,13 +184,22 @@ const Tile: FC<TileProps> = memo(
         const tileRect = tileNode.getBoundingClientRect();
         const canvas = document.querySelector("canvas");
         if (!canvas) return;
+
         const canvasRect = canvas.getBoundingClientRect();
+
         reportPosition(data.id, {
           x: tileRect.left - canvasRect.left,
           y: tileRect.top - canvasRect.top + headerHeight + 15,
           width: tileRect.width,
           height: tileRect.height
         });
+        console.log("------Position for Tile-------", data);
+        console.log(
+          "Reporting position x: ",
+          tileRect.left - canvasRect.left,
+          "y:",
+          tileRect.top - canvasRect.top + headerHeight + 15
+        );
       }
     }, [zoom, tileProperties, data.id, reportPosition, tileNode, isPast]);
 
@@ -286,6 +290,7 @@ const Tile: FC<TileProps> = memo(
               form: undefined
             })}
           </div>
+
           {data.recurring && (
             <div
               className="relative flex text-[white] w-[40px] h-[21px] px-1 items-center justify-between rounded-[4px]"
@@ -310,12 +315,6 @@ const Tile: FC<TileProps> = memo(
             form: form,
             task: data
           })}
-          <div
-            style={{ color: "black", display: "flex" }}
-            className=" pt-1 pl-1"
-            onClick={handleTaskClick}>
-            {renderData}
-          </div>
         </div>
       ),
       [
@@ -325,7 +324,6 @@ const Tile: FC<TileProps> = memo(
         handleTaskToggle,
         selectedParentTasks,
         form,
-        handleTaskClick,
         renderData
       ]
     );
@@ -341,16 +339,19 @@ const Tile: FC<TileProps> = memo(
             size="mini"
             position="top left"
             on="hover" // optional: removes focus/click toggle behavior
-            content={popupContent}
+            content={
+              <div>
+                {popupContent}
+                <div
+                  style={{ color: "black", display: "flex" }}
+                  className=" pt-1 pl-1"
+                  onClick={handleTaskClick}>
+                  {renderData}
+                </div>
+              </div>
+            }
             trigger={
-              <StyledTileWrapper
-                ref={combinedRef}
-                {...attributes}
-                {...listeners}
-                style={tileStyle}
-                onMouseEnter={() => {
-                  setPopupOpen(true);
-                }}>
+              <StyledTileWrapper ref={combinedRef} {...attributes} {...listeners} style={tileStyle}>
                 <StyledTextWrapper>
                   <StyledStickyWrapper $allowOverflow={actualTruncate}>
                     <>

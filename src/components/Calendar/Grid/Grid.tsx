@@ -57,7 +57,7 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
   const allProjects: SchedulerProjectData[] = data.flatMap((row) =>
     row.data.flatMap((projectsPerRow) => projectsPerRow)
   );
-  const [isDraggingGlobal, setIsDraggingGlobal] = useState(false);
+
   const handleTilePosition = (
     id: string,
     pos: { x: number; y: number; width: number; height: number }
@@ -75,7 +75,7 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
       resizeCanvas(ctx, width, height);
       drawGrid(ctx, zoom, rows, cols, startDate, theme);
     },
-    [cols, startDate, rows, zoom, theme, truncateText, onAssignTask]
+    [cols, startDate, rows, zoom, theme, truncateText, onAssignTask, tilePositions]
   );
 
   useEffect(() => {
@@ -218,7 +218,6 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
         );
       }
     }
-    setIsDraggingGlobal(false);
   };
 
   const handleRightClick = (e: React.MouseEvent) => {
@@ -251,7 +250,6 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
 
     const clickedColumn = Math.ceil(mouseX / columnWidth);
     const clickedRows = Math.floor(mouseY / rowHeight);
-
     const selectedRow = getCardFromRowClick(clickedRows, filteredData);
 
     const clickedDate = getDateFromColumn(clickedColumn);
@@ -308,7 +306,7 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
         <StyledSpan position="left" ref={refLeft} />
         <Loader isLoading={isLoading} position="left" />
 
-        <DndContext onDragEnd={() => handleDragEnd}>
+        <DndContext onDragEnd={handleDragEnd}>
           <Tiles
             data={data}
             tilePositions={tilePositions}
@@ -327,8 +325,8 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
             setShowCompleted={setShowCompleted}
             onAssignTask={onAssignTask}
             form={form}
-            isDraggingGlobal={isDraggingGlobal}
             reccuringIcon={reccuringIcon}
+            handleDragEnd={handleDragEnd}
             canvasRef={canvasRef}
             setClickedTask={setClickedTask}
           />

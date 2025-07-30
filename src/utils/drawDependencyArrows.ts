@@ -33,7 +33,6 @@ export function drawDependencyArrows(
     const canvas = document.querySelector("canvas");
     if (!canvas) return;
     const canvasRect = canvas.getBoundingClientRect();
-
     let yoffset = 0;
 
     if (scrollOffset?.scrollTop || 0 > 0) {
@@ -51,7 +50,7 @@ export function drawDependencyArrows(
     const toy = to.y + yoffset;
     const toWidth = to.width;
     const toHeight = to.height;
-
+    console.log("Drawing Deps Arrows from", from, "to", to);
     drawArrow(
       ctx,
       zoom,

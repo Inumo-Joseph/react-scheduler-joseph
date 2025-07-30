@@ -27,7 +27,7 @@ export type TilesProps = {
   onAssignTask?: (task: any, updatedTask: any, flag: any) => void;
   form?: any;
   canvasRef?: React.RefObject<HTMLCanvasElement>;
-  isDraggingGlobal?: boolean;
+  handleDragEnd?: (event: DragEndEvent) => void;
   setClickedTask?: React.Dispatch<React.SetStateAction<any>>;
 };
 

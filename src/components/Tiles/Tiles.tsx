@@ -16,6 +16,7 @@ const Tiles: FC<TilesProps> = ({
   parentChildTask,
   alarmClock,
   Users,
+  handleDragEnd,
   hideCheckedItems,
   onAssignTask,
   form,
