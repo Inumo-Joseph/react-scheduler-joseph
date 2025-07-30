@@ -50,7 +50,7 @@ export const drawWeeksOnBottom = (
         },
         bottomText: {
           y: dayNumYPos,
-          label: ` ${weekLabel.toUpperCase()} ${week.isoWeek().toString()} `,
+          label: `${weekLabel.toUpperCase()} ${week.isoWeek().toString()}`,
           font: fonts.middleRow,
           color: getTextStyle({ isCurrent: isCurrWeek }, theme)
         }

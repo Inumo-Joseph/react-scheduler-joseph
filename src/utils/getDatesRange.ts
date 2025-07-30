@@ -15,6 +15,13 @@ export const getDatesRange = (date: dayjs.Dayjs, zoom: number): DatesRange => {
   const colsOffset = Math.round(getCols(zoom) / 2);
 
   let startDate;
+
+  // console.log("=== getDatesRange Debug ===");
+  // console.log("zoom:", zoom);
+  // console.log("getCols(zoom):", getCols(zoom));
+  // console.log("colsOffset:", colsOffset);
+  // console.log("input date:", date.format('YYYY-MM-DD'));
+
   switch (zoom) {
     case 1:
       startDate = date.subtract(colsOffset, "days");

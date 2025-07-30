@@ -9,7 +9,6 @@ import {
   dayWidth,
   headerHeight,
   leftColumnWidth,
-  monthWidth,
   outsideWrapperId
 } from "@/constants";
 import { Loader, Tiles } from "@/components";
@@ -58,7 +57,7 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
   const allProjects: SchedulerProjectData[] = data.flatMap((row) =>
     row.data.flatMap((projectsPerRow) => projectsPerRow)
   );
-
+  const [isDraggingGlobal, setIsDraggingGlobal] = useState(false);
   const handleTilePosition = (
     id: string,
     pos: { x: number; y: number; width: number; height: number }
@@ -219,6 +218,7 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
         );
       }
     }
+    setIsDraggingGlobal(false);
   };
 
   const handleRightClick = (e: React.MouseEvent) => {
@@ -308,7 +308,7 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
         <StyledSpan position="left" ref={refLeft} />
         <Loader isLoading={isLoading} position="left" />
 
-        <DndContext onDragEnd={handleDragEnd}>
+        <DndContext onDragEnd={() => handleDragEnd}>
           <Tiles
             data={data}
             tilePositions={tilePositions}
@@ -327,8 +327,8 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
             setShowCompleted={setShowCompleted}
             onAssignTask={onAssignTask}
             form={form}
+            isDraggingGlobal={isDraggingGlobal}
             reccuringIcon={reccuringIcon}
-            handleDragEnd={handleDragEnd}
             canvasRef={canvasRef}
             setClickedTask={setClickedTask}
           />

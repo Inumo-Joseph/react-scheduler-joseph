@@ -23,7 +23,6 @@ const Tiles: FC<TilesProps> = ({
   tilePositions,
   reccuringIcon,
   canvasRef,
-  handleDragEnd,
   setClickedTask
 }) => {
   const recurringMap = new Map<string, SchedulerProjectData[]>();
@@ -38,88 +37,77 @@ const Tiles: FC<TilesProps> = ({
     });
   });
 
-  const placeTiles = useCallback((): PlacedTiles => {
+  const flattenedTiles = useMemo(() => {
     let globalRowIndex = 0;
-    const placedIds = new Set<string>(); // ✅ track rendered IDs
+    const placedIds = new Set<string>();
+    const tiles: Array<{
+      id: string;
+      row: number;
+      data: SchedulerProjectData;
+    }> = [];
 
-    return data
-      .map((person) => {
-        return person.data.map((projectsPerRow) => {
-          return projectsPerRow.flatMap((project) => {
-            const baseId = project.id.split("-recurring")[0];
-            if (project.isRecurring && !placedIds.has(baseId)) {
-              const group = recurringMap.get(baseId) ?? [];
-              placedIds.add(baseId);
+    for (const person of data) {
+      for (const projectsPerRow of person.data) {
+        for (const project of projectsPerRow) {
+          const baseId = project.id.split("-recurring")[0];
 
-              group.forEach((task) => placedIds.add(task.id));
+          if (project.isRecurring && !placedIds.has(baseId)) {
+            const group = recurringMap.get(baseId) ?? [];
+            placedIds.add(baseId);
 
-              const tiles = group.map((task) => (
-                <Tile
-                  key={task.id}
-                  row={globalRowIndex}
-                  data={task}
-                  zoom={zoom}
-                  renderData={renderData}
-                  projectData={projectData}
-                  reportPosition={reportPosition}
-                  truncateText={truncateText}
-                  setTruncate={showToggle}
-                  parentChildTask={parentChildTask}
-                  alarmClock={alarmClock}
-                  Users={Users}
-                  hideCheckedItems={hideCheckedItems}
-                  onAssignTask={onAssignTask}
-                  form={form}
-                  tilePositions={tilePositions}
-                  canvasRef={canvasRef}
-                  handleDragEnd={handleDragEnd}
-                  setClickedTask={setClickedTask}
-                />
-              ));
-              globalRowIndex++; // only once for the whole group
-              return tiles;
+            // Add all recurring tasks at once
+            for (const task of group) {
+              placedIds.add(task.id);
+              tiles.push({
+                id: task.id,
+                row: globalRowIndex,
+                data: task
+              });
             }
+            globalRowIndex++;
+          } else if (!placedIds.has(project.id)) {
+            placedIds.add(project.id);
+            tiles.push({
+              id: project.id,
+              row: globalRowIndex,
+              data: project
+            });
+            globalRowIndex++;
+          }
+        }
+      }
+    }
 
-            // if this task is not part of recurring or we already handled it
-            if (!placedIds.has(project.id)) {
-              placedIds.add(project.id);
-              const tile = (
-                <Tile
-                  key={project.id}
-                  row={globalRowIndex}
-                  data={project}
-                  zoom={zoom}
-                  renderData={renderData}
-                  projectData={projectData}
-                  reportPosition={reportPosition}
-                  truncateText={truncateText}
-                  setTruncate={showToggle}
-                  parentChildTask={parentChildTask}
-                  alarmClock={alarmClock}
-                  Users={Users}
-                  hideCheckedItems={hideCheckedItems}
-                  onAssignTask={onAssignTask}
-                  form={form}
-                  reccuringIcon={reccuringIcon}
-                  tilePositions={tilePositions}
-                  canvasRef={canvasRef}
-                  handleDragEnd={handleDragEnd}
-                  setClickedTask={setClickedTask}
-                />
-              );
-              globalRowIndex++;
-              return tile;
-            }
+    return tiles;
+  }, [data, recurringMap]); // Only recompute when data actually changes
 
-            return null; // skip duplicates
-          });
-        });
-      })
-      .flat(2)
-      .filter(Boolean) as React.ReactElement[]; // remove nulls;dr
-  }, [data, onTileClick, zoom, renderData, showCompleted]);
+  const placeTiles = useMemo((): PlacedTiles => {
+    return flattenedTiles.map(({ id, row, data: tileData }) => (
+      <Tile
+        key={id}
+        row={row}
+        data={tileData}
+        zoom={zoom}
+        renderData={renderData}
+        projectData={projectData}
+        reportPosition={reportPosition}
+        truncateText={truncateText}
+        setTruncate={showToggle}
+        parentChildTask={parentChildTask}
+        alarmClock={alarmClock}
+        Users={Users}
+        hideCheckedItems={hideCheckedItems}
+        onAssignTask={onAssignTask}
+        form={form}
+        reccuringIcon={reccuringIcon}
+        tilePositions={tilePositions}
+        canvasRef={canvasRef}
+        setClickedTask={setClickedTask}
+      />
+    ));
+  }, [flattenedTiles, zoom, renderData, tilePositions, canvasRef, showCompleted, setClickedTask]);
 
-  return <>{placeTiles()}</>;
+  return <>{placeTiles}</>;
 };
 
 export default Tiles;

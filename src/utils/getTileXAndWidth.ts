@@ -18,7 +18,7 @@ export const getTileXAndWidth = (item: DatesRange, range: DatesRange, zoom: numb
       cellWidth = zoom2ColumnWidth;
       break;
     case 3:
-      cellWidth = 2.5;
+      cellWidth = 3;
       break;
     default:
       cellWidth = dayWidth;
@@ -31,6 +31,7 @@ export const getTileXAndWidth = (item: DatesRange, range: DatesRange, zoom: numb
         position =
           (item.startDate.diff(range.startDate, "minute") / minutesInHour + 1) * cellWidth -
           cellWidth / 2;
+
         break;
 
       default: {

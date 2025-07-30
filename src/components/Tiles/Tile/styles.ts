@@ -9,7 +9,6 @@ export const StyledTileWrapper = styled.div`
   position: absolute;
   border: none;
   border-radius: 5px;
-  flex-direction: column;
   text-align: left;
   color: ${({ theme }) => theme.colors.textPrimary};
   width: 100%;
@@ -18,15 +17,14 @@ export const StyledTileWrapper = styled.div`
 export const StyledTextWrapper = styled.div`
   margin: 2px;
   display: flex;
-  overflow: visible;
-  display: flex;
-  flex-direction: column;
+  letter-spacing: 0.5px;
+  line-height: 12px;
 `;
 
 export const StyledText = styled.p<StyledTextProps>`
   ${marginPaddingReset}
+
   display: inline;
-  flex-direction: column;
   font-weight: ${({ bold }) => (bold ? "600" : "400")};
   &:first-child {
     &::after {

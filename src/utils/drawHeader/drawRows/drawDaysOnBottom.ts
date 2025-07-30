@@ -10,6 +10,7 @@ import {
   headerHeight,
   headerMonthHeight,
   headerWeekHeight,
+  weeksInYear,
   zoom2HeaderBottomRowHeight,
   zoom2HeaderMiddleRowHeight,
   zoom2HeaderTopRowHeight
@@ -29,10 +30,30 @@ export const drawDaysOnBottom = (
 ) => {
   let xPos = -25;
   const yPos = headerMonthHeight - 15;
+  const width = 7 * dayWidth;
+  const startWeek = startDate.weekOfYear;
+  const weeksThreshold = ctx.canvas.width / width + width;
+
+  // for(let j = 0; j < weeksThreshold; j++)
+  // {
+  //    const day = dayjs(`${startDate.year}-${startDate.month + 1}-${startDate.dayOfMonth}`).day();
+  //       let weekIndex = (startWeek + j) % weeksInYear;
+
+  //       if (weekIndex <= 0) {
+  //         weekIndex += weeksInYear;
+  //       }
+  //       console.log("week Index", weekIndex)
+  // }
+
   for (let i = 0; i < cols; i++) {
     const day = parseDay(
       dayjs(`${startDate.year}-${startDate.month + 1}-${startDate.dayOfMonth}`).add(i, "days")
     );
+    const week = dayjs(`${startDate.year}-${startDate.month + 1}-${startDate.dayOfMonth}`).add(
+      i,
+      "weeks"
+    );
+
     const dayLabel = `${day.dayName}${day.dayOfMonth}`;
 
     const isToday = day.isCurrentDay;
@@ -76,8 +97,6 @@ export const drawDaysOnBottom = (
       // Set dashed line style
 
       // Save current line style
-
-      // Set dashed line style
       for (let i = 0; i < 12; i++) {
         ctx.strokeStyle = "black";
         ctx.lineWidth = 0.1;

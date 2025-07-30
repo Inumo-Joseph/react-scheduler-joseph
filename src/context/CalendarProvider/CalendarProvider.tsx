@@ -50,6 +50,7 @@ const CalendarProvider = ({
   todayClicked
 }: CalendarProviderProps) => {
   const { zoom: configZoom, maxRecordsPerPage = 15 } = config;
+
   let z = schedulerZoom;
 
   useEffect(() => {

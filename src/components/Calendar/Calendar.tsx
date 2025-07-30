@@ -28,16 +28,6 @@ import { StyledInputWrapper, StyledLeftColumnHeader, StyledWrapper } from "../Le
 import { CalendarProps } from "./types";
 import { StyledOuterWrapper, StyledInnerWrapper, StyledEmptyBoxWrapper } from "./styles";
 
-const initialTooltipData: TooltipData = {
-  coords: { x: 0, y: 0 },
-  resourceIndex: 0,
-  disposition: {
-    taken: { hours: 0, minutes: 0 },
-    free: { hours: 0, minutes: 0 },
-    overtime: { hours: 0, minutes: 0 }
-  }
-};
-
 export const Calendar: FC<CalendarProps> = ({
   data,
   onItemClick,
@@ -188,34 +178,6 @@ export const Calendar: FC<CalendarProps> = ({
     debouncedFilterData.current.cancel();
     debouncedFilterData.current(data, phrase);
   };
-
-  const handleMouseLeave = useCallback(() => {
-    debouncedHandleMouseOver.current.cancel();
-  }, []);
-
-  useEffect(() => {
-    const handleMouseOver = (e: MouseEvent) =>
-      debouncedHandleMouseOver.current(e, startDate, rowsPerItem, projectsPerPerson, zoom);
-    const gridArea = gridRef?.current;
-    if (!gridArea) return;
-    gridArea.addEventListener("mousemove", handleMouseOver);
-    gridArea.addEventListener("mouseleave", handleMouseLeave);
-
-    return () => {
-      gridArea.removeEventListener("mousemove", handleMouseOver);
-      gridArea.removeEventListener("mouseleave", handleMouseLeave);
-    };
-  }, [
-    debouncedHandleMouseOver,
-    handleMouseLeave,
-    projectsPerPerson,
-    totalRowsPerPage,
-    rowsPerItem,
-    startDate,
-    zoom,
-    truncateText,
-    showCompleted
-  ]);
 
   useEffect(() => {
     if (searchPhrase) return;

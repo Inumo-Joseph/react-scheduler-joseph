@@ -17,10 +17,8 @@ export const getCols = (zoom: number) => {
       return Math.ceil(componentWidth / dayWidth) * screenWidthMultiplier;
     case 2:
       return Math.ceil(componentWidth / zoom2ColumnWidth) * screenWidthMultiplier;
-
     case 3:
       return Math.ceil(componentWidth / monthWidth) * screenWidthMultiplier;
-
     default:
       return Math.ceil(componentWidth / weekWidth) * screenWidthMultiplier;
   }
