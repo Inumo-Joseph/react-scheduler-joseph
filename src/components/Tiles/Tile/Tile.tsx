@@ -9,7 +9,7 @@ import {
   useMemo
 } from "react";
 import debounce from "lodash.debounce";
-import Button, { Popup } from "semantic-ui-react";
+import { Button, Modal, Popup } from "semantic-ui-react";
 import { DndContext, DragEndEvent, useDraggable, useDroppable } from "@dnd-kit/core";
 import { useCalendar } from "@/context/CalendarProvider";
 import { getDatesRange } from "@/utils/getDatesRange";
@@ -49,13 +49,45 @@ const Tile: FC<TileProps> = memo(
     let tileRef = useRef<HTMLDivElement>(null);
     const [popupOpen, setPopupOpen] = useState(false);
     const [tileNode, setTileNode] = useState<HTMLDivElement | null>(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
     const {
       zoom,
       startDate,
       config: { includeTakenHoursOnWeekendsInDayView, showTooltip, showThemeToggle }
     } = useCalendar();
 
-    // Memoize expensive calculations
+    const handleConfirmDelete = () => {
+      handleTaskClick();
+      setIsModalOpen(false);
+      setPopupOpen(false);
+      alert("Task deleted");
+    };
+
+    const handleCancelDelete = () => {
+      setIsModalOpen(false);
+      setPopupOpen(false);
+    };
+
+    const renderModal = useCallback(() => {
+      return (
+        <Modal
+          open={isModalOpen}
+          size="mini"
+          onClose={handleCancelDelete}
+          closeOnDimmerClick={true}
+          dimmer={{ style: { backgroundColor: "rgba(0,0,0,0.1)" } }}>
+          <Modal.Content>{`Do you want to delete [${data.name}]? This action cannot be undone.`}</Modal.Content>
+          <Modal.Actions>
+            <Button onClick={handleCancelDelete}>No</Button>
+            <Button negative onClick={handleConfirmDelete}>
+              Yes
+            </Button>
+          </Modal.Actions>
+        </Modal>
+      );
+    }, [isModalOpen]);
+
     const datesRange = getDatesRange(date, zoom);
     const tileProperties = getTileProperties(
       row,
@@ -67,18 +99,16 @@ const Tile: FC<TileProps> = memo(
     );
     const { y, x, width } = tileProperties;
 
-    const [hoveredTileData, setHoveredTileData] = useState<SchedulerProjectData | null>(null);
+    // const [hoveredTileData, setHoveredTileData] = useState<SchedulerProjectData | null>(null);
     const [addTaskMonth, setAddTaskMonth] = useState<Date | undefined>(new Date());
     const [isHidden, setIsHidden] = useState(false);
     const [selectedTask, setSelectedTask] = useState<any | null>();
 
-    // Memoize date calculations
     const { endDate, isPast, effectiveIsHidden } = useMemo(() => {
       const endDate = new Date(data.dueDate);
       const now = new Date();
       const isPast = endDate < now;
       const effectiveIsHidden = isPast ? true : data.isCompleted ? true : isHidden;
-
       return { endDate, isPast, effectiveIsHidden };
     }, [data.dueDate, data.isCompleted, isHidden]);
 
@@ -235,6 +265,7 @@ const Tile: FC<TileProps> = memo(
 
     // Memoize click handler
     const handleTaskClick = useCallback(() => {
+      console.log("setting handleTaskClick");
       setClickedTask?.(data);
     }, [setClickedTask, data]);
 
@@ -310,7 +341,6 @@ const Tile: FC<TileProps> = memo(
             addTaskMonth: addTaskMonth,
             addTaskDate: addTaskDate
           })}
-
           {Users?.({
             form: form,
             task: data
@@ -340,14 +370,10 @@ const Tile: FC<TileProps> = memo(
             position="top left"
             on="hover" // optional: removes focus/click toggle behavior
             content={
-              <div>
+              <div style={{ color: "black", display: "flex" }} className=" pt-1 pl-1">
                 {popupContent}
-                <div
-                  style={{ color: "black", display: "flex" }}
-                  className=" pt-1 pl-1"
-                  onClick={handleTaskClick}>
-                  {renderData}
-                </div>
+                <div onClick={() => setIsModalOpen(true)}>{renderData}</div>
+                {renderModal()}
               </div>
             }
             trigger={

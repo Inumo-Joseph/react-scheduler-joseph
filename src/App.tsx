@@ -87,30 +87,30 @@ function App() {
           users: ["Fran"],
           isCompleted: false,
           isRecurring: false
-        },
-        {
-          cardId: "row-1",
-          id: "task-4",
-          name: "Task 4",
-          startDate: new Date("2025-07-10"),
-          dueDate: new Date("2025-07-013"),
-          occupancy: 100,
-          users: ["Colby"],
-          parentTaskId: "task-5",
-          isCompleted: false,
-          isRecurring: true,
-          recurring: "monthly"
-        },
-        {
-          cardId: "row-1",
-          id: "task-5",
-          name: "Task 5",
-          startDate: new Date("2025-07-10"),
-          dueDate: new Date("2025-08-013"),
-          occupancy: 100,
-          isCompleted: true,
-          isRecurring: false
         }
+        // {
+        //   cardId: "row-1",
+        //   id: "task-4",
+        //   name: "Task 4",
+        //   startDate: new Date("2025-07-10"),
+        //   dueDate: new Date("2025-07-013"),
+        //   occupancy: 100,
+        //   users: ["Colby"],
+        //   parentTaskId: "task-5",
+        //   isCompleted: false,
+        //   isRecurring: true,
+        //   recurring: "monthly"
+        // },
+        // {
+        //   cardId: "row-1",
+        //   id: "task-5",
+        //   name: "Task 5",
+        //   startDate: new Date("2025-07-10"),
+        //   dueDate: new Date("2025-08-013"),
+        //   occupancy: 100,
+        //   isCompleted: true,
+        //   isRecurring: false
+        // }
       ]
     }
 
@@ -340,20 +340,6 @@ function App() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleTrashClick = useCallback(() => {
-    setIsModalOpen(true);
-  }, []);
-
-  const handleConfirmDelete = () => {
-    alert("Task deleted");
-    setIsModalOpen(false);
-  };
-
-  const handleCancelDelete = () => {
-    console.log("Modal closing");
-    setIsModalOpen(false);
-  };
-
   const [range, setRange] = useState<ParsedDatesRange>({
     startDate: new Date(),
     endDate: new Date()
@@ -403,7 +389,11 @@ function App() {
     //  console.log(`Set selected Date ${selectedDate}`)
   }
 
-  console.log("clickedTask", clickedTask);
+  if (clickedTask) {
+    alert(`task deleted ${clickedTask.name}`);
+    setClickedTask(null);
+  }
+
   return (
     <>
       <div style={{ paddingLeft: "300px" }}>
@@ -475,23 +465,9 @@ function App() {
           onFilterData={handleFilterData}
           renderData={
             <div>
-              <button onClick={handleTrashClick}>
+              <button>
                 <Trash2 />
               </button>
-              <Modal
-                open={isModalOpen}
-                size="mini"
-                onClose={handleCancelDelete}
-                closeOnDimmerClick={true}
-                dimmer={{ style: { backgroundColor: "rgba(0,0,0,0.1)" } }}>
-                <Modal.Content>{"Do you want to Delete?"}</Modal.Content>
-                <Modal.Actions>
-                  <Button onClick={() => handleCancelDelete}>No</Button>
-                  <Button negative onClick={handleConfirmDelete}>
-                    Yes
-                  </Button>
-                </Modal.Actions>
-              </Modal>
             </div>
           }
           config={{
@@ -540,23 +516,9 @@ function App() {
             }
             renderData={
               <div>
-                <button onClick={handleTrashClick}>
+                <button>
                   <Trash2 />
                 </button>
-                <Modal
-                  open={isModalOpen}
-                  size="mini"
-                  onClose={handleCancelDelete}
-                  closeOnDimmerClick={true}
-                  dimmer={{ style: { backgroundColor: "rgba(0,0,0,0.1)" } }}>
-                  <Modal.Content>{"Do you want to Delete?"}</Modal.Content>
-                  <Modal.Actions>
-                    <Button onClick={handleCancelDelete}>No</Button>
-                    <Button negative onClick={handleConfirmDelete}>
-                      Yes
-                    </Button>
-                  </Modal.Actions>
-                </Modal>
               </div>
             }
             schedulerSize={schedulerSize}

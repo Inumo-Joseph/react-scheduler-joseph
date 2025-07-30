@@ -58,15 +58,15 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
     row.data.flatMap((projectsPerRow) => projectsPerRow)
   );
 
-  const handleTilePosition = (
-    id: string,
-    pos: { x: number; y: number; width: number; height: number }
-  ) => {
-    setTilePositions((prev) => ({
-      ...prev,
-      [id]: pos
-    }));
-  };
+  const handleTilePosition = useCallback(
+    () => (id: string, pos: { x: number; y: number; width: number; height: number }) => {
+      setTilePositions((prev) => ({
+        ...prev,
+        [id]: pos
+      }));
+    },
+    [tilePositions]
+  );
 
   const handleResize = useCallback(
     (ctx: CanvasRenderingContext2D) => {
@@ -116,7 +116,7 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
     };
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    handleResize(ctx); // draw grid first
+    handleResize(ctx);
 
     drawDependencyArrows(ctx, allProjects, tilePositions, zoom, hideCheckedItems, scrollOffset);
   }, [date, rows, zoom, handleResize, tilePositions, truncateText, hideCheckedItems, onAssignTask]);
@@ -181,14 +181,14 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
             : targetTask?.name;
 
         if (draggedTask?.cardId !== targetTask?.cardId) {
-          reason = `Cannot assign ${name1} to ${name2} - Different cards`;
+          reason = `Cannot assign [${name1}] to [${name2}] - Different cards`;
         }
 
         if (draggedTask && targetTask && draggedTask.dueDate > targetTask.dueDate) {
-          reason = `Cannot assign ${name1} to ${name2} - Due Date issue `;
+          reason = `Cannot assign [${name1}] to [${name2}]- Due Date issue `;
         }
       } else {
-        reason = `Error Cannot assign Tasks`;
+        reason = `Error Cannot assign these Tasks `;
       }
 
       const flag = reason;
@@ -222,7 +222,6 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
 
   const handleRightClick = (e: React.MouseEvent) => {
     e.preventDefault(); // Prevent default context menu
-
     // Get the mouse position relative to the grid
     const gridRect = canvasRef.current?.getBoundingClientRect();
     if (!gridRect) return;
@@ -240,7 +239,7 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
 
     switch (zoom) {
       case 0:
-        columnWidth = Math.ceil(columnWidth / 7);
+        columnWidth = Math.floor(columnWidth / 6.9);
         break;
 
       case 3:
@@ -248,14 +247,10 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
         break;
     }
 
-    const clickedColumn = Math.ceil(mouseX / columnWidth);
+    const clickedColumn = Math.floor(mouseX / columnWidth);
     const clickedRows = Math.floor(mouseY / rowHeight);
     const selectedRow = getCardFromRowClick(clickedRows, filteredData);
-
     const clickedDate = getDateFromColumn(clickedColumn);
-
-    // Show your add-task form/modal with this date
-
     taskInteractionProps?.setSelectedDate?.(clickedDate);
     taskInteractionProps?.setSelectedCard?.(selectedRow?.card.id);
     taskInteractionProps?.setShowAddTaskModal?.(true);

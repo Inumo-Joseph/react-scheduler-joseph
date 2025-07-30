@@ -5,7 +5,7 @@ import { StyledInputWrapperProps } from "./types";
 export const StyledWrapper = styled.div`
   min-width: ${leftColumnWidth + "px"};
   max-width: ${leftColumnWidth + "px"};
-  min-height: 10vh;
+  min-height: 40vh;
   position: sticky;
   left: 0;
   background-color: ${({ theme }) => theme.colors.background};
@@ -14,9 +14,9 @@ export const StyledWrapper = styled.div`
 `;
 
 export const StyledLeftColumnHeader = styled.div`
-  padding-bottom: 1px;
+  padding-bottom: 5px;
   position: sticky;
-  top: 0;
+  top: 2px;
   height: 40=3px;
   display: flex;
   flex-direction: column;
