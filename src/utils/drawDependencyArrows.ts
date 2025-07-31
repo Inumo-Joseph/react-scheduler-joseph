@@ -39,8 +39,6 @@ export function drawDependencyArrows(
       yoffset = scrollOffset?.scrollTop || 0;
     }
 
-    const xoffset = canvasRect.top + headerHeight + 15;
-
     const fromx = from.x;
     const fromy = from.y + yoffset;
     const fromWidth = from.width;
@@ -50,8 +48,8 @@ export function drawDependencyArrows(
     const toy = to.y + yoffset;
     const toWidth = to.width;
     const toHeight = to.height;
-    // console.log("________Drawing Deps________ for Task: ", task);
-    // console.log("Drawing Deps Arrows from.x", from.x, "to.x", to.x);
+    console.log("________Drawing Deps________ for Task: ", task);
+    console.log("Drawing Deps Arrows from.x", from.x, "to.x", to.x);
     drawArrow(
       ctx,
       zoom,

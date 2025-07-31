@@ -214,6 +214,9 @@ const Tile: FC<TileProps> = memo(
 
         const canvasRect = canvas.getBoundingClientRect();
 
+        console.log("Report Position X: ", tileRect.left - canvasRect.left);
+        console.log("Report Position Y: ", tileRect.top - canvasRect.top + headerHeight + 15);
+
         reportPosition?.(data.id, {
           x: tileRect.left - canvasRect.left,
           y: tileRect.top - canvasRect.top + headerHeight + 15,
@@ -221,7 +224,7 @@ const Tile: FC<TileProps> = memo(
           height: tileRect.height
         });
       }
-    }, [zoom, row, data.id, onAssignTask, isPast]);
+    }, [zoom, row, data, onAssignTask, isPast]);
 
     const actualTruncate = useMemo(() => {
       if (isDragging || isOver) return;

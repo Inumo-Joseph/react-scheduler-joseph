@@ -57,6 +57,7 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
   const allProjects: SchedulerProjectData[] = data.flatMap((row) =>
     row.data.flatMap((projectsPerRow) => projectsPerRow)
   );
+
   const handleTilePosition = (
     id: string,
     pos: { x: number; y: number; width: number; height: number }
@@ -113,6 +114,8 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
       scrollTop: SchedulerRef?.current?.scrollTop || 0,
       scrollLeft: SchedulerRef?.current?.scrollLeft || 0
     };
+
+    console.log("scroll Ofset", scrollOffset);
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     handleResize(ctx); // draw grid first
