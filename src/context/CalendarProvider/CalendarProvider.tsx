@@ -49,7 +49,7 @@ const CalendarProvider = ({
   onClearFilterData,
   todayClicked
 }: CalendarProviderProps) => {
-  const { zoom: configZoom, maxRecordsPerPage = 50 } = config;
+  const { zoom: configZoom, maxRecordsPerPage = 25 } = config;
 
   let z = schedulerZoom;
 

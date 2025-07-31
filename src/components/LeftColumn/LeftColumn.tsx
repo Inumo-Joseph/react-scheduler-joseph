@@ -56,7 +56,7 @@ const LeftColumn: FC<LeftColumnProps> = ({
         intent="next"
         isVisible={pageNum !== pagesAmount - 1}
         onClick={onLoadNext}
-        icon={<Icon iconName="arrowDown" width="16" height="18" />}
+        icon={<Icon iconName="arrowDown" width="16" height="15" />}
         pageNum={pageNum}
         pagesAmount={pagesAmount}
       />

@@ -58,7 +58,7 @@ function App() {
           cardId: "row-1",
           id: "task-20",
           name: "Task 20",
-          startDate: new Date("2025-7-21"),
+          startDate: new Date("2025-7-10"),
           dueDate: new Date("2025-08-05"),
           occupancy: 100,
           isCompleted: true,

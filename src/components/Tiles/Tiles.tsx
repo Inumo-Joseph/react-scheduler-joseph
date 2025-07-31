@@ -56,7 +56,6 @@ const Tiles: FC<TilesProps> = ({
             const group = recurringMap.get(baseId) ?? [];
             placedIds.add(baseId);
 
-            // Add all recurring tasks at once
             for (const task of group) {
               placedIds.add(task.id);
               tiles.push({

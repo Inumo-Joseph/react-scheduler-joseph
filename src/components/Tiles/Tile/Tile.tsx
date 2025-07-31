@@ -207,30 +207,21 @@ const Tile: FC<TileProps> = memo(
     }, [tileNode, debouncedHandleMouseOver, startDate, isDragging]);
 
     useLayoutEffect(() => {
-      if (isDragging || isOver) return;
-
-      if (tileNode && reportPosition) {
+      if (tileNode) {
         const tileRect = tileNode.getBoundingClientRect();
         const canvas = document.querySelector("canvas");
         if (!canvas) return;
 
         const canvasRect = canvas.getBoundingClientRect();
 
-        reportPosition(data.id, {
+        reportPosition?.(data.id, {
           x: tileRect.left - canvasRect.left,
           y: tileRect.top - canvasRect.top + headerHeight + 15,
           width: tileRect.width,
           height: tileRect.height
         });
-        // console.log("------Position for Tile-------", data);
-        // console.log(
-        //   "Reporting position x: ",
-        //   tileRect.left - canvasRect.left,
-        //   "y:",
-        //   tileRect.top - canvasRect.top + headerHeight + 15
-        // );
       }
-    }, [zoom, tileProperties, data.id, reportPosition, tileNode, isPast]);
+    }, [zoom, row, data.id, onAssignTask, isPast]);
 
     const actualTruncate = useMemo(() => {
       if (isDragging || isOver) return;
