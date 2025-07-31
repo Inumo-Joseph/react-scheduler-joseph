@@ -86,6 +86,10 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
     const onResize = () => handleResize(ctx);
 
     window.addEventListener("resize", onResize);
+    console.log("***********************************");
+    console.log("Tile Positions in total being drawn");
+    console.log("***********************************");
+
     drawDependencyArrows(
       ctx,
       data.flatMap((paginatedRow) => {

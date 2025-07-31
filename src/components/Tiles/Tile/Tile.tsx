@@ -207,6 +207,7 @@ const Tile: FC<TileProps> = memo(
     }, [tileNode, debouncedHandleMouseOver, startDate, isDragging]);
 
     useLayoutEffect(() => {
+      console.log("Rerendering Position");
       if (tileNode) {
         const tileRect = tileNode.getBoundingClientRect();
         const canvas = document.querySelector("canvas");
@@ -229,7 +230,7 @@ const Tile: FC<TileProps> = memo(
           height: tileRect.height
         });
       }
-    }, [zoom, row, data, onAssignTask, isPast]);
+    }, [zoom, row, data, onAssignTask, isPast, reportPosition]);
 
     const actualTruncate = useMemo(() => {
       if (isDragging || isOver) return;
