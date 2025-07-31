@@ -16,10 +16,10 @@ export const StyledButton = styled.button<StyledPaginationButton>`
   display: flex;
   align-items: center;
   background-color: transparent;
-  border: 1px solid ${({ theme }) => theme.colors.accent};
+  border: 1px solid ${({ theme }) => theme.colors.placeholder};
   border-radius: 4px;
   font-size: 14px;
-  color: ${({ theme }) => theme.colors.accent};
+  color: ${({ theme }) => theme.colors.placeholder};
   line-height: 150%;
   letter-spacing: 1px;
   cursor: pointer;
@@ -27,7 +27,7 @@ export const StyledButton = styled.button<StyledPaginationButton>`
   pointer-events: ${({ isVisible }) => (isVisible ? "auto" : "none")};
   &:hover {
     transition: 0.5s ease;
-    background-color: ${({ theme }) => theme.colors.hover};
+    background-color: ${({ theme }) => theme.colors.placeholder};
   }
 `;
 

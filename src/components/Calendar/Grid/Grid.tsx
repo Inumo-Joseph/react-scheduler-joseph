@@ -57,8 +57,6 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
   const allProjects: SchedulerProjectData[] = data.flatMap((row) =>
     row.data.flatMap((projectsPerRow) => projectsPerRow)
   );
-  const [activeId, setActiveId] = useState<string | null>(null);
-
   const handleTilePosition = (
     id: string,
     pos: { x: number; y: number; width: number; height: number }
@@ -166,17 +164,13 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
     return new Map(allProjects.map((project) => [project.id, project]));
   }, [allProjects]);
 
-  const handleDragStart = useCallback((event: DragStartEvent) => {
-    setActiveId(event.active.id as string);
-  }, []);
-
   const handleDragEnd = useCallback(
     (event: DragEndEvent) => {
       const { active, over } = event;
 
       if (active && over && active.id !== over.id) {
         const draggedTask = projectsMap.get(active.id.toString());
-        const targetTask = projectsMap.get(active.id.toString());
+        const targetTask = projectsMap.get(over.id.toString());
 
         let reason = "";
 
@@ -202,7 +196,6 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
         }
 
         const flag = reason;
-
         if (
           draggedTask &&
           targetTask &&
@@ -228,14 +221,9 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
           );
         }
       }
-      setActiveId(null);
     },
-    [projectsMap, onAssignTask]
+    [projectsMap]
   );
-
-  const handleDragCancel = useCallback(() => {
-    setActiveId(null);
-  }, []);
 
   const handleRightClick = (e: React.MouseEvent) => {
     e.preventDefault(); // Prevent default context menu
@@ -323,10 +311,7 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
         <StyledSpan position="left" ref={refLeft} />
         <Loader isLoading={isLoading} position="left" />
 
-        <DndContext
-          onDragEnd={handleDragEnd}
-          onDragStart={handleDragStart}
-          onDragCancel={handleDragCancel}>
+        <DndContext onDragEnd={handleDragEnd}>
           <Tiles
             data={data}
             tilePositions={tilePositions}
