@@ -271,7 +271,6 @@ const Tile: FC<TileProps> = memo(
     );
 
     // Memoize popup content to prevent recreation
-
     const popupContent = useMemo(
       () => (
         <div

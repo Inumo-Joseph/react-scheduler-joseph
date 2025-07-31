@@ -14,7 +14,7 @@ export const StyledWrapper = styled.div`
 `;
 
 export const StyledLeftColumnHeader = styled.div`
-  padding-bottom: 7px;
+  padding-bottom: 4px;
   position: sticky;
   top: 2px;
   height: 40=3px;

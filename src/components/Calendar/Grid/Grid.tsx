@@ -1,7 +1,7 @@
 import { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTheme } from "styled-components";
 import dayjs from "dayjs";
-import { DndContext, DragEndEvent } from "@dnd-kit/core";
+import { DndContext, DragEndEvent, DragStartEvent, DragOverlay } from "@dnd-kit/core";
 import { drawGrid } from "@/utils/drawGrid/drawGrid";
 import {
   boxHeight,
@@ -57,6 +57,7 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
   const allProjects: SchedulerProjectData[] = data.flatMap((row) =>
     row.data.flatMap((projectsPerRow) => projectsPerRow)
   );
+  const [activeId, setActiveId] = useState<string | null>(null);
 
   const handleTilePosition = (
     id: string,
@@ -161,64 +162,80 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
     ctx.stroke();
   }, []);
 
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
+  const projectsMap = useMemo(() => {
+    return new Map(allProjects.map((project) => [project.id, project]));
+  }, [allProjects]);
 
-    if (active && over && active.id !== over.id) {
-      const draggedTask = allProjects.find((task) => task.id === active.id);
-      const targetTask = allProjects.find((task) => task.id === over.id);
+  const handleDragStart = useCallback((event: DragStartEvent) => {
+    setActiveId(event.active.id as string);
+  }, []);
 
-      let reason = "";
+  const handleDragEnd = useCallback(
+    (event: DragEndEvent) => {
+      const { active, over } = event;
 
-      if (draggedTask && targetTask) {
-        const name1 =
-          draggedTask?.name.length > 10
-            ? draggedTask?.name.substring(0, 10).concat("...")
-            : draggedTask?.name;
-        const name2 =
-          targetTask?.name.length > 10
-            ? targetTask?.name.substring(0, 10).concat("...")
-            : targetTask?.name;
+      if (active && over && active.id !== over.id) {
+        const draggedTask = projectsMap.get(active.id.toString());
+        const targetTask = projectsMap.get(active.id.toString());
 
-        if (draggedTask?.cardId !== targetTask?.cardId) {
-          reason = `Cannot assign [${name1}] to [${name2}] - Different cards`;
+        let reason = "";
+
+        if (draggedTask && targetTask) {
+          const name1 =
+            draggedTask?.name.length > 10
+              ? draggedTask?.name.substring(0, 14).concat("...")
+              : draggedTask?.name;
+          const name2 =
+            targetTask?.name.length > 10
+              ? targetTask?.name.substring(0, 14).concat("...")
+              : targetTask?.name;
+
+          if (draggedTask?.cardId !== targetTask?.cardId) {
+            reason = `Cannot assign [${name1}] to [${name2}] - Different cards`;
+          }
+
+          if (draggedTask && targetTask && draggedTask.dueDate > targetTask.dueDate) {
+            reason = `Cannot assign [${name1}] to [${name2}] - Due Date issue `;
+          }
+        } else {
+          reason = `Error Cannot assign Tasks`;
         }
 
-        if (draggedTask && targetTask && draggedTask.dueDate > targetTask.dueDate) {
-          reason = `Cannot assign [${name1}] to [${name2}] - Due Date issue `;
+        const flag = reason;
+
+        if (
+          draggedTask &&
+          targetTask &&
+          draggedTask?.cardId === targetTask?.cardId &&
+          draggedTask.dueDate <= targetTask.dueDate
+        ) {
+          // update parentTaskId etc.
+          onAssignTask?.(
+            draggedTask.id,
+            {
+              ...draggedTask,
+              parentTaskId: targetTask.id
+            },
+            null
+          );
+        } else {
+          onAssignTask?.(
+            draggedTask?.id,
+            {
+              ...draggedTask
+            },
+            flag
+          );
         }
-      } else {
-        reason = `Error Cannot assign Tasks`;
       }
+      setActiveId(null);
+    },
+    [projectsMap, onAssignTask]
+  );
 
-      const flag = reason;
-
-      if (
-        draggedTask &&
-        targetTask &&
-        draggedTask?.cardId === targetTask?.cardId &&
-        draggedTask.dueDate < targetTask.dueDate
-      ) {
-        // update parentTaskId etc.
-        onAssignTask?.(
-          draggedTask.id,
-          {
-            ...draggedTask,
-            parentTaskId: targetTask.id
-          },
-          null
-        );
-      } else {
-        onAssignTask?.(
-          draggedTask?.id,
-          {
-            ...draggedTask
-          },
-          flag
-        );
-      }
-    }
-  };
+  const handleDragCancel = useCallback(() => {
+    setActiveId(null);
+  }, []);
 
   const handleRightClick = (e: React.MouseEvent) => {
     e.preventDefault(); // Prevent default context menu
@@ -306,7 +323,10 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
         <StyledSpan position="left" ref={refLeft} />
         <Loader isLoading={isLoading} position="left" />
 
-        <DndContext onDragEnd={handleDragEnd}>
+        <DndContext
+          onDragEnd={handleDragEnd}
+          onDragStart={handleDragStart}
+          onDragCancel={handleDragCancel}>
           <Tiles
             data={data}
             tilePositions={tilePositions}
