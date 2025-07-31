@@ -48,7 +48,7 @@ export function drawDependencyArrows(
     const toy = to.y + yoffset;
     const toWidth = to.width;
     const toHeight = to.height;
-    console.log("________Drawing Deps________ for Task: ", task);
+    console.log("________Drawing Deps________ for Task: ", task.name);
     console.log("Drawing Deps Arrows from.x", from.x, "to.x", to.x);
     drawArrow(
       ctx,

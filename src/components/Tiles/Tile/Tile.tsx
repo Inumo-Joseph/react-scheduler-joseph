@@ -214,8 +214,13 @@ const Tile: FC<TileProps> = memo(
 
         const canvasRect = canvas.getBoundingClientRect();
 
-        console.log("Report Position X: ", tileRect.left - canvasRect.left);
-        console.log("Report Position Y: ", tileRect.top - canvasRect.top + headerHeight + 15);
+        console.log("Report Position X: ", tileRect.left - canvasRect.left, "for", data.name);
+        console.log(
+          "Report Position Y: ",
+          tileRect.top - canvasRect.top + headerHeight + 15,
+          "for",
+          data.name
+        );
 
         reportPosition?.(data.id, {
           x: tileRect.left - canvasRect.left,
