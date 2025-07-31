@@ -58,25 +58,22 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
     row.data.flatMap((projectsPerRow) => projectsPerRow)
   );
 
-  const handleTilePosition = useCallback(
-    () => (id: string, pos: { x: number; y: number; width: number; height: number }) => {
-      setTilePositions((prev) => ({
-        ...prev,
-        [id]: pos
-      }));
-    },
-    [tilePositions]
-  );
+  const handleTilePosition = (
+    id: string,
+    pos: { x: number; y: number; width: number; height: number }
+  ) => {
+    setTilePositions((prev) => ({
+      ...prev,
+      [id]: pos
+    }));
+  };
 
-  const handleResize = useCallback(
-    (ctx: CanvasRenderingContext2D) => {
-      const width = getCanvasWidth();
-      const height = rows * boxHeight;
-      resizeCanvas(ctx, width, height);
-      drawGrid(ctx, zoom, rows, cols, startDate, theme);
-    },
-    [cols, startDate, rows, zoom, theme, truncateText, onAssignTask, tilePositions]
-  );
+  const handleResize = (ctx: CanvasRenderingContext2D) => {
+    const width = getCanvasWidth();
+    const height = rows * boxHeight;
+    resizeCanvas(ctx, width, height);
+    drawGrid(ctx, zoom, rows, cols, startDate, theme);
+  };
 
   useEffect(() => {
     if (!canvasRef.current) return;

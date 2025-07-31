@@ -14,9 +14,9 @@ export const StyledWrapper = styled.div`
 `;
 
 export const StyledLeftColumnHeader = styled.div`
-  padding-bottom: 5px;
+  padding-bottom: 7px;
   position: sticky;
-  top: 2px;
+  top: 4px;
   height: 40=3px;
   display: flex;
   flex-direction: column;
@@ -41,7 +41,7 @@ export const StyledInput = styled.input`
 
 export const StyledInputWrapper = styled.div<StyledInputWrapperProps>`
   margin-left: 10px;
-  height: 30px;
+  height: 27px;
   width: calc(100% - 20px); //20px = 10px margin each side
   background-color: ${({ theme }) => theme.colors.primary};
   border: 1px solid

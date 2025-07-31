@@ -31,6 +31,10 @@ export const getTileXAndWidth = (item: DatesRange, range: DatesRange, zoom: numb
         position =
           (item.startDate.diff(range.startDate, "minute") / minutesInHour + 1) * cellWidth -
           cellWidth / 2;
+        break;
+
+      case 3:
+        position = position = item.startDate.diff(range.startDate, "day") * cellWidth;
 
         break;
 

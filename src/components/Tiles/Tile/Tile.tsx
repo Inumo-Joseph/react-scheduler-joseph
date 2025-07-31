@@ -58,10 +58,9 @@ const Tile: FC<TileProps> = memo(
     } = useCalendar();
 
     const handleConfirmDelete = () => {
-      handleTaskClick();
       setIsModalOpen(false);
       setPopupOpen(false);
-      alert("Task deleted");
+      setClickedTask?.(data);
     };
 
     const handleCancelDelete = () => {
@@ -223,13 +222,13 @@ const Tile: FC<TileProps> = memo(
           width: tileRect.width,
           height: tileRect.height
         });
-        console.log("------Position for Tile-------", data);
-        console.log(
-          "Reporting position x: ",
-          tileRect.left - canvasRect.left,
-          "y:",
-          tileRect.top - canvasRect.top + headerHeight + 15
-        );
+        // console.log("------Position for Tile-------", data);
+        // console.log(
+        //   "Reporting position x: ",
+        //   tileRect.left - canvasRect.left,
+        //   "y:",
+        //   tileRect.top - canvasRect.top + headerHeight + 15
+        // );
       }
     }, [zoom, tileProperties, data.id, reportPosition, tileNode, isPast]);
 
@@ -264,10 +263,6 @@ const Tile: FC<TileProps> = memo(
     }, [data, onAssignTask]);
 
     // Memoize click handler
-    const handleTaskClick = useCallback(() => {
-      console.log("setting handleTaskClick");
-      setClickedTask?.(data);
-    }, [setClickedTask, data]);
 
     // Memoize style objects to prevent recreation
     const tileStyle = useMemo(
@@ -341,6 +336,7 @@ const Tile: FC<TileProps> = memo(
             addTaskMonth: addTaskMonth,
             addTaskDate: addTaskDate
           })}
+
           {Users?.({
             form: form,
             task: data
@@ -372,7 +368,7 @@ const Tile: FC<TileProps> = memo(
             content={
               <div style={{ color: "black", display: "flex" }} className=" pt-1 pl-1">
                 {popupContent}
-                <div onClick={() => setIsModalOpen(true)}>{renderData}</div>
+                <div onClick={() => setIsModalOpen(true)}> {renderData}</div>
                 {renderModal()}
               </div>
             }
