@@ -384,7 +384,7 @@ const Tile: FC<TileProps> = memo(
                           task: data
                         })}
 
-                        <div
+                        <span
                           style={{
                             color: "black",
                             ...(!actualTruncate && {
@@ -394,13 +394,9 @@ const Tile: FC<TileProps> = memo(
                             })
                           }}>
                           {data.name}
-                        </div>
+                        </span>
                       </div>
                       {/* Subtitle and description below */}
-                      <StyledText>{data.subtitle}</StyledText>
-                      <StyledDescription $allowOverflow={actualTruncate}>
-                        {data.description}
-                      </StyledDescription>
                     </>
                   </StyledStickyWrapper>
                 </StyledTextWrapper>

@@ -1,16 +1,11 @@
-import { FC } from "react";
+import { FC, useRef } from "react";
 import { Icon } from "@/components";
-import {
-  StyledImage,
-  StyledImageWrapper,
-  StyledInnerWrapper,
-  StyledText,
-  StyledTextWrapper,
-  StyledWrapper
-} from "./styles";
+import { StyledInnerWrapper, StyledText, StyledTextWrapper, StyledWrapper } from "./styles";
 import { LeftColumnItemProps } from "./types";
 
 const LeftColumnItem: FC<LeftColumnItemProps> = ({ id, item, rows, onItemClick }) => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
   return (
     <StyledWrapper
       title={item.title + " | " + item.subtitle}
@@ -27,7 +22,9 @@ const LeftColumnItem: FC<LeftColumnItemProps> = ({ id, item, rows, onItemClick }
         </StyledImageWrapper> */}
 
         <StyledTextWrapper>
-          <StyledText isMain>{item.title}</StyledText>
+          <StyledText isMain>
+            {item.title.length >= 12 ? item.title.substring(0, 11).concat("...") : item.title}
+          </StyledText>
         </StyledTextWrapper>
       </StyledInnerWrapper>
     </StyledWrapper>

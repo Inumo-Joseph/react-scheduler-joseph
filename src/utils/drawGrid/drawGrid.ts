@@ -16,7 +16,7 @@ export const drawGrid = (
   theme: Theme
 ) => {
   const canvasWrapper = document.getElementById(canvasWrapperId);
-
+  console.log("CanvasWrapper", canvasWrapper?.scrollHeight);
   if (!canvasWrapper) return;
 
   switch (zoom) {

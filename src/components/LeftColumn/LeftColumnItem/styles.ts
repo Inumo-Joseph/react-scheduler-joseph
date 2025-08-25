@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { useRef } from "react";
 import { boxHeight } from "@/constants";
 import { StyledLeftColumnItemWrapperProps, StyledTextProps } from "./types";
 

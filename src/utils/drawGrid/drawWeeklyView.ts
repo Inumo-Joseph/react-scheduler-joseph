@@ -27,7 +27,6 @@ export const drawWeeklyView = (
     for (let y = 0; y < rows; y++) {
       drawCell(ctx, xPos, y * boxHeight * 2, rows, weekWidth, true, isCurrWeek, theme);
     }
-
     xPos += weekWidth;
   }
 
