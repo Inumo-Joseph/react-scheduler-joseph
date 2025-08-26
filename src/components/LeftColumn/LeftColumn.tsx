@@ -19,7 +19,6 @@ const LeftColumn: FC<LeftColumnProps> = ({
 }) => {
   const [isInputFocused, setIsInputFocused] = useState(false);
   const { search } = useLanguage();
-
   const toggleFocus = () => setIsInputFocused((prev) => !prev);
   return (
     <StyledWrapper>
