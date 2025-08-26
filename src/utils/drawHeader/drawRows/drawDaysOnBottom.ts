@@ -2,18 +2,11 @@ import dayjs from "dayjs";
 import { Day } from "@/types/global";
 import {
   boxHeight,
-  dayNameYoffset,
-  dayNumYOffset,
   dayWidth,
   fonts,
   headerDayHeight,
   headerHeight,
-  headerMonthHeight,
-  headerWeekHeight,
-  weeksInYear,
-  zoom2HeaderBottomRowHeight,
-  zoom2HeaderMiddleRowHeight,
-  zoom2HeaderTopRowHeight
+  headerMonthHeight
 } from "@/constants";
 import { parseDay } from "@/utils/dates";
 import { Theme } from "@/styles";
@@ -55,7 +48,6 @@ export const drawDaysOnBottom = (
     );
 
     const dayLabel = `${day.dayName}${day.dayOfMonth}`;
-
     const isToday = day.isCurrentDay;
 
     // Determine styling

@@ -87,241 +87,242 @@ function App() {
           users: ["Fran"],
           isCompleted: false,
           isRecurring: false
+        },
+
+        {
+          cardId: "row-1",
+          id: "task-4",
+          name: "Task 4",
+          startDate: new Date("2025-07-10"),
+          dueDate: new Date("2025-07-013"),
+          occupancy: 100,
+          users: ["Colby"],
+          parentTaskId: "task-5",
+          isCompleted: false,
+          isRecurring: true,
+          recurring: "monthly"
+        },
+        {
+          cardId: "row-1",
+          id: "task-5",
+          name: "Task 5",
+          startDate: new Date("2025-07-10"),
+          dueDate: new Date("2025-08-013"),
+          occupancy: 100,
+          isCompleted: true,
+          isRecurring: false
         }
-        // {
-        //   cardId: "row-1",
-        //   id: "task-4",
-        //   name: "Task 4",
-        //   startDate: new Date("2025-07-10"),
-        //   dueDate: new Date("2025-07-013"),
-        //   occupancy: 100,
-        //   users: ["Colby"],
-        //   parentTaskId: "task-5",
-        //   isCompleted: false,
-        //   isRecurring: true,
-        //   recurring: "monthly"
-        // },
-        // {
-        //   cardId: "row-1",
-        //   id: "task-5",
-        //   name: "Task 5",
-        //   startDate: new Date("2025-07-10"),
-        //   dueDate: new Date("2025-08-013"),
-        //   occupancy: 100,
-        //   isCompleted: true,
-        //   isRecurring: false
-        // }
+      ]
+    },
+
+    {
+      id: "row-2",
+      label: { icon: "📁", title: "Project B", subtitle: "Phase 1" },
+      data: [
+        {
+          cardId: "row-2",
+          id: "task-6",
+          name: "  Emptying Locker",
+          startDate: new Date("2025-06-28"),
+          dueDate: new Date("2025-07-06"),
+          occupancy: 100,
+          parentTaskId: "task-7",
+          bgColor: "rgba(133, 193, 233, 0.83)",
+          isCompleted: false,
+          isRecurring: false
+        },
+        {
+          cardId: "row-2",
+          id: "task-16",
+          name: "Doin ya mom",
+          startDate: new Date("2025-07-03"),
+          dueDate: new Date("2025-08-06"),
+          occupancy: 100,
+          parentTaskId: "task-7",
+          bgColor: "rgba(133, 193, 233, 0.83)",
+          isCompleted: false,
+          isRecurring: false
+        },
+        {
+          cardId: "row-2",
+          id: "task-7",
+          name: "Task second shift",
+          startDate: new Date("2025-07-03"),
+          dueDate: new Date("2025-07-03"),
+          occupancy: 100,
+          users: ["Rob"],
+          bgColor: "rgba(133, 193, 233, 0.83)",
+          isCompleted: false,
+          isRecurring: false,
+          parentTaskId: "task-8"
+        },
+        {
+          cardId: "row-2",
+          id: "task-8",
+          name: "Orlando Roster",
+          startDate: new Date("2025-07-010"),
+          dueDate: new Date("2025-07-017"),
+          occupancy: 100,
+          users: ["Fran"],
+          bgColor: "rgba(133, 193, 233, 0.83)",
+          isCompleted: false,
+          isRecurring: false
+        },
+        {
+          cardId: "row-2",
+          id: "task-9",
+          name: "Task fourth Shift",
+          startDate: new Date("2025-07-10"),
+          dueDate: new Date("2025-07-013"),
+          occupancy: 100,
+          users: ["Colby"],
+          parentTaskId: "task-3",
+          bgColor: "rgba(133, 193, 233, 0.83)",
+          isCompleted: false,
+          isRecurring: false
+        },
+        {
+          cardId: "row-2",
+          id: "task-10",
+          name: "Task 5th shift",
+          startDate: new Date("2025-07-6"),
+          dueDate: new Date("2025-06-020"),
+          occupancy: 100,
+          bgColor: "rgba(133, 193, 233, 0.83)",
+          isCompleted: false,
+          isRecurring: false
+        },
+        {
+          cardId: "row-2",
+          id: "task-11",
+          name: "Fix Flyer Codes",
+          startDate: new Date("2025-07-10"),
+          dueDate: new Date("2025-07-013"),
+          occupancy: 100,
+          users: ["Colby"],
+          bgColor: "rgba(133, 193, 233, 0.83)",
+          isCompleted: true,
+          isRecurring: true,
+          recurring: "daily"
+        },
+        {
+          cardId: "row-2",
+          id: "task-12",
+          name: "Cancel Weekend Missions",
+          startDate: new Date("2025-7-05"),
+          dueDate: new Date("2025-07-010"),
+          users: ["Dev"],
+          occupancy: 100,
+          bgColor: "rgba(133, 193, 233, 0.83)",
+          isCompleted: false,
+          isRecurring: false
+        }
+      ]
+    },
+
+    {
+      id: "row-3",
+      label: { icon: "📁", title: "Project Cee", subtitle: "Phase 1" },
+      data: [
+        {
+          cardId: "row-3",
+          id: "task-21",
+          name: "  Emptying Locker Looeivill",
+          startDate: new Date("2025-07-28"),
+          dueDate: new Date("2025-07-06"),
+          occupancy: 100,
+          parentTaskId: "task-23",
+          bgColor: "rgba(133, 193, 233, 0.83)",
+          isCompleted: false,
+          isRecurring: false
+        },
+        {
+          cardId: "row-3",
+          id: "task-22",
+          name: "Doin ya dad",
+          startDate: new Date("2025-08-03"),
+          dueDate: new Date("2025-09-06"),
+          occupancy: 100,
+          bgColor: "rgba(133, 193, 233, 0.83)",
+          isCompleted: false,
+          isRecurring: false
+        },
+        {
+          cardId: "row-3",
+          id: "task-23",
+          name: "This a long sentence made to test out the text truncating capabailities of the tile",
+          startDate: new Date("2025-08-03"),
+          dueDate: new Date("2025-08-03"),
+          occupancy: 100,
+          users: ["Rob"],
+          bgColor: "rgba(133, 193, 233, 0.83)",
+          isCompleted: false,
+          isRecurring: false
+        },
+        {
+          cardId: "row-3",
+          id: "task-24",
+          name: "Meet with new CM Orlando",
+          startDate: new Date("2025-07-20"),
+          dueDate: new Date("2025-07-027"),
+          occupancy: 100,
+          users: ["Fran"],
+          bgColor: "rgba(133, 193, 233, 0.83)",
+          isCompleted: false,
+          isRecurring: false
+        },
+        {
+          cardId: "row-3",
+          id: "task-25",
+          name: "Creatign a new task again for new card",
+          startDate: new Date("2025-07-10"),
+          dueDate: new Date("2025-07-013"),
+          occupancy: 100,
+          users: ["Colby"],
+          parentTaskId: "task-3",
+          bgColor: "rgba(133, 193, 233, 0.83)",
+          isCompleted: false,
+          isRecurring: false
+        },
+        {
+          cardId: "row-3",
+          id: "task-26",
+          name: "Task 5th shift",
+          startDate: new Date("2025-07-6"),
+          dueDate: new Date("2025-07-6"),
+          occupancy: 100,
+          bgColor: "rgba(133, 193, 233, 0.83)",
+          isCompleted: false,
+          isRecurring: true,
+          recurring: "daily"
+        },
+        {
+          cardId: "row-3",
+          id: "task-27",
+          name: "TASK 27",
+          startDate: new Date("2025-07-10"),
+          dueDate: new Date("2025-07-013"),
+          occupancy: 100,
+          users: ["Colby"],
+          bgColor: "rgba(133, 193, 233, 0.83)",
+          isCompleted: true,
+          isRecurring: true,
+          recurring: "Weekly"
+        },
+        {
+          cardId: "row-3",
+          id: "task-28",
+          name: "Something Something Yada yada makre sure Brrand Ambassadors have been paid",
+          startDate: new Date("2025-7-05"),
+          dueDate: new Date("2025-07-010"),
+          users: ["Dev"],
+          occupancy: 100,
+          bgColor: "rgba(133, 193, 233, 0.83)",
+          isCompleted: false,
+          isRecurring: false
+        }
       ]
     }
-
-    // {
-    //   id: "row-2",
-    //   label: { icon: "📁", title: "Project B", subtitle: "Phase 1" },
-    //   data: [
-    //     {
-    //       cardId: "row-2",
-    //       id: "task-6",
-    //       name: "  Emptying Locker",
-    //       startDate: new Date("2025-06-28"),
-    //       dueDate: new Date("2025-07-06"),
-    //       occupancy: 100,
-    //       parentTaskId: "task-7",
-    //       bgColor: "rgba(133, 193, 233, 0.83)",
-    //       isCompleted: false,
-    //       isRecurring: false
-    //     },
-    //     {
-    //       cardId: "row-2",
-    //       id: "task-16",
-    //       name: "Doin ya mom",
-    //       startDate: new Date("2025-07-03"),
-    //       dueDate: new Date("2025-08-06"),
-    //       occupancy: 100,
-    //       parentTaskId: "task-7",
-    //       bgColor: "rgba(133, 193, 233, 0.83)",
-    //       isCompleted: false,
-    //       isRecurring: false
-    //     },
-    //     {
-    //       cardId: "row-2",
-    //       id: "task-7",
-    //       name: "Task second shift",
-    //       startDate: new Date("2025-07-03"),
-    //       dueDate: new Date("2025-07-03"),
-    //       occupancy: 100,
-    //       users: ["Rob"],
-    //       bgColor: "rgba(133, 193, 233, 0.83)",
-    //       isCompleted: false,
-    //       isRecurring: false,
-    //       parentTaskId: "task-8"
-    //     },
-    //     {
-    //       cardId: "row-2",
-    //       id: "task-8",
-    //       name: "Orlando Roster",
-    //       startDate: new Date("2025-07-010"),
-    //       dueDate: new Date("2025-07-017"),
-    //       occupancy: 100,
-    //       users: ["Fran"],
-    //       bgColor: "rgba(133, 193, 233, 0.83)",
-    //       isCompleted: false,
-    //       isRecurring: false
-    //     },
-    //     {
-    //       cardId: "row-2",
-    //       id: "task-9",
-    //       name: "Task fourth Shift",
-    //       startDate: new Date("2025-07-10"),
-    //       dueDate: new Date("2025-07-013"),
-    //       occupancy: 100,
-    //       users: ["Colby"],
-    //       parentTaskId: "task-3",
-    //       bgColor: "rgba(133, 193, 233, 0.83)",
-    //       isCompleted: false,
-    //       isRecurring: false
-    //     },
-    //     {
-    //       cardId: "row-2",
-    //       id: "task-10",
-    //       name: "Task 5th shift",
-    //       startDate: new Date("2025-07-6"),
-    //       dueDate: new Date("2025-06-020"),
-    //       occupancy: 100,
-    //       bgColor: "rgba(133, 193, 233, 0.83)",
-    //       isCompleted: false,
-    //       isRecurring: false
-    //     },
-    //     {
-    //       cardId: "row-2",
-    //       id: "task-11",
-    //       name: "Fix Flyer Codes",
-    //       startDate: new Date("2025-07-10"),
-    //       dueDate: new Date("2025-07-013"),
-    //       occupancy: 100,
-    //       users: ["Colby"],
-    //       bgColor: "rgba(133, 193, 233, 0.83)",
-    //       isCompleted: true,
-    //       isRecurring: true,
-    //       recurring: "daily"
-    //     },
-    //     {
-    //       cardId: "row-2",
-    //       id: "task-12",
-    //       name: "Cancel Weekend Missions",
-    //       startDate: new Date("2025-7-05"),
-    //       dueDate: new Date("2025-07-010"),
-    //       users: ["Dev"],
-    //       occupancy: 100,
-    //       bgColor: "rgba(133, 193, 233, 0.83)",
-    //       isCompleted: false,
-    //       isRecurring: false
-    //     }
-    //   ]
-    // },
-
-    // {
-    //   id: "row-3",
-    //   label: { icon: "📁", title: "Project Cee", subtitle: "Phase 1" },
-    //   data: [
-    //     {
-    //       cardId: "row-3",
-    //       id: "task-21",
-    //       name: "  Emptying Locker Looeivill",
-    //       startDate: new Date("2025-07-28"),
-    //       dueDate: new Date("2025-07-06"),
-    //       occupancy: 100,
-    //       parentTaskId: "task-23",
-    //       bgColor: "rgba(133, 193, 233, 0.83)",
-    //       isCompleted: false,
-    //       isRecurring: false
-    //     },
-    //     {
-    //       cardId: "row-3",
-    //       id: "task-22",
-    //       name: "Doin ya dad",
-    //       startDate: new Date("2025-08-03"),
-    //       dueDate: new Date("2025-09-06"),
-    //       occupancy: 100,
-    //       bgColor: "rgba(133, 193, 233, 0.83)",
-    //       isCompleted: false,
-    //       isRecurring: false
-    //     },
-    //     {
-    //       cardId: "row-3",
-    //       id: "task-23",
-    //       name: "This a long sentence made to test out the text truncating capabailities of the tile",
-    //       startDate: new Date("2025-08-03"),
-    //       dueDate: new Date("2025-08-03"),
-    //       occupancy: 100,
-    //       users: ["Rob"],
-    //       bgColor: "rgba(133, 193, 233, 0.83)",
-    //       isCompleted: false,
-    //       isRecurring: false
-    //     },
-    //     {
-    //       cardId: "row-3",
-    //       id: "task-24",
-    //       name: "Meet with new CM Orlando",
-    //       startDate: new Date("2025-07-20"),
-    //       dueDate: new Date("2025-07-027"),
-    //       occupancy: 100,
-    //       users: ["Fran"],
-    //       bgColor: "rgba(133, 193, 233, 0.83)",
-    //       isCompleted: false,
-    //       isRecurring: false
-    //     },
-    //     {
-    //       cardId: "row-3",
-    //       id: "task-25",
-    //       name: "Creatign a new task again for new card",
-    //       startDate: new Date("2025-07-10"),
-    //       dueDate: new Date("2025-07-013"),
-    //       occupancy: 100,
-    //       users: ["Colby"],
-    //       parentTaskId: "task-3",
-    //       bgColor: "rgba(133, 193, 233, 0.83)",
-    //       isCompleted: false,
-    //       isRecurring: false
-    //     },
-    //     {
-    //       cardId: "row-3",
-    //       id: "task-26",
-    //       name: "Task 5th shift",
-    //       startDate: new Date("2025-07-6"),
-    //       dueDate: new Date("2025-07-6"),
-    //       occupancy: 100,
-    //       bgColor: "rgba(133, 193, 233, 0.83)",
-    //       isCompleted: false,
-    //       isRecurring: true,
-    //       recurring: "daily"
-    //     },
-    //     {
-    //       cardId: "row-3",
-    //       id: "task-27",
-    //       name: "TASK 27",
-    //       startDate: new Date("2025-07-10"),
-    //       dueDate: new Date("2025-07-013"),
-    //       occupancy: 100,
-    //       users: ["Colby"],
-    //       bgColor: "rgba(133, 193, 233, 0.83)",
-    //       isCompleted: true,
-    //       isRecurring: true,
-    //       recurring: "Weekly"
-    //     },
-    //     {
-    //       cardId: "row-3",
-    //       id: "task-28",
-    //       name: "Something Something Yada yada makre sure Brrand Ambassadors have been paid",
-    //       startDate: new Date("2025-7-05"),
-    //       dueDate: new Date("2025-07-010"),
-    //       users: ["Dev"],
-    //       occupancy: 100,
-    //       bgColor: "rgba(133, 193, 233, 0.83)",
-    //       isCompleted: false,
-    //       isRecurring: false
-    //     }
-    //   ]
-    // }
   ];
 
   const onAssignTask = (taskId: any, updatedTask: any, flag = null) => {

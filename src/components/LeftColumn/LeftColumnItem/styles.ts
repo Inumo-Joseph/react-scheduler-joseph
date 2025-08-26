@@ -6,7 +6,7 @@ import { StyledLeftColumnItemWrapperProps, StyledTextProps } from "./types";
 export const StyledWrapper = styled.div<StyledLeftColumnItemWrapperProps>`
   display: flex;
   align-items: ${({ rows }) => (rows > 1 ? "start" : "center")};
-  padding: 0.813rem 0 0.813rem 1rem;
+  padding: 0.715rem 0 0.715rem 0.7rem;
   width: 100%;
   min-height: ${boxHeight - 1}px;
   height: calc(${boxHeight - 2}px * ${({ rows }) => rows});

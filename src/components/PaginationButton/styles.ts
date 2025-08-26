@@ -18,9 +18,9 @@ export const StyledButton = styled.button<StyledPaginationButton>`
   background-color: transparent;
   border: 1px solid ${({ theme }) => theme.colors.accent};
   border-radius: 4px;
-  font-size: 14px;
+  font-size: 13px;
   color: ${({ theme }) => theme.colors.accent};
-  line-height: 150%;
+  line-height: 130%;
   letter-spacing: 1px;
   cursor: pointer;
   opacity: ${({ isVisible }) => (isVisible ? "1" : "0")};
