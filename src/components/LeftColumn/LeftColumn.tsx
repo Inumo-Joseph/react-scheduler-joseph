@@ -41,6 +41,14 @@ const LeftColumn: FC<LeftColumnProps> = ({
           pageNum={pageNum}
           pagesAmount={pagesAmount}
         />
+        <PaginationButton
+          intent="next"
+          isVisible={pageNum !== pagesAmount - 1}
+          onClick={onLoadNext}
+          icon={<Icon iconName="arrowDown" width="16" height="18" />}
+          pageNum={pageNum}
+          pagesAmount={pagesAmount}
+        />
       </StyledLeftColumnHeader>
       {data.map((item, index) => (
         <LeftColumnItem
@@ -51,14 +59,6 @@ const LeftColumn: FC<LeftColumnProps> = ({
           onItemClick={onItemClick}
         />
       ))}
-      <PaginationButton
-        intent="next"
-        isVisible={pageNum !== pagesAmount - 1}
-        onClick={onLoadNext}
-        icon={<Icon iconName="arrowDown" width="16" height="15" />}
-        pageNum={pageNum}
-        pagesAmount={pagesAmount}
-      />
     </StyledWrapper>
   );
 };

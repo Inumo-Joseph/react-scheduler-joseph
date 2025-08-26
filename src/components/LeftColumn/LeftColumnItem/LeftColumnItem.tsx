@@ -5,7 +5,6 @@ import { LeftColumnItemProps } from "./types";
 
 const LeftColumnItem: FC<LeftColumnItemProps> = ({ id, item, rows, onItemClick }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-
   return (
     <StyledWrapper
       title={item.title + " | " + item.subtitle}

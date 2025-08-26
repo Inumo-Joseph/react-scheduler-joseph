@@ -54,6 +54,9 @@ export const getTileXAndWidth = (item: DatesRange, range: DatesRange, zoom: numb
   // Calculate width for tiles completely within range
   let width;
   switch (zoom) {
+    case 0:
+      width = (item.endDate.diff(item.startDate, "day") + 1) * cellWidth;
+      break;
     case 2:
       width = (item.endDate.diff(item.startDate, "minute") / minutesInHour) * cellWidth;
       break;

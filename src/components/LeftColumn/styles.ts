@@ -5,7 +5,7 @@ import { StyledInputWrapperProps } from "./types";
 export const StyledWrapper = styled.div`
   min-width: ${leftColumnWidth + "px"};
   max-width: ${leftColumnWidth + "px"};
-  min-height: 40vh;
+  min-height: 50vh;
   position: sticky;
   left: 0;
   background-color: ${({ theme }) => theme.colors.background};
@@ -14,15 +14,15 @@ export const StyledWrapper = styled.div`
 `;
 
 export const StyledLeftColumnHeader = styled.div`
-  padding-bottom: 6px;
+  padding-bottom: 0px;
   position: sticky;
-  top: 4px;
+  top: 7px;
   height: 60px;
   display: flex;
   flex-direction: column;
   justify-content: end;
   width: ${leftColumnWidth}px;
-  background-color: ${({ theme }) => theme.colors.background};
+  background-color: ${({ theme }) => theme.colors.primary};
   z-index: 3;
 `;
 
@@ -31,7 +31,7 @@ export const StyledInput = styled.input`
   width: calc(100% - 44px);
   background-color: transparent;
   color: ${({ theme }) => theme.colors.textPrimary};
-  padding: 7px 0 7px 7px;
+  padding: 6px 0 7px 7px;
   border: 0;
   outline: none;
   &::placeholder {

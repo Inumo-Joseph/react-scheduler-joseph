@@ -78,13 +78,54 @@ const Scheduler = ({
   }, [handleResize]);
 
   const filteredData = useMemo(() => {
-    if (!hideCheckedItems) return data;
-    return data
-      .map((row) => ({
-        ...row,
-        data: row.data.filter((task) => !task.isCompleted)
-      }))
-      .filter((row) => row.data.length > 0);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Reset time for accurate date comparison
+
+    let processedData = data;
+
+    // Filter out completed tasks if needed
+    if (hideCheckedItems) {
+      processedData = data
+        .map((row) => ({
+          ...row,
+          data: row.data.filter((task) => !task.isCompleted)
+        }))
+        .filter((row) => row.data.length > 0);
+    }
+
+    return processedData.map((row) => ({
+      ...row,
+      data: row.data.sort((a, b) => {
+        const dateA = a.dueDate ? new Date(a.dueDate) : null;
+        const dateB = b.dueDate ? new Date(b.dueDate) : null;
+
+        // Handle null dates (put them at the end)
+        if (!dateA && !dateB) return 0;
+        if (!dateA) return 1;
+        if (!dateB) return -1;
+
+        // Calculate days from today
+        const daysFromTodayA = Math.floor(
+          (dateA.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)
+        );
+        const daysFromTodayB = Math.floor(
+          (dateB.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)
+        );
+
+        // Priority order: future dates, today, recent past, then old past
+        // Future dates and today first (ascending order)
+        if (daysFromTodayA >= 0 && daysFromTodayB >= 0) {
+          return daysFromTodayA - daysFromTodayB;
+        }
+
+        // If one is future/today and one is past, prioritize future/today
+        if (daysFromTodayA >= 0 && daysFromTodayB < 0) return -1;
+        if (daysFromTodayA < 0 && daysFromTodayB >= 0) return 1;
+
+        // Both are in the past - prioritize more recent past (less negative = more recent)
+        return daysFromTodayB - daysFromTodayA;
+      })
+    }));
   }, [data, hideCheckedItems]);
 
   if (!data?.length && !isLoading) {
