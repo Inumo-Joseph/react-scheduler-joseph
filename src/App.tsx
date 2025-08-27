@@ -56,11 +56,13 @@ function App() {
         },
         {
           cardId: "row-1",
+          originalId: null,
           id: "task-20",
           name: "Task 20",
           startDate: new Date("2025-7-10"),
           dueDate: new Date("2025-08-05"),
           occupancy: 100,
+
           isCompleted: true,
           isRecurring: false
         },
@@ -376,17 +378,20 @@ function App() {
   };
 
   if (selectedDate || addTaskModal) {
-    return (
-      <Popup.Header>
-        ADD TASK
-        <Popup.Content>
-          {selectedDate?.toDateString()}
-          {`At position ${mousePosition?.x} : ${mousePosition?.y}`}
-          {`AND with card, ${selectedCard}`}
-        </Popup.Content>
-      </Popup.Header>
-    );
+    // return (
+    //   <Popup.Header>
+    //     ADD TASK
+    //     <Popup.Content>
+    //       {selectedDate?.toDateString()}
+    //       {`At position ${mousePosition?.x} : ${mousePosition?.y}`}
+    //       {`AND with card, ${selectedCard}`}
+    //     </Popup.Content>
+    //   </Popup.Header>
+    // );
 
+    alert(
+      `Adding Task t at POS: ${mousePosition?.x}: ${mousePosition?.y} with $\n  ${selectedCard}`
+    );
     //  console.log(`Set selected Date ${selectedDate}`)
   }
 
@@ -457,6 +462,7 @@ function App() {
       </div>
 
       <ConfigPanel values={values} onSubmit={setValues} />
+
       {isFullscreen ? (
         <Scheduler
           startDate={values.startDate ? new Date(values.startDate).toISOString() : undefined}

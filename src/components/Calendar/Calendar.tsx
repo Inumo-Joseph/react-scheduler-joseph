@@ -67,9 +67,11 @@ export const Calendar: FC<CalendarProps> = ({
     setHoveredTileRef(ref);
   };
 
+  console.log("filteredData - data for [Calendar]", data);
+
   const [filteredData, setFilteredData] = useState(data);
 
-  const expandedFilteredData = useMemo(() => {
+  let expandedFilteredData = useMemo(() => {
     return filteredData.map((row) => {
       const expandedTasks: SchedulerProjectData[] = [];
 
@@ -79,7 +81,7 @@ export const Calendar: FC<CalendarProps> = ({
         if (task.isRecurring && task.recurring) {
           let nextDate = dayjs(task.startDate);
           let endDate = dayjs(task.dueDate);
-          for (let i = 1; i <= 3; i++) {
+          for (let i = 1; i <= 20; i++) {
             switch (task.recurring.toLowerCase()) {
               case "daily":
                 nextDate = nextDate.add(1, "day");
@@ -118,9 +120,26 @@ export const Calendar: FC<CalendarProps> = ({
     });
   }, [filteredData]);
 
+  expandedFilteredData.forEach((card) => {
+    card.data.sort((a, b) => {
+      return new Date(b.dueDate).getTime() - new Date(a.dueDate).getTime();
+    });
+  });
+
+  if (hideCheckedItems) {
+    expandedFilteredData = expandedFilteredData
+      .map((row) => ({
+        ...row,
+        data: row.data.filter((task) => !task.isCompleted)
+      }))
+      .filter((row) => row.data.length > 0);
+  }
+
+  console.log("Expanded Filtered Data [Calendar]", expandedFilteredData);
+  console.log("hideCheckedItems", hideCheckedItems);
+
   const {
     page,
-    projectsPerPerson,
     totalRowsPerPage,
     rowsPerItem,
     rowsPerPerson,

@@ -47,7 +47,8 @@ const CalendarProvider = ({
   onRangeChange,
   onFilterData,
   onClearFilterData,
-  todayClicked
+  todayClicked,
+  hideCheckedItems
 }: CalendarProviderProps) => {
   const { zoom: configZoom, maxRecordsPerPage = 25 } = config;
 

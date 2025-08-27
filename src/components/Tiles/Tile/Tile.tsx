@@ -207,7 +207,6 @@ const Tile: FC<TileProps> = memo(
     }, [tileNode, debouncedHandleMouseOver, startDate, isDragging]);
 
     useLayoutEffect(() => {
-      console.log("Rerendering Position");
       if (tileNode) {
         const tileRect = tileNode.getBoundingClientRect();
         const canvas = document.querySelector("canvas");
@@ -215,13 +214,13 @@ const Tile: FC<TileProps> = memo(
 
         const canvasRect = canvas.getBoundingClientRect();
 
-        console.log("Report Position X: ", tileRect.left - canvasRect.left, "for", data.name);
-        console.log(
-          "Report Position Y: ",
-          tileRect.top - canvasRect.top + headerHeight + 15,
-          "for",
-          data.name
-        );
+        // console.log("Report Position X: ", tileRect.left - canvasRect.left, "for", data.name);
+        // console.log(
+        //   "Report Position Y: ",
+        //   tileRect.top - canvasRect.top + headerHeight + 15,
+        //   "for",
+        //   data.name
+        // );
 
         reportPosition?.(data.id, {
           x: tileRect.left - canvasRect.left,
@@ -238,10 +237,10 @@ const Tile: FC<TileProps> = memo(
       if (
         truncateText &&
         data.isRecurring &&
-        data.recurring === "Daily" &&
+        data.recurring === ("Daily" || "Weekly") &&
         data.id.includes("-recurring")
       ) {
-        return true;
+        return false;
       }
 
       return truncateText;
@@ -272,9 +271,11 @@ const Tile: FC<TileProps> = memo(
         backgroundColor: `${data.bgColor ?? "#ffcc4d"}`,
         opacity: isDragging ? 0.5 : effectiveIsHidden ? "0.4" : "1",
         width: `${width}px`,
+
         color: getTileTextColor(data.bgColor ?? ""),
         transform: transform ? `translate3d(${transform.x}px, ${transform.y}px, 0)` : undefined,
-        border: isOver ? "2px solid blue" : undefined
+        border: isOver ? "1px solid blue" : undefined,
+        overflow: "visible" /* 👈 critical */
       }),
       [x, y, actualTruncate, data.bgColor, isDragging, effectiveIsHidden, width, transform, isOver]
     );

@@ -4,14 +4,14 @@ import { marginPaddingReset, truncate } from "@/styles";
 import { StyledTextProps } from "./types";
 
 export const StyledTileWrapper = styled.div`
-  ${marginPaddingReset}
-  height: ${tileHeight}px;
+  display: inline;
+
   position: absolute;
-  border: none;
+  height: ${tileHeight}px;
+  border: 1px;
   border-radius: 5px;
   text-align: left;
   color: ${({ theme }) => theme.colors.textPrimary};
-  width: 100%;
 `;
 
 export const StyledTextWrapper = styled.div`
@@ -24,7 +24,6 @@ export const StyledTextWrapper = styled.div`
 export const StyledText = styled.p<StyledTextProps>`
   ${marginPaddingReset}
 
-  display: inline;
   font-weight: ${({ bold }) => (bold ? "600" : "400")};
   &:first-child {
     &::after {
@@ -39,14 +38,19 @@ export const StyledDescription = styled.p<{ $allowOverflow?: boolean }>`
 `;
 
 export const StyledStickyWrapper = styled.div<{ $allowOverflow?: boolean }>`
-  position: sticky;
-  left: ${leftColumnWidth + 50}px;
   ${({ $allowOverflow }) =>
-    !$allowOverflow &&
-    `
-    overflow: hidden;
-    white-space: nowrap;
-    textOverflow: ellipsis;  
-
-  `}
+    $allowOverflow
+      ? `
+        position: relative; 
+        overflow: visible;
+        white-space: nowrap;
+        min-width: max-content;
+      `
+      : `
+        position: sticky;
+        left: ${leftColumnWidth + 50}px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      `}
 `;

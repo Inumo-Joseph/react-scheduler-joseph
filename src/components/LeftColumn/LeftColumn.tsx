@@ -33,22 +33,24 @@ const LeftColumn: FC<LeftColumnProps> = ({
           />
           <Icon iconName="search" />
         </StyledInputWrapper>
-        <PaginationButton
-          intent="previous"
-          isVisible={pageNum !== 0}
-          onClick={onLoadPrevious}
-          icon={<Icon iconName="arrowUp" width="16" height="15" />}
-          pageNum={pageNum}
-          pagesAmount={pagesAmount}
-        />
-        <PaginationButton
-          intent="next"
-          isVisible={pageNum !== pagesAmount - 1}
-          onClick={onLoadNext}
-          icon={<Icon iconName="arrowDown" width="16" height="18" />}
-          pageNum={pageNum}
-          pagesAmount={pagesAmount}
-        />
+        <span className="flex row">
+          <PaginationButton
+            intent="previous"
+            isVisible={pageNum !== 0}
+            onClick={onLoadPrevious}
+            icon={<Icon iconName="arrowLeft" width="16" height="15" />}
+            pageNum={pageNum}
+            pagesAmount={pagesAmount}
+          />
+          <PaginationButton
+            intent="next"
+            isVisible={pageNum !== pagesAmount - 1}
+            onClick={onLoadNext}
+            icon={<Icon iconName="arrowRight" width="16" height="15" />}
+            pageNum={pageNum}
+            pagesAmount={pagesAmount}
+          />
+        </span>
       </StyledLeftColumnHeader>
       {data.map((item, index) => (
         <LeftColumnItem

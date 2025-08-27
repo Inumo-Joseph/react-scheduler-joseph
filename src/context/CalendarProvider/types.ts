@@ -40,4 +40,5 @@ export type CalendarProviderProps = {
   onRangeChange?: (range: ParsedDatesRange) => void;
   onFilterData?: () => void;
   onClearFilterData?: () => void;
+  hideCheckedItems?: boolean;
 };

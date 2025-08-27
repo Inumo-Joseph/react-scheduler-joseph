@@ -133,6 +133,8 @@ export type SchedulerProjectData = {
   isRecurring?: boolean;
 
   isCompleted?: boolean;
+
+  // originalId?: string;
 };
 
 export type Day = {

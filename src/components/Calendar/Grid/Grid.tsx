@@ -54,19 +54,23 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
   const theme = useTheme();
   type TilePositionMap = Record<string, { x: number; y: number; width: number; height: number }>;
   const [tilePositions, setTilePositions] = useState<TilePositionMap>({});
+
   const allProjects: SchedulerProjectData[] = data.flatMap((row) =>
     row.data.flatMap((projectsPerRow) => projectsPerRow)
   );
 
-  const handleTilePosition = (
-    id: string,
-    pos: { x: number; y: number; width: number; height: number }
-  ) => {
-    setTilePositions((prev) => ({
-      ...prev,
-      [id]: pos
-    }));
-  };
+  console.log("All Projects [Grid]", allProjects);
+  console.log("Data, passed [Grid]", data);
+
+  const handleTilePosition = useCallback(
+    (id: string, pos: { x: number; y: number; width: number; height: number }) => {
+      setTilePositions((prev) => ({
+        ...prev,
+        [id]: pos
+      }));
+    },
+    [tilePositions]
+  );
 
   const handleResize = useCallback(
     (ctx: CanvasRenderingContext2D) => {
@@ -86,9 +90,9 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
     const onResize = () => handleResize(ctx);
 
     window.addEventListener("resize", onResize);
-    console.log("***********************************");
-    console.log("Tile Positions in total being drawn");
-    console.log("***********************************");
+    // console.log("***********************************");
+    // console.log("Tile Positions in total being drawn");
+    // console.log("***********************************");
 
     drawDependencyArrows(
       ctx,
@@ -119,7 +123,7 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
       scrollLeft: SchedulerRef?.current?.scrollLeft || 0
     };
 
-    console.log("scroll Ofset", scrollOffset);
+    // console.log("scroll Ofset", scrollOffset);s
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     handleResize(ctx); // draw grid first
@@ -163,7 +167,7 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
     ctx.moveTo(50, 50);
     ctx.lineTo(200, 200);
     ctx.strokeStyle = "red";
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 1;
     ctx.stroke();
   }, []);
 

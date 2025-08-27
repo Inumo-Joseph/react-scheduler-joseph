@@ -81,17 +81,7 @@ const Scheduler = ({
     const today = new Date();
     today.setHours(0, 0, 0, 0); // Reset time for accurate date comparison
 
-    let processedData = data;
-
-    // Filter out completed tasks if needed
-    if (hideCheckedItems) {
-      processedData = data
-        .map((row) => ({
-          ...row,
-          data: row.data.filter((task) => !task.isCompleted)
-        }))
-        .filter((row) => row.data.length > 0);
-    }
+    const processedData = data;
 
     return processedData.map((row) => ({
       ...row,
@@ -108,6 +98,7 @@ const Scheduler = ({
         const daysFromTodayA = Math.floor(
           (dateA.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)
         );
+
         const daysFromTodayB = Math.floor(
           (dateB.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)
         );
@@ -148,7 +139,8 @@ const Scheduler = ({
             onFilterData={onFilterData}
             schedulerZoom={schedulerZoom}
             onClearFilterData={onClearFilterData}
-            todayClicked={todayClicked}>
+            todayClicked={todayClicked}
+            hideCheckedItems={hideCheckedItems}>
             <StyledOutsideWrapper
               showScroll={!!data.length}
               id={outsideWrapperId}

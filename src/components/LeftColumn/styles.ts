@@ -16,13 +16,15 @@ export const StyledWrapper = styled.div`
 export const StyledLeftColumnHeader = styled.div`
   padding-bottom: 0px;
   position: sticky;
-  top: 7px;
-  height: 60px;
+  padding-right: 4px;
+  padding-left: 4px;
+
+  top: 0px;
   display: flex;
   flex-direction: column;
   justify-content: end;
   width: ${leftColumnWidth}px;
-  background-color: ${({ theme }) => theme.colors.primary};
+  background-color: ${({ theme }) => theme.colors.background};
   z-index: 3;
 `;
 
@@ -40,9 +42,9 @@ export const StyledInput = styled.input`
 `;
 
 export const StyledInputWrapper = styled.div<StyledInputWrapperProps>`
-  margin-left: 10px;
-  height: 27px;
-  width: calc(100% - 20px); //20px = 10px margin each side
+  margin-top: 7px;
+  height: 25px;
+  width: 100%;
   background-color: ${({ theme }) => theme.colors.primary};
   border: 1px solid
     ${({ theme, isFocused }) => (isFocused ? theme.colors.accent : theme.colors.border)};

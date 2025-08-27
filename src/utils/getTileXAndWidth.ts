@@ -42,6 +42,7 @@ export const getTileXAndWidth = (item: DatesRange, range: DatesRange, zoom: numb
   };
   // Only show tiles that are completely within the range
   if (item.startDate.isBefore(range.startDate) || item.endDate.isAfter(range.endDate)) {
+    console.log("Item clamped", item, "for range", range);
     const clampedStartDate = item.startDate.isBefore(range.startDate)
       ? range.startDate
       : item.startDate;
@@ -53,6 +54,7 @@ export const getTileXAndWidth = (item: DatesRange, range: DatesRange, zoom: numb
 
   // Calculate width for tiles completely within range
   let width;
+
   switch (zoom) {
     case 0:
       width = (item.endDate.diff(item.startDate, "day") + 1) * cellWidth;
@@ -63,18 +65,6 @@ export const getTileXAndWidth = (item: DatesRange, range: DatesRange, zoom: numb
     default:
       width = item.endDate.diff(item.startDate, "day") * cellWidth + cellWidth;
   }
-
-  // if (item.startDate.isAfter(range.startDate) || item.endDate.isBefore(range.endDate)) {
-  //   // Clamp the dates to the visible range
-  //   const clampedStart = item.startDate.isAfter(range.startDate) ? range.startDate : item.startDate;
-
-  //   console.log("Clamped Start", clampedStart);
-  //   console.log("Clamped End", item.endDate.isAfter(range.endDate) ? range.endDate : item.endDate);
-  //   const clampedEnd = item.endDate.isAfter(range.endDate) ? range.endDate : item.endDate;
-  //   // Calculate width based on clamped dates
-  //   const clampedWidth = clampedEnd.diff(item.startDate, "day") * cellWidth + cellWidth;
-  //   return { x: getX(), width: clampedWidth };
-  // }
 
   return { x: getX(), width };
 };
