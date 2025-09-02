@@ -34,7 +34,7 @@ const Header: FC<HeaderProps> = ({
       const height = currentHeaderHeight + 1;
       resizeCanvas(ctx, width, height);
 
-      drawHeader(ctx, zoom, cols, startDate, week, dayOfYear, theme, Rows);
+      drawHeader(ctx, zoom, cols, startDate, week, dayOfYear, theme, Rows, canvasRef);
     },
     [cols, dayOfYear, startDate, week, zoom, theme]
   );

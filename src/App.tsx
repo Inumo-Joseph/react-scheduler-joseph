@@ -388,17 +388,16 @@ function App() {
     //     </Popup.Content>
     //   </Popup.Header>
     // );
-
-    alert(
-      `Adding Task t at POS: ${mousePosition?.x}: ${mousePosition?.y} with $\n  ${selectedCard}`
-    );
+    // alert(
+    //   `Adding Task t at POS: ${mousePosition?.x}: ${mousePosition?.y} with $\n  ${selectedCard} during ${selectedDate}`
+    // );
     //  console.log(`Set selected Date ${selectedDate}`)
   }
 
-  if (clickedTask) {
-    alert(`task deleted ${clickedTask.name}`);
-    setClickedTask(null);
-  }
+  // if (clickedTask) {
+  //   alert(`task deleted ${clickedTask.name}`);
+  //   setClickedTask(null);
+  // }
 
   return (
     <>

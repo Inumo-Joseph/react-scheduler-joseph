@@ -214,14 +214,6 @@ const Tile: FC<TileProps> = memo(
 
         const canvasRect = canvas.getBoundingClientRect();
 
-        // console.log("Report Position X: ", tileRect.left - canvasRect.left, "for", data.name);
-        // console.log(
-        //   "Report Position Y: ",
-        //   tileRect.top - canvasRect.top + headerHeight + 15,
-        //   "for",
-        //   data.name
-        // );
-
         reportPosition?.(data.id, {
           x: tileRect.left - canvasRect.left,
           y: tileRect.top - canvasRect.top + headerHeight + 15,
@@ -238,7 +230,7 @@ const Tile: FC<TileProps> = memo(
         truncateText &&
         data.isRecurring &&
         data.recurring === ("Daily" || "Weekly") &&
-        data.id.includes("-recurring")
+        data.id.includes("-arecurring")
       ) {
         return false;
       }

@@ -1,4 +1,5 @@
 import dayjs from "dayjs";
+import { RefObject, useRef } from "react";
 import { Day } from "@/types/global";
 import {
   boxHeight,
@@ -14,37 +15,22 @@ import { drawDashedLine } from "@/utils/drawDashedLine";
 import { drawRow } from "../../drawRow";
 import { getBoxFillStyle } from "../../getBoxFillStyle";
 import { getTextStyle } from "../../getTextStyle";
+
 export const drawDaysOnBottom = (
   ctx: CanvasRenderingContext2D,
   cols: number,
   startDate: Day,
   theme: Theme,
-  Rows?: number
+  Rows?: number,
+  canvasRef?: RefObject<HTMLCanvasElement>
 ) => {
   let xPos = -25;
   const yPos = headerMonthHeight - 15;
-  const width = 7 * dayWidth;
-  const startWeek = startDate.weekOfYear;
-  const weeksThreshold = ctx.canvas.width / width + width;
-
-  // for(let j = 0; j < weeksThreshold; j++)
-  // {
-  //    const day = dayjs(`${startDate.year}-${startDate.month + 1}-${startDate.dayOfMonth}`).day();
-  //       let weekIndex = (startWeek + j) % weeksInYear;
-
-  //       if (weekIndex <= 0) {
-  //         weekIndex += weeksInYear;
-  //       }
-  //       console.log("week Index", weekIndex)
-  // }
+  const gridHEight = canvasRef?.current?.getBoundingClientRect().height;
 
   for (let i = 0; i < cols; i++) {
     const day = parseDay(
       dayjs(`${startDate.year}-${startDate.month + 1}-${startDate.dayOfMonth}`).add(i, "days")
-    );
-    const week = dayjs(`${startDate.year}-${startDate.month + 1}-${startDate.dayOfMonth}`).add(
-      i,
-      "weeks"
     );
 
     const dayLabel = `${day.dayName}${day.dayOfMonth}`;
@@ -68,6 +54,8 @@ export const drawDaysOnBottom = (
     const textX = xPos + (dayWidth - textWidth) / 2;
     const lineStartY = yPos + 7;
     let lineEndY = boxHeight * cols;
+    // const gridRect = canvasRef.current?.getBoundingClientRect();
+
     Rows ? (lineEndY = boxHeight * Rows) : (lineEndY = boxHeight * cols); // Use provided height or default
     // Draw the text
     if (isToday) {
@@ -85,9 +73,6 @@ export const drawDaysOnBottom = (
 
       const lineX = xPos + 0.5 + dayWidth / 2;
 
-      //  drawDashedLine(ctx, lineX, cols , originalStrokeStyle)
-      // Set dashed line style
-
       // Save current line style
       for (let i = 0; i < 12; i++) {
         ctx.strokeStyle = "black";
@@ -96,7 +81,7 @@ export const drawDaysOnBottom = (
 
         ctx.beginPath();
         ctx.moveTo(lineX, lineStartY);
-        ctx.lineTo(lineX, 38);
+        ctx.lineTo(lineX, gridHEight ? gridHEight : 38);
         ctx.stroke();
         lineEndY += 120;
       }

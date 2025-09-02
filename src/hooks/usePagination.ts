@@ -19,15 +19,11 @@ export const usePagination = (data: SchedulerData): UsePaginationData => {
 
   const { projectsPerPerson, rowsPerPerson } = useMemo(() => projectsOnGrid(data), [data]);
 
-  console.log("Data [pagination]", data);
-
   const pages = useMemo(
     () => splitToPages(data, projectsPerPerson, rowsPerPerson, recordsThreshold),
 
     [data, projectsPerPerson, recordsThreshold, rowsPerPerson]
   );
-
-  console.log("Pages [Pagination]", pages);
 
   const next = useCallback(() => {
     if (pages.length > 0 && pages[pageNum].length && outsideWrapper.current) {

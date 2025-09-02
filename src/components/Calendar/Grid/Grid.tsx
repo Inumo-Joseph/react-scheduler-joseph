@@ -2,6 +2,7 @@ import { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from "r
 import { useTheme } from "styled-components";
 import dayjs from "dayjs";
 import { DndContext, DragEndEvent, DragStartEvent, DragOverlay } from "@dnd-kit/core";
+import { ColorModule } from "@faker-js/faker";
 import { drawGrid } from "@/utils/drawGrid/drawGrid";
 import {
   boxHeight,
@@ -59,18 +60,15 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
     row.data.flatMap((projectsPerRow) => projectsPerRow)
   );
 
-  console.log("All Projects [Grid]", allProjects);
-  console.log("Data, passed [Grid]", data);
-
-  const handleTilePosition = useCallback(
-    (id: string, pos: { x: number; y: number; width: number; height: number }) => {
-      setTilePositions((prev) => ({
-        ...prev,
-        [id]: pos
-      }));
-    },
-    [tilePositions]
-  );
+  const handleTilePosition = (
+    id: string,
+    pos: { x: number; y: number; width: number; height: number }
+  ) => {
+    setTilePositions((prev) => ({
+      ...prev,
+      [id]: pos
+    }));
+  };
 
   const handleResize = useCallback(
     (ctx: CanvasRenderingContext2D) => {
@@ -90,23 +88,9 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
     const onResize = () => handleResize(ctx);
 
     window.addEventListener("resize", onResize);
-    // console.log("***********************************");
-    // console.log("Tile Positions in total being drawn");
-    // console.log("***********************************");
-
-    drawDependencyArrows(
-      ctx,
-      data.flatMap((paginatedRow) => {
-        return paginatedRow.data.flatMap((doubleArray) => {
-          return doubleArray;
-        });
-      }),
-      tilePositions,
-      zoom
-    );
 
     return () => window.removeEventListener("resize", onResize);
-  }, [handleResize]);
+  }, [handleResize, tilePositions]);
 
   useEffect(() => {
     const schedulerContainer = SchedulerRef?.current;
@@ -245,7 +229,8 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
 
     taskInteractionProps?.setMousePosition?.({ x: e.clientX, y: e.clientY });
 
-    const mouseX = e.clientX - gridRect.left - dayWidth;
+    const scale = window.devicePixelRatio;
+    const mouseX = e.clientX - gridRect.left - dayWidth - (dayWidth * scale) / 2;
     const mouseY = e.clientY - gridRect.top + headerHeight;
 
     const gridWidth = gridRect.width;
@@ -264,14 +249,12 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
         break;
     }
 
-    const clickedColumn = Math.floor(mouseX / columnWidth);
+    const clickedColumn = Math.ceil(mouseX / columnWidth);
     const clickedRows = Math.floor(mouseY / rowHeight);
     const selectedRow = getCardFromRowClick(clickedRows, filteredData);
-
     const clickedDate = getDateFromColumn(clickedColumn);
 
     // Show your add-task form/modal with this date
-
     taskInteractionProps?.setSelectedDate?.(clickedDate);
     taskInteractionProps?.setSelectedCard?.(selectedRow?.card.id);
     taskInteractionProps?.setShowAddTaskModal?.(true);

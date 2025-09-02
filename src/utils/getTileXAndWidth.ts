@@ -42,13 +42,15 @@ export const getTileXAndWidth = (item: DatesRange, range: DatesRange, zoom: numb
   };
   // Only show tiles that are completely within the range
   if (item.startDate.isBefore(range.startDate) || item.endDate.isAfter(range.endDate)) {
-    console.log("Item clamped", item, "for range", range);
     const clampedStartDate = item.startDate.isBefore(range.startDate)
       ? range.startDate
       : item.startDate;
+
     const clampedEndDate = item.endDate.isAfter(range.endDate) ? range.endDate : item.endDate;
-    // Calculate width based on clamped dates
-    const clampedWidth = clampedEndDate.diff(item.startDate, "day");
+
+    // width based on clamped values
+    const clampedWidth = clampedEndDate.diff(clampedStartDate, "day");
+
     return { x: getX(), width: clampedWidth };
   }
 

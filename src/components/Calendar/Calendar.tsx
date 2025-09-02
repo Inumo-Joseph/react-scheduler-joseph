@@ -67,8 +67,6 @@ export const Calendar: FC<CalendarProps> = ({
     setHoveredTileRef(ref);
   };
 
-  console.log("filteredData - data for [Calendar]", data);
-
   const [filteredData, setFilteredData] = useState(data);
 
   let expandedFilteredData = useMemo(() => {
@@ -134,9 +132,6 @@ export const Calendar: FC<CalendarProps> = ({
       }))
       .filter((row) => row.data.length > 0);
   }
-
-  console.log("Expanded Filtered Data [Calendar]", expandedFilteredData);
-  console.log("hideCheckedItems", hideCheckedItems);
 
   const {
     page,

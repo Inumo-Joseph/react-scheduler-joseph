@@ -1,3 +1,4 @@
+import { RefObject } from "react";
 import { Day } from "@/types/global";
 import { Theme } from "@/styles";
 import { drawDaysOnBottom } from "./drawRows/drawDaysOnBottom";
@@ -22,7 +23,8 @@ export const drawHeader = (
   weekLabel: string,
   dayOfYear: number,
   theme: Theme,
-  Rows?: number
+  Rows?: number,
+  canvasRef?: RefObject<HTMLCanvasElement>
 ) => {
   switch (zoom) {
     case 0:
@@ -32,7 +34,7 @@ export const drawHeader = (
 
     case 1:
       //  drawWeeksInMiddle(ctx, cols, startDate,weekLabel, theme )
-      drawDaysOnBottom(ctx, cols, startDate, theme, Rows);
+      drawDaysOnBottom(ctx, cols, startDate, theme, Rows, canvasRef);
       break;
 
     case 3:
