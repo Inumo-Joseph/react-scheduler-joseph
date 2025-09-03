@@ -7,9 +7,9 @@ export function drawArrow(
   from: { x: number; y: number; width: number; height: number; _index: number },
   to: { x: number; y: number; width: number; height: number; _index: number },
   options = {
-    padding: 9,
+    padding: 8,
     arrowCurve: 1,
-    barHeight: 7,
+    barHeight: 6,
     headerHeight: 30
   }
 ) {
@@ -82,7 +82,7 @@ export function drawArrow(
   }
 
   ctx.strokeStyle = "black";
-  ctx.lineWidth = 1;
+  ctx.lineWidth = 2;
   ctx.stroke();
 
   // Draw arrowhead

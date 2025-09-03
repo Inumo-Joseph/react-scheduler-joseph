@@ -60,15 +60,15 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
     row.data.flatMap((projectsPerRow) => projectsPerRow)
   );
 
-  const handleTilePosition = (
-    id: string,
-    pos: { x: number; y: number; width: number; height: number }
-  ) => {
-    setTilePositions((prev) => ({
-      ...prev,
-      [id]: pos
-    }));
-  };
+  const handleTilePosition = useCallback(
+    (id: string, pos: { x: number; y: number; width: number; height: number }) => {
+      setTilePositions((prev) => ({
+        ...prev,
+        [id]: pos
+      }));
+    },
+    [setTilePositions]
+  );
 
   const handleResize = useCallback(
     (ctx: CanvasRenderingContext2D) => {
@@ -113,7 +113,18 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
     handleResize(ctx); // draw grid first
 
     drawDependencyArrows(ctx, allProjects, tilePositions, zoom, hideCheckedItems, scrollOffset);
-  }, [date, rows, zoom, handleResize, tilePositions, truncateText, hideCheckedItems, onAssignTask]);
+  }, [
+    date,
+    rows,
+    zoom,
+    handleResize,
+    tilePositions,
+    truncateText,
+    hideCheckedItems,
+    onAssignTask,
+    SchedulerRef,
+    allProjects
+  ]);
 
   useEffect(() => {
     if (!refRight.current) return;
@@ -241,7 +252,7 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
 
     switch (zoom) {
       case 0:
-        columnWidth = Math.floor(columnWidth / 7);
+        columnWidth = Math.ceil(columnWidth / 7.3);
         break;
 
       case 3:

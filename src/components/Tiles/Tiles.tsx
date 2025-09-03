@@ -28,6 +28,16 @@ const Tiles: FC<TilesProps> = ({
 }) => {
   const recurringMap = new Map<string, SchedulerProjectData[]>();
 
+  data.forEach((card) => {
+    card.data.forEach((projectArray) => {
+      projectArray.sort((a, b) => {
+        return new Date(b.dueDate).getTime() - new Date(a.dueDate).getTime();
+      });
+    });
+  });
+
+  console.log("Tiles Data sorted: ", data);
+
   data.forEach((person) => {
     person.data.forEach((projectsPerRow) => {
       projectsPerRow.forEach((project) => {

@@ -118,12 +118,6 @@ export const Calendar: FC<CalendarProps> = ({
     });
   }, [filteredData]);
 
-  expandedFilteredData.forEach((card) => {
-    card.data.sort((a, b) => {
-      return new Date(b.dueDate).getTime() - new Date(a.dueDate).getTime();
-    });
-  });
-
   if (hideCheckedItems) {
     expandedFilteredData = expandedFilteredData
       .map((row) => ({
