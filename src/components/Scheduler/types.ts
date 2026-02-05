@@ -1,5 +1,4 @@
 import React, { Dispatch } from "react";
-import { AnyAction } from "redux";
 import {
   Config,
   SchedulerData,

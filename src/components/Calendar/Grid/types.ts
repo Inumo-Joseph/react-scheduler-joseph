@@ -1,5 +1,4 @@
 import { Dispatch } from "react";
-import { AnyAction } from "redux";
 import { PaginatedSchedulerData, SchedulerData, SchedulerProjectData } from "@/types/global";
 
 export type GridProps = {

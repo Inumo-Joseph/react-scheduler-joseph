@@ -48,10 +48,21 @@ export const getTileXAndWidth = (item: DatesRange, range: DatesRange, zoom: numb
 
     const clampedEndDate = item.endDate.isAfter(range.endDate) ? range.endDate : item.endDate;
 
-    // width based on clamped values
-    const clampedWidth = clampedEndDate.diff(clampedStartDate, "day");
+    // Calculate width based on clamped values, applying same logic as normal tiles
+    let clampedWidth;
+    switch (zoom) {
+      case 0:
+        clampedWidth = (clampedEndDate.diff(clampedStartDate, "day") + 1) * cellWidth;
+        break;
+      case 2:
+        clampedWidth =
+          (clampedEndDate.diff(clampedStartDate, "minute") / minutesInHour) * cellWidth;
+        break;
+      default:
+        clampedWidth = clampedEndDate.diff(clampedStartDate, "day") * cellWidth + cellWidth;
+    }
 
-    return { x: getX(), width: clampedWidth };
+    return { x: getX(), width: Math.max(0, clampedWidth) };
   }
 
   // Calculate width for tiles completely within range

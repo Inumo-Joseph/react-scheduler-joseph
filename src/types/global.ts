@@ -132,6 +132,12 @@ export type SchedulerProjectData = {
 
   isRecurring?: boolean;
 
+  /**
+   * Date until which recurring instances should be generated.
+   * If not set, the default number of recurrences (15) is used.
+   */
+  recurringUntil?: Date;
+
   isCompleted?: boolean;
 
   // originalId?: string;

@@ -7,7 +7,7 @@ export const prefixId = "reactSchedulerOutsideWrapper";
 export const GlobalStyle = createGlobalStyle`
 
   #${prefixId} {
-    font-family: 'Proxima Nova','Nunito', Arial, sans-serif;
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
     box-sizing: border-box;
     line-height: 1.15;
     -webkit-text-size-adjust: 100%;
@@ -52,25 +52,25 @@ export const theme: DefaultTheme = {
   navHeight: "44px",
   colors: {
     background: "#FFFFFF",
-    gridBackground: "#F5F5F5",
+    gridBackground: "#FAFBFC",
 
-    primary: "#F8F8FD",
-    secondary: "#E6F3FF",
-    tertiary: "#C9E5FF",
+    primary: "#F4F6F9",
+    secondary: "#EBF2FF",
+    tertiary: "#D6E4FF",
 
-    textPrimary: "#1C222F",
+    textPrimary: "#1A1D23",
     textSecondary: "#FFFFFF",
-    placeholder: "#607D8B",
+    placeholder: "#8993A4",
 
     button: "#FFFFFF",
-    border: "#D2D2D2",
+    border: "#E2E6ED",
     tooltip: "#FFFFFF",
-    hover: "#E6F3FF",
-    disabled: "#777777",
-    warning: "#EF4444",
+    hover: "#F0F4FF",
+    disabled: "#A0A8B4",
+    warning: "#E5484D",
 
-    defaultTile: "#728DE2",
-    accent: "#5cb577"
+    defaultTile: "#6E7FF5",
+    accent: "#34C759"
   }
 };
 
@@ -78,27 +78,27 @@ export const darkTheme: Theme = {
   mode: "dark",
   navHeight: "44px",
   colors: {
-    background: "#161B22",
-    gridBackground: "#1E252E",
+    background: "#13161B",
+    gridBackground: "#1A1E27",
 
-    primary: "#303b49",
-    secondary: "#444e5b",
-    tertiary: "#6E757F",
+    primary: "#242936",
+    secondary: "#2D3548",
+    tertiary: "#3D465A",
 
-    textPrimary: "#DADCE0",
-    textSecondary: "#EAEBED",
-    placeholder: "#bbbbbb",
+    textPrimary: "#E1E4EA",
+    textSecondary: "#F0F1F3",
+    placeholder: "#6B7280",
 
-    button: "#60676f",
-    border: "#2C333A",
-    hover: "#303439",
-    tooltip: "#3B3C5F",
-    disabled: "#38414a",
-    warning: "#FF4C4C",
+    button: "#2D3548",
+    border: "#2A2F3C",
+    hover: "#2D3548",
+    tooltip: "#2D3548",
+    disabled: "#3D465A",
+    warning: "#E5484D",
 
-    defaultTile: "#728DE2",
+    defaultTile: "#6E7FF5",
 
-    accent: "#1798c2"
+    accent: "#34C759"
   }
 };
 

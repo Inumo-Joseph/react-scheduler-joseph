@@ -2,6 +2,12 @@
 node_modules/
 dist/
 
+.claude-flow/
+.claude/
+.hive-mind/
+.swarm/
+src/.agents/
+
 # Log files
 *.log
 

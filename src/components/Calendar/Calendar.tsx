@@ -79,7 +79,8 @@ export const Calendar: FC<CalendarProps> = ({
         if (task.isRecurring && task.recurring) {
           let nextDate = dayjs(task.startDate);
           let endDate = dayjs(task.dueDate);
-          for (let i = 1; i <= 20; i++) {
+          const recurringLimit = task.recurringUntil ? Infinity : 15;
+          for (let i = 1; i <= recurringLimit; i++) {
             switch (task.recurring.toLowerCase()) {
               case "daily":
                 nextDate = nextDate.add(1, "day");
@@ -99,6 +100,10 @@ export const Calendar: FC<CalendarProps> = ({
                 break;
               default:
                 break;
+            }
+
+            if (task.recurringUntil && nextDate.isAfter(dayjs(task.recurringUntil))) {
+              break;
             }
 
             expandedTasks.push({
@@ -126,7 +131,7 @@ export const Calendar: FC<CalendarProps> = ({
       }))
       .filter((row) => row.data.length > 0);
   }
-
+console.log("data in calendar", data)
   const {
     page,
     totalRowsPerPage,
@@ -192,6 +197,7 @@ export const Calendar: FC<CalendarProps> = ({
     setFilteredData(data);
   }, [data, searchPhrase, hoveredTileData]);
 
+  console.log("Page", page)
   return (
     <div
       style={{

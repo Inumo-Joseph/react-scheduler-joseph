@@ -1,5 +1,8 @@
 import dayjs from "dayjs";
+import isoWeek from "dayjs/plugin/isoWeek";
 import { getCols } from "./getCols";
+
+dayjs.extend(isoWeek);
 
 export type DatesRange = {
   startDate: dayjs.Dayjs;
@@ -11,29 +14,37 @@ export type ParsedDatesRange = {
   endDate: Date;
 };
 
+/**
+ * Get the date range for the calendar view.
+ *
+ * IMPORTANT: startDate is normalized to calendar boundaries so headers and tiles align:
+ * - Week view (zoom=0): startDate is normalized to Monday (start of ISO week)
+ * - Day view (zoom=1): startDate is the exact day
+ * - Hour view (zoom=2): startDate is the exact hour
+ * - Month view (zoom=3): startDate is normalized to 1st of month
+ */
 export const getDatesRange = (date: dayjs.Dayjs, zoom: number): DatesRange => {
-  const colsOffset = Math.round(getCols(zoom) / 2);
+  const cols = getCols(zoom);
+  const colsOffset = Math.round(cols / 2);
 
   let startDate;
 
-  // console.log("=== getDatesRange Debug ===");
-  // console.log("zoom:", zoom);
-  // console.log("getCols(zoom):", getCols(zoom));
-  // console.log("colsOffset:", colsOffset);
-  // console.log("input date:", date.format('YYYY-MM-DD'));
-
   switch (zoom) {
     case 1:
+      // Day view: exact days
       startDate = date.subtract(colsOffset, "days");
       break;
-    case 2:
-      startDate = date.subtract(colsOffset, "hours");
-      break;
+    // case 2:
+    //   // Hour view: exact hours
+    //   startDate = date.subtract(colsOffset, "hours");
+    //   break;
     case 3:
-      startDate = date.subtract(colsOffset, "months");
+      // Month view: normalize to 1st of month for header alignment
+      startDate = date.subtract(colsOffset, "months").startOf("month");
       break;
     default:
-      startDate = date.subtract(colsOffset, "weeks");
+      // Week view (zoom=0): normalize to Monday for header alignment
+      startDate = date.subtract(colsOffset, "weeks").startOf("isoWeek");
       break;
   }
 
@@ -42,14 +53,16 @@ export const getDatesRange = (date: dayjs.Dayjs, zoom: number): DatesRange => {
     case 1:
       endDate = date.add(colsOffset, "days");
       break;
-    case 2:
-      endDate = date.add(colsOffset, "hours");
-      break;
+    // case 2:
+    //   endDate = date.add(colsOffset, "hours");
+    //   break;
     case 3:
-      endDate = date.add(colsOffset, "months");
+      // Month view: normalize to end of month
+      endDate = date.add(colsOffset, "months").endOf("month");
       break;
     default:
-      endDate = date.add(colsOffset, "weeks");
+      // Week view: normalize to Sunday
+      endDate = date.add(colsOffset, "weeks").endOf("isoWeek");
       break;
   }
 

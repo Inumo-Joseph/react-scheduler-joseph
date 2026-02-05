@@ -1,60 +1,71 @@
-import { useEffect } from "react";
-import { cornersOfRectangle } from "@dnd-kit/core/dist/utilities/algorithms/helpers";
 import { SchedulerProjectData } from "@/types/global";
-import { headerHeight } from "@/constants";
 import { drawArrow } from "./drawArrows";
 
 type TilePositionMap = Record<string, { x: number; y: number; width: number; height: number }>;
 
 /**
- * Draw dependency arrows between tasks using Canvas
+ * Draw dependency arrows between tasks using Canvas.
+ * Only draws arrows for tasks that have valid positions (are currently visible).
+ * Tile positions are already canvas-relative and updated on scroll.
  */
 export function drawDependencyArrows(
   ctx: CanvasRenderingContext2D,
   data: SchedulerProjectData[],
   tilePositions: TilePositionMap,
   zoom: number,
-  showHideChecked?: boolean,
-  scrollOffset?: { scrollTop: number; scrollLeft: number }
+  hideCheckedItems?: boolean
 ) {
+
+  // Create a map for quick lookup of task indices in the visible data
+  const visibleTaskIndices = new Map<string, number>();
+  data.forEach((task, index) => {
+    visibleTaskIndices.set(task.id, index);
+  });
+
+  // Create a set of visible task IDs for quick lookup
+  const visibleTaskIds = new Set(data.map((task) => task.id));
+
   data.forEach((task) => {
-    const to = tilePositions[task.parentTaskId ?? ""];
-    const from = tilePositions[task.id];
+    // Skip if task has no parent dependency
+    if (!task.parentTaskId) return;
 
-    if (!from || !to) return;
+    // Get positions for both tasks
+    const fromPosition = tilePositions[task.id];
+    const toPosition = tilePositions[task.parentTaskId];
 
-    const index = data.indexOf(task);
-    const index2 = data.findIndex((currentTask) => currentTask.id === task.parentTaskId);
+    // Skip if positions are not available
+    if (!fromPosition || !toPosition) return;
 
-    if (showHideChecked) {
-      if (index2 === -1) return;
+    // Get the visual indices of both tasks in the current visible data
+    const fromIndex = visibleTaskIndices.get(task.id);
+    const toIndex = visibleTaskIndices.get(task.parentTaskId);
+
+    // Skip if either index is undefined (task not in visible data)
+    if (fromIndex === undefined || toIndex === undefined) return;
+
+    // When hiding checked items, verify parent task is actually visible
+    if (hideCheckedItems && !visibleTaskIds.has(task.parentTaskId)) {
+      return;
     }
 
-    const canvas = document.querySelector("canvas");
-    if (!canvas) return;
-    const canvasRect = canvas.getBoundingClientRect();
-    let yoffset = 0;
+    // Prepare coordinates (tile positions are already canvas-relative and updated on scroll)
+    const from = {
+      x: fromPosition.x,
+      y: fromPosition.y,
+      width: fromPosition.width,
+      height: fromPosition.height,
+      _index: fromIndex
+    };
 
-    if (scrollOffset?.scrollTop || 0 > 0) {
-      yoffset = scrollOffset?.scrollTop || 0;
-    }
+    const to = {
+      x: toPosition.x,
+      y: toPosition.y,
+      width: toPosition.width,
+      height: toPosition.height,
+      _index: toIndex
+    };
 
-    const fromx = from.x;
-    const fromy = from.y + yoffset;
-    const fromWidth = from.width;
-    const fromheight = from.height;
-
-    const tox = to.x;
-    const toy = to.y + yoffset;
-    const toWidth = to.width;
-    const toHeight = to.height;
-    // console.log("________Drawing Deps________ for Task: ", task.name);
-    // console.log("Drawing Deps Arrows from.x", from.x, "to.x", to.x);
-    drawArrow(
-      ctx,
-      zoom,
-      { x: fromx, y: fromy, width: fromWidth, height: fromheight, _index: index },
-      { x: tox, y: toy, width: toWidth, height: toHeight, _index: index2 }
-    );
+    // Draw the dependency arrow
+    drawArrow(ctx, zoom, from, to);
   });
 }

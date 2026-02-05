@@ -12,7 +12,7 @@ export const drawMonthsOnTop = (ctx: CanvasRenderingContext2D, startDate: Day, t
   let startMonthIndex = dayjs(
     `${startDate.year}-${startDate.month + 1}-${startDate.dayOfMonth}`
   ).month();
-  xPos = -startDate.dayOfMonth * dayWidth + dayWidth;
+  xPos = -startDate.dayOfMonth;
 
   for (let i = 0; i < monthsInYear; i++) {
     if (startMonthIndex > monthsInYear - 1) {

@@ -21,11 +21,11 @@ export const zoom2ButtonJump = 1;
 export const weeksInYear = 52;
 export const navHeight = 44;
 export const fonts = {
-  topRow: "600 14px Arial",
-  middleRow: "400 13px Arial",
+  topRow: "600 13px 'Inter', 'Segoe UI', system-ui, sans-serif",
+  middleRow: "500 12px 'Inter', 'Segoe UI', system-ui, sans-serif",
   bottomRow: {
-    name: "100 10.5px Arial",
-    number: "100 10.5px Arial"
+    name: "400 10.5px 'Inter', 'Segoe UI', system-ui, sans-serif",
+    number: "500 10.5px 'Inter', 'Segoe UI', system-ui, sans-serif"
   }
 };
 export const screenWidthMultiplier = 3;
@@ -37,6 +37,8 @@ export const canvasHeaderWrapperId = "reactSchedulerCanvasHeaderWrapper";
 export const canvasWrapperId = "reactSchedulerCanvasWrapper";
 export const outsideWrapperId = prefixId;
 export const tileYOffset = 4;
+// Height of left column header (search bar + pagination) that tiles must offset below
+export const leftColumnHeaderHeight = 50;
 export const tileHeight = 45;
 export const formFieldsIds = {
   peopleCount: "peopleCount",
@@ -46,7 +48,7 @@ export const formFieldsIds = {
   maxRecordsPerPage: "maxRecordsPerPage",
   isFullscreen: "isFullscreen"
 };
-export const yearViewMonthLabelFont = "bold 12px Inter";
+export const yearViewMonthLabelFont = "600 12px 'Inter', 'Segoe UI', system-ui, sans-serif";
 export const yearViewMonthLabelHeight = 16;
 export const businessDays = 5;
 export const maxHoursPerWeek = 40;

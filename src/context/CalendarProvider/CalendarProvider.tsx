@@ -1,5 +1,4 @@
 import {
-  SetStateAction,
   useCallback,
   useContext,
   useEffect,
@@ -14,7 +13,7 @@ import isoWeek from "dayjs/plugin/isoWeek";
 import isBetween from "dayjs/plugin/isBetween";
 import duration from "dayjs/plugin/duration";
 import debounce from "lodash.debounce";
-import { Coords, ZoomLevel, allZoomLevel } from "@/types/global";
+import { ZoomLevel, allZoomLevel } from "@/types/global";
 import { isAvailableZoom } from "@/types/guards";
 import { getDatesRange, getParsedDatesRange } from "@/utils/getDatesRange";
 import { parseDay } from "@/utils/dates";
@@ -36,6 +35,7 @@ dayjs.extend(isBetween);
 dayjs.extend(duration);
 
 type Direction = "back" | "forward" | "middle";
+type DebouncedScrollFn = ReturnType<typeof debounce<(behavior?: ScrollBehavior) => void>>;
 
 const CalendarProvider = ({
   data,
@@ -90,7 +90,12 @@ const CalendarProvider = ({
   const dayOfYear = dayjs(startDate).dayOfYear();
   const parsedStartDate = parseDay(startDate);
   const outsideWrapper = useRef<HTMLElement | null>(null);
-  type TilePositionMap = Record<string, { x: number; y: number; width: number; height: number }>;
+
+  // Create stable debounced scroll functions (fixes anti-pattern of creating new debounce on each call)
+  const debouncedScrollForward = useRef<DebouncedScrollFn>();
+  const debouncedScrollBack = useRef<DebouncedScrollFn>();
+  const debouncedScrollMiddle = useRef<DebouncedScrollFn>();
+  const debouncedDateUpdate = useRef<ReturnType<typeof debounce>>();
 
   const moveHorizontalScroll = useCallback(
     (direction: Direction, behavior: ScrollBehavior = "auto") => {
@@ -127,42 +132,66 @@ const CalendarProvider = ({
     []
   );
 
-  const loadMore = useCallback(
-    (direction: Direction) => {
-      const cols = getVisibleCols(zoom);
-      let offset: number;
-      switch (zoom) {
-        case 0:
-          offset = cols * 7;
+  // Calculate offset based on zoom level
+  const getDateOffset = useCallback((currentZoom: ZoomLevel) => {
+    const cols = getVisibleCols(currentZoom);
+    switch (currentZoom) {
+      case 0:
+        return cols * 7;
+      case 1:
+        return cols;
+      case 2:
+        return Math.ceil(cols / hoursInDay);
+      case 3:
+        return cols * 30;
+      default:
+        return cols;
+    }
+  }, []);
+
+  // Stable date update functions - created once, not on every call
+  const updateDateBack = useCallback(() => {
+    const offset = getDateOffset(zoom);
+    setDate((prev) => prev.subtract(offset, "days"));
+    onRangeChange?.(range);
+  }, [zoom, getDateOffset, onRangeChange, range]);
+
+  const updateDateForward = useCallback(() => {
+    const offset = getDateOffset(zoom);
+    setDate((prev) => prev.add(offset, "days"));
+    onRangeChange?.(range);
+  }, [zoom, getDateOffset, onRangeChange, range]);
+
+  const updateDateMiddle = useCallback(() => {
+    setDate(dayjs());
+    onRangeChange?.(range);
+  }, [onRangeChange, range]);
+
+  // Initialize debounced functions once and update refs when dependencies change
+  useEffect(() => {
+    debouncedDateUpdate.current?.cancel();
+    debouncedDateUpdate.current = debounce((direction: Direction) => {
+      switch (direction) {
+        case "back":
+          updateDateBack();
           break;
-        case 1:
-          offset = cols;
+        case "forward":
+          updateDateForward();
           break;
-        case 2:
-          offset = Math.ceil(cols / hoursInDay);
-          break;
-        case 3:
-          offset = cols * 30;
+        case "middle":
+          updateDateMiddle();
           break;
       }
-      const load = debounce(() => {
-        switch (direction) {
-          case "back":
-            setDate((prev) => prev.subtract(offset, "days"));
-            break;
-          case "forward":
-            setDate((prev) => prev.add(offset, "days"));
-            break;
-          case "middle":
-            setDate(dayjs());
-            break;
-        }
-        onRangeChange?.(range);
-      }, 300);
-      load();
-    },
-    [onRangeChange, range, zoom]
-  );
+    }, 300);
+
+    return () => {
+      debouncedDateUpdate.current?.cancel();
+    };
+  }, [updateDateBack, updateDateForward, updateDateMiddle]);
+
+  const loadMore = useCallback((direction: Direction) => {
+    debouncedDateUpdate.current?.(direction);
+  }, []);
 
   useEffect(() => {
     // Only act when prop changes
@@ -208,14 +237,36 @@ const CalendarProvider = ({
     onRangeChange?.(range);
   };
 
+  // Initialize stable debounced scroll functions
+  useEffect(() => {
+    debouncedScrollForward.current?.cancel();
+    debouncedScrollBack.current?.cancel();
+    debouncedScrollMiddle.current?.cancel();
+
+    debouncedScrollForward.current = debounce((behavior?: ScrollBehavior) => {
+      moveHorizontalScroll("forward", behavior);
+    }, 300);
+
+    debouncedScrollBack.current = debounce((behavior?: ScrollBehavior) => {
+      moveHorizontalScroll("back", behavior);
+    }, 300);
+
+    debouncedScrollMiddle.current = debounce((behavior?: ScrollBehavior) => {
+      moveHorizontalScroll("middle", behavior);
+    }, 300);
+
+    return () => {
+      debouncedScrollForward.current?.cancel();
+      debouncedScrollBack.current?.cancel();
+      debouncedScrollMiddle.current?.cancel();
+    };
+  }, [moveHorizontalScroll]);
+
   const handleScrollNext = useCallback(() => {
     if (isLoading) return;
-
     loadMore("forward");
-    debounce(() => {
-      moveHorizontalScroll("forward");
-    }, 300)();
-  }, [isLoading, loadMore, moveHorizontalScroll]);
+    debouncedScrollForward.current?.();
+  }, [isLoading, loadMore]);
 
   const handleGoPrev = () => {
     if (isLoading) return;
@@ -229,18 +280,14 @@ const CalendarProvider = ({
   const handleScrollPrev = useCallback(() => {
     if (!isInitialized || isLoading) return;
     loadMore("back");
-    debounce(() => {
-      moveHorizontalScroll("back");
-    }, 300)();
-  }, [isInitialized, isLoading, loadMore, moveHorizontalScroll]);
+    debouncedScrollBack.current?.();
+  }, [isInitialized, isLoading, loadMore]);
 
   const goToToday = useCallback(() => {
     if (isLoading) return;
     loadMore("middle");
-    debounce(() => {
-      moveHorizontalScroll("middle", "smooth");
-    }, 300)();
-  }, [isLoading, loadMore, moveHorizontalScroll]);
+    debouncedScrollMiddle.current?.("smooth");
+  }, [isLoading, loadMore]);
 
   const zoomIn = () => changeZoom(zoom + 1);
 

@@ -1,8 +1,7 @@
 import { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTheme } from "styled-components";
 import dayjs from "dayjs";
-import { DndContext, DragEndEvent, DragStartEvent, DragOverlay } from "@dnd-kit/core";
-import { ColorModule } from "@faker-js/faker";
+import { DndContext, DragEndEvent, DragStartEvent } from "@dnd-kit/core";
 import { drawGrid } from "@/utils/drawGrid/drawGrid";
 import {
   boxHeight,
@@ -10,6 +9,7 @@ import {
   dayWidth,
   headerHeight,
   leftColumnWidth,
+  leftColumnHeaderHeight,
   outsideWrapperId
 } from "@/constants";
 import { Loader, Tiles } from "@/components";
@@ -19,6 +19,7 @@ import { getCanvasWidth } from "@/utils/getCanvasWidth";
 import { drawDependencyArrows } from "@/utils/drawDependencyArrows";
 import { PaginatedSchedulerData, SchedulerProjectData } from "@/types/global";
 import { parseDay } from "@/utils/dates";
+import { useTilePositions } from "@/hooks/useTilePositions";
 
 import { StyledCanvas, StyledInnerWrapper, StyledSpan, StyledWrapper } from "./styles";
 import { GridProps } from "./types";
@@ -53,27 +54,38 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
   const refRight = useRef<HTMLSpanElement>(null);
   const refLeft = useRef<HTMLSpanElement>(null);
   const theme = useTheme();
-  type TilePositionMap = Record<string, { x: number; y: number; width: number; height: number }>;
-  const [tilePositions, setTilePositions] = useState<TilePositionMap>({});
 
-  const allProjects: SchedulerProjectData[] = data.flatMap((row) =>
-    row.data.flatMap((projectsPerRow) => projectsPerRow)
-  );
+  // Get all projects, filtering out completed ones when hideCheckedItems is true
+  const allProjects: SchedulerProjectData[] = useMemo(() => {
+    const projects = data.flatMap((row) => row.data.flatMap((projectsPerRow) => projectsPerRow));
+
+    if (hideCheckedItems) {
+      return projects.filter((project) => !project.isCompleted);
+    }
+    return projects;
+  }, [data, hideCheckedItems]);
+
+  // Use the tile positions hook
+  const { tilePositions, updatePosition, clearPositions } = useTilePositions();
+
+  // No need to clear positions when hideCheckedItems changes.
+  // drawDependencyArrows only iterates allProjects (already filtered),
+  // so stale positions of hidden tiles are never looked up.
+
 
   const handleTilePosition = useCallback(
     (id: string, pos: { x: number; y: number; width: number; height: number }) => {
-      setTilePositions((prev) => ({
-        ...prev,
-        [id]: pos
-      }));
+      updatePosition(id, pos);
     },
-    [setTilePositions]
+    [updatePosition]
   );
 
   const handleResize = useCallback(
     (ctx: CanvasRenderingContext2D) => {
       const width = getCanvasWidth();
-      const height = rows * boxHeight;
+      // Calculate height based on rows plus the left column header offset and some footer padding
+      const footerPadding = 20;
+      const height = rows * boxHeight + leftColumnHeaderHeight + footerPadding;
       resizeCanvas(ctx, width, height);
       drawGrid(ctx, zoom, rows, cols, startDate, theme);
     },
@@ -93,26 +105,17 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
   }, [handleResize, tilePositions]);
 
   useEffect(() => {
-    const schedulerContainer = SchedulerRef?.current;
-    if (!schedulerContainer) return;
-
     const canvas = canvasRef.current;
     if (!canvas) return;
     canvas.style.letterSpacing = "1px";
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const scrollOffset = {
-      scrollTop: SchedulerRef?.current?.scrollTop || 0,
-      scrollLeft: SchedulerRef?.current?.scrollLeft || 0
-    };
-
-    // console.log("scroll Ofset", scrollOffset);s
-
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     handleResize(ctx); // draw grid first
 
-    drawDependencyArrows(ctx, allProjects, tilePositions, zoom, hideCheckedItems, scrollOffset);
+    // Tile positions are already canvas-relative and updated on scroll
+    drawDependencyArrows(ctx, allProjects, tilePositions, zoom, hideCheckedItems);
   }, [
     date,
     rows,
@@ -153,25 +156,27 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
     return () => observerLeft.disconnect();
   }, [handleScrollPrev]);
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-    ctx.beginPath();
-    ctx.moveTo(50, 50);
-    ctx.lineTo(200, 200);
-    ctx.strokeStyle = "red";
-    ctx.lineWidth = 1;
-    ctx.stroke();
-  }, []);
+  // Debug line removed during UI modernization
 
   const projectsMap = useMemo(() => {
     return new Map(allProjects.map((project) => [project.id, project]));
   }, [allProjects]);
 
+  // Track drag state
+  const [, setActiveId] = useState<string | null>(null);
+
+  const handleDragStart = useCallback((event: DragStartEvent) => {
+    setActiveId(event.active.id.toString());
+  }, []);
+
+  const handleDragCancel = useCallback(() => {
+    setActiveId(null);
+  }, []);
+
   const handleDragEnd = useCallback(
     (event: DragEndEvent) => {
+      setActiveId(null); // Clear active drag state
+
       const { active, over } = event;
 
       if (active && over && active.id !== over.id) {
@@ -201,6 +206,7 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
           reason = `Error Cannot assign Tasks`;
         }
 
+
         const flag = reason;
         if (
           draggedTask &&
@@ -208,6 +214,7 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
           draggedTask?.cardId === targetTask?.cardId &&
           draggedTask.dueDate <= targetTask.dueDate
         ) {
+          console.log("updating Parent task to", targetTask.id)
           // update parentTaskId etc.
           onAssignTask?.(
             draggedTask.id,
@@ -228,7 +235,7 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
         }
       }
     },
-    [projectsMap]
+    [projectsMap, onAssignTask]
   );
 
   const handleRightClick = (e: React.MouseEvent) => {
@@ -316,7 +323,11 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
         <StyledSpan position="left" ref={refLeft} />
         <Loader isLoading={isLoading} position="left" />
 
-        <DndContext onDragEnd={handleDragEnd}>
+        <DndContext
+          onDragStart={handleDragStart}
+          onDragEnd={handleDragEnd}
+          onDragCancel={handleDragCancel}
+        >
           <Tiles
             data={data}
             tilePositions={tilePositions}

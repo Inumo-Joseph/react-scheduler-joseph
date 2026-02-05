@@ -1,19 +1,12 @@
 import { RefObject } from "react";
 import { Day } from "@/types/global";
 import { Theme } from "@/styles";
-import { drawDaysOnBottom } from "./drawRows/drawDaysOnBottom";
-import { drawMonthsInMiddle } from "./drawRows/drawMonthsInMiddle";
-import { drawMonthsOnTop } from "./drawRows/drawMonthsOnTop";
-import { drawWeeksInMiddle } from "./drawRows/drawWeeksInMiddle";
-import { drawWeeksOnBottom } from "./drawRows/drawWeeksOnBottom";
-import { drawYearsOnTop } from "./drawRows/drawYearsOnTop";
+import { drawWeekViewHeader } from "./drawRows/newDrawWeekViewHeader";
+import { drawDayViewHeader } from "./drawRows/newDrawDayViewHeader";
+import { drawMonthViewHeader } from "./drawRows/newDrawMonthViewHeader";
 import { drawZoom2DaysInMiddle } from "./drawRows/drawZoom2DaysInMiddle";
 import { drawZoom2MonthsOnTop } from "./drawRows/DrawZoom2MonthsOnTop";
 import { drawZoom2HoursOnBottom } from "./drawRows/drawZoom2HoursOnBottom";
-import { drawMonthsOnBottom } from "./drawRows/drawMonthsOnBottom";
-import { drawQuartersInMiddle } from "./drawRows/drawQuatersInMiddle";
-import { drawQuartersOnTop } from "./drawRows/drawQuartersOnTop";
-import { drawYearsInMiddle } from "./drawRows/drawYearsInMiddle";
 
 export const drawHeader = (
   ctx: CanvasRenderingContext2D,
@@ -28,24 +21,25 @@ export const drawHeader = (
 ) => {
   switch (zoom) {
     case 0:
-      drawMonthsInMiddle(ctx, cols, startDate, theme);
-      drawWeeksOnBottom(ctx, cols, startDate, weekLabel, theme);
+      // Week view: Months on top, Weeks on bottom
+      drawWeekViewHeader(ctx, cols, startDate, weekLabel, theme);
       break;
 
     case 1:
-      //  drawWeeksInMiddle(ctx, cols, startDate,weekLabel, theme )
-      drawDaysOnBottom(ctx, cols, startDate, theme, Rows, canvasRef);
+      // Day view: Days with highlighting for today
+      drawDayViewHeader(ctx, cols, startDate, theme, Rows, canvasRef);
       break;
 
     case 3:
-      drawYearsOnTop(ctx, startDate, dayOfYear, theme);
-      drawQuartersInMiddle(ctx, cols, startDate, theme);
-      drawMonthsOnBottom(ctx, cols, startDate, theme);
+      // Month view: Years on top, Quarters in middle, Months on bottom
+      drawMonthViewHeader(ctx, cols, startDate, dayOfYear, theme);
       break;
-    // case 2:
-    //   drawZoom2MonthsOnTop(ctx, cols, startDate, theme);
-    //   drawZoom2DaysInMiddle(ctx, cols, startDate, theme);
-    //   drawZoom2HoursOnBottom(ctx, cols, startDate, theme);
-    //   break;
+
+    case 2:
+      // Hour view (zoom 2) - keep existing implementation
+      drawZoom2MonthsOnTop(ctx, cols, startDate, theme);
+      drawZoom2DaysInMiddle(ctx, cols, startDate, theme);
+      drawZoom2HoursOnBottom(ctx, cols, startDate, theme);
+      break;
   }
 };

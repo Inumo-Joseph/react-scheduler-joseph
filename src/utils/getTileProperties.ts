@@ -1,6 +1,5 @@
 import dayjs from "dayjs";
-import { useRef } from "react";
-import { boxHeight, tileYOffset } from "@/constants";
+import { boxHeight, tileYOffset, leftColumnHeaderHeight } from "@/constants";
 import { TileProperties } from "@/types/global";
 import { getTileXAndWidth } from "./getTileXAndWidth";
 
@@ -12,7 +11,8 @@ export const getTileProperties = (
   resourceEndDate: Date,
   zoom: number
 ): TileProperties => {
-  const y = row * boxHeight + tileYOffset;
+  // Offset tiles below the left column header (search bar + pagination)
+  const y = row * boxHeight + tileYOffset + leftColumnHeaderHeight /2 ;
   const rangeStartHour = startDate.hour();
   const rangeEndHour = endDate.hour();
   let parsedResourceStartDate;
@@ -33,7 +33,7 @@ export const getTileProperties = (
     case 3: {
       parsedResourceStartDate = dayjs(resourceStartDate).hour(0).minute(0);
       parsedResourceEndDate = dayjs(resourceEndDate).hour(23).minute(59);
-      parsedStartDate = startDate.add(1, "month");
+      parsedStartDate = startDate;
       parsedEndDate = endDate;
       break;
     }

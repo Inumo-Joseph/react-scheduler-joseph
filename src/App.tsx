@@ -32,296 +32,161 @@ function App() {
     projectsPerYear: 5,
     yearsCovered: 0,
     startDate: undefined,
-    maxRecordsPerPage: 20,
+    maxRecordsPerPage: 30,
     isFullscreen: false
   });
 
   const { isFullscreen, maxRecordsPerPage } = values;
 
+  // Today's date: 2026-02-02
+  const today = new Date();
   const dummyData = [
     {
-      id: "row-1",
-      label: { icon: "📁", title: "Project Abcderfghijk", subtitle: "Phase 1" },
+      id: "card-1",
+      label: { icon: "📁", title: "Marketing Campaign", subtitle: "Q1 Launch" },
       data: [
+        // Parent task - Campaign Planning (no parent)
         {
-          cardId: "row-1",
+          cardId: "card-1",
           id: "task-1",
-          name: "Task 1",
-          startDate: new Date("2025-07-01"),
-          dueDate: new Date("2025-07-05"),
+          name: "Campaign Planning",
+          startDate: new Date(today.getFullYear(), today.getMonth(), today.getDate()),
+          dueDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 10),
           occupancy: 100,
-          isCompleted: true,
-          isRecurring: false,
-          parentTaskId: "task-20"
-        },
-        {
-          cardId: "row-1",
-          originalId: null,
-          id: "task-20",
-          name: "Task 20",
-          startDate: new Date("2025-7-10"),
-          dueDate: new Date("2025-08-05"),
-          occupancy: 100,
-
-          isCompleted: true,
+          users: ["Alice"],
+          bgColor: "#4CAF50",
+          isCompleted: false,
           isRecurring: false
         },
+        // Child of task-1
         {
-          cardId: "row-1",
+          cardId: "card-1",
           id: "task-2",
-          name: "Task 2",
-          startDate: new Date("2025-07-03"),
-          dueDate: new Date("2025-07-10"),
+          name: "Design Assets",
+          startDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 3),
+          dueDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 7),
           occupancy: 100,
-          users: [],
+          users: ["Bob"],
+          bgColor: "#2196F3",
+          isCompleted: false,
+          isRecurring: false,
+          parentTaskId: "task-1"
+        },
+        // Recurring task - Weekly standup
+        {
+          cardId: "card-1",
+          id: "task-3",
+          name: "Weekly Standup",
+          startDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1),
+          dueDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 2),
+          occupancy: 100,
+          users: ["Team"],
+          bgColor: "#FF9800",
           isCompleted: false,
           isRecurring: true,
           recurring: "weekly"
         },
-
+        // Child of task-2
         {
-          cardId: "row-1",
-          id: "task-3",
-          name: "Task 3",
-          startDate: new Date("2025-07-07"),
-          dueDate: new Date("2025-07-06"),
-          occupancy: 100,
-          users: ["Fran"],
-          isCompleted: false,
-          isRecurring: false
-        },
-
-        {
-          cardId: "row-1",
+          cardId: "card-1",
           id: "task-4",
-          name: "Task 4",
-          startDate: new Date("2025-07-10"),
-          dueDate: new Date("2025-07-013"),
+          name: "Review Designs",
+          startDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 2),
+          dueDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 2),
           occupancy: 100,
-          users: ["Colby"],
-          parentTaskId: "task-5",
-          isCompleted: false,
-          isRecurring: true,
-          recurring: "monthly"
-        },
-        {
-          cardId: "row-1",
-          id: "task-5",
-          name: "Task 5",
-          startDate: new Date("2025-07-10"),
-          dueDate: new Date("2025-08-013"),
-          occupancy: 100,
-          isCompleted: true,
-          isRecurring: false
-        }
-      ]
-    },
-
-    {
-      id: "row-2",
-      label: { icon: "📁", title: "Project B", subtitle: "Phase 1" },
-      data: [
-        {
-          cardId: "row-2",
-          id: "task-6",
-          name: "  Emptying Locker",
-          startDate: new Date("2025-06-28"),
-          dueDate: new Date("2025-07-06"),
-          occupancy: 100,
-          parentTaskId: "task-7",
-          bgColor: "rgba(133, 193, 233, 0.83)",
-          isCompleted: false,
-          isRecurring: false
-        },
-        {
-          cardId: "row-2",
-          id: "task-16",
-          name: "Doin ya mom",
-          startDate: new Date("2025-07-03"),
-          dueDate: new Date("2025-08-06"),
-          occupancy: 100,
-          parentTaskId: "task-7",
-          bgColor: "rgba(133, 193, 233, 0.83)",
-          isCompleted: false,
-          isRecurring: false
-        },
-        {
-          cardId: "row-2",
-          id: "task-7",
-          name: "Task second shift",
-          startDate: new Date("2025-07-03"),
-          dueDate: new Date("2025-07-03"),
-          occupancy: 100,
-          users: ["Rob"],
-          bgColor: "rgba(133, 193, 233, 0.83)",
+          users: ["Carol"],
+          bgColor: "#9C27B0",
           isCompleted: false,
           isRecurring: false,
-          parentTaskId: "task-8"
+          parentTaskId: "task-2"
         },
+        // Standalone task
         {
-          cardId: "row-2",
-          id: "task-8",
-          name: "Orlando Roster",
-          startDate: new Date("2025-07-010"),
-          dueDate: new Date("2025-07-017"),
+          cardId: "card-1",
+          id: "task-5",
+          name: "Content Writing",
+          startDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 5),
+          dueDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 14),
           occupancy: 100,
-          users: ["Fran"],
-          bgColor: "rgba(133, 193, 233, 0.83)",
-          isCompleted: false,
-          isRecurring: false
-        },
-        {
-          cardId: "row-2",
-          id: "task-9",
-          name: "Task fourth Shift",
-          startDate: new Date("2025-07-10"),
-          dueDate: new Date("2025-07-013"),
-          occupancy: 100,
-          users: ["Colby"],
-          parentTaskId: "task-3",
-          bgColor: "rgba(133, 193, 233, 0.83)",
-          isCompleted: false,
-          isRecurring: false
-        },
-        {
-          cardId: "row-2",
-          id: "task-10",
-          name: "Task 5th shift",
-          startDate: new Date("2025-07-6"),
-          dueDate: new Date("2025-06-020"),
-          occupancy: 100,
-          bgColor: "rgba(133, 193, 233, 0.83)",
-          isCompleted: false,
-          isRecurring: false
-        },
-        {
-          cardId: "row-2",
-          id: "task-11",
-          name: "Fix Flyer Codes",
-          startDate: new Date("2025-07-10"),
-          dueDate: new Date("2025-07-013"),
-          occupancy: 100,
-          users: ["Colby"],
-          bgColor: "rgba(133, 193, 233, 0.83)",
-          isCompleted: true,
-          isRecurring: true,
-          recurring: "daily"
-        },
-        {
-          cardId: "row-2",
-          id: "task-12",
-          name: "Cancel Weekend Missions",
-          startDate: new Date("2025-7-05"),
-          dueDate: new Date("2025-07-010"),
-          users: ["Dev"],
-          occupancy: 100,
-          bgColor: "rgba(133, 193, 233, 0.83)",
+          users: ["Diana"],
+          bgColor: "#E91E63",
           isCompleted: false,
           isRecurring: false
         }
       ]
     },
-
     {
-      id: "row-3",
-      label: { icon: "📁", title: "Project Cee", subtitle: "Phase 1" },
+      id: "card-2",
+      label: { icon: "🚀", title: "Product Development", subtitle: "Sprint 12" },
       data: [
+        // Parent task - Feature Development
         {
-          cardId: "row-3",
-          id: "task-21",
-          name: "  Emptying Locker Looeivill",
-          startDate: new Date("2025-07-28"),
-          dueDate: new Date("2025-07-06"),
+          cardId: "card-2",
+          id: "task-6",
+          name: "Feature Development",
+          startDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 2),
+          dueDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 16),
           occupancy: 100,
-          parentTaskId: "task-23",
-          bgColor: "rgba(133, 193, 233, 0.83)",
+          users: ["Erik"],
+          bgColor: "#00BCD4",
           isCompleted: false,
-          isRecurring: false
+          isRecurring: false,
+                    parentTaskId: "task-7"
+
         },
+        // Child of task-6
         {
-          cardId: "row-3",
-          id: "task-22",
-          name: "Doin ya dad",
-          startDate: new Date("2025-08-03"),
-          dueDate: new Date("2025-09-06"),
+          cardId: "card-2",
+          id: "task-7",
+          name: "Unit Testing",
+          startDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 10),
+          dueDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 18),
           occupancy: 100,
-          bgColor: "rgba(133, 193, 233, 0.83)",
-          isCompleted: false,
-          isRecurring: false
+          users: ["Frank"],
+          bgColor: "#795548",
+          isCompleted: true,
+          isRecurring: false,
         },
+        // Recurring task - Daily sync
         {
-          cardId: "row-3",
-          id: "task-23",
-          name: "This a long sentence made to test out the text truncating capabailities of the tile",
-          startDate: new Date("2025-08-03"),
-          dueDate: new Date("2025-08-03"),
+          cardId: "card-2",
+          id: "task-8",
+          name: "Daily Sync",
+          startDate: new Date(today.getFullYear(), today.getMonth(), today.getDate()-1),
+          dueDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1),
           occupancy: 100,
-          users: ["Rob"],
-          bgColor: "rgba(133, 193, 233, 0.83)",
-          isCompleted: false,
-          isRecurring: false
-        },
-        {
-          cardId: "row-3",
-          id: "task-24",
-          name: "Meet with new CM Orlando",
-          startDate: new Date("2025-07-20"),
-          dueDate: new Date("2025-07-027"),
-          occupancy: 100,
-          users: ["Fran"],
-          bgColor: "rgba(133, 193, 233, 0.83)",
-          isCompleted: false,
-          isRecurring: false
-        },
-        {
-          cardId: "row-3",
-          id: "task-25",
-          name: "Creatign a new task again for new card",
-          startDate: new Date("2025-07-10"),
-          dueDate: new Date("2025-07-013"),
-          occupancy: 100,
-          users: ["Colby"],
-          parentTaskId: "task-3",
-          bgColor: "rgba(133, 193, 233, 0.83)",
-          isCompleted: false,
-          isRecurring: false
-        },
-        {
-          cardId: "row-3",
-          id: "task-26",
-          name: "Task 5th shift",
-          startDate: new Date("2025-07-6"),
-          dueDate: new Date("2025-07-6"),
-          occupancy: 100,
-          bgColor: "rgba(133, 193, 233, 0.83)",
+          users: ["Team"],
+          bgColor: "#607D8B",
           isCompleted: false,
           isRecurring: true,
           recurring: "daily"
         },
+        // Standalone completed task
         {
-          cardId: "row-3",
-          id: "task-27",
-          name: "TASK 27",
-          startDate: new Date("2025-07-10"),
-          dueDate: new Date("2025-07-013"),
+          cardId: "card-2",
+          id: "task-9",
+          name: "Documentation",
+          startDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 4),
+          dueDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 9),
           occupancy: 100,
-          users: ["Colby"],
-          bgColor: "rgba(133, 193, 233, 0.83)",
+          users: ["Grace"],
+          bgColor: "#3F51B5",
           isCompleted: true,
-          isRecurring: true,
-          recurring: "Weekly"
-        },
-        {
-          cardId: "row-3",
-          id: "task-28",
-          name: "Something Something Yada yada makre sure Brrand Ambassadors have been paid",
-          startDate: new Date("2025-7-05"),
-          dueDate: new Date("2025-07-010"),
-          users: ["Dev"],
-          occupancy: 100,
-          bgColor: "rgba(133, 193, 233, 0.83)",
-          isCompleted: false,
           isRecurring: false
+        },
+        // Child of task-7 (grandchild of task-6)
+        {
+          cardId: "card-2",
+          id: "task-10",
+          name: "Code Review",
+          startDate: new Date(today.getFullYear(), today.getMonth(), today.getDate()),
+          dueDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1),
+          occupancy: 100,
+          users: ["Henry"],
+          bgColor: "#F44336",
+          isCompleted: false,
+          isRecurring: false,
+          parentTaskId: "task-7"
         }
       ]
     }
@@ -351,7 +216,7 @@ function App() {
   const handleRangeChange = useCallback((range: ParsedDatesRange) => {
     setRange(range);
   }, []);
-
+  console.log("Data in App", dummyData)
   const handleFilterData = () => console.log(`Filters button was clicked.`);
   const [schedulerZoom, setSchedulerZoom] = useState<any>("1");
   const [truncateText, setTruncateText] = useState<boolean>();
@@ -377,6 +242,7 @@ function App() {
     setTodayClicked((prev) => !prev);
   };
 
+  
   if (selectedDate || addTaskModal) {
     // return (
     //   <Popup.Header>

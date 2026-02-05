@@ -39,6 +39,8 @@ const Header: FC<HeaderProps> = ({
     [cols, dayOfYear, startDate, week, zoom, theme]
   );
 
+  console.log("zoom", zoom)
+
   useEffect(() => {
     if (!canvasRef.current) return;
     const ctx = canvasRef.current.getContext("2d");
@@ -64,7 +66,7 @@ const Header: FC<HeaderProps> = ({
       style={{
         position: "sticky",
         top: "0px",
-        backgroundColor: "#f5f5f5",
+        backgroundColor: theme.colors.gridBackground,
         pointerEvents: "none",
         zIndex: 10
       }}>

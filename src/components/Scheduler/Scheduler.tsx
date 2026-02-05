@@ -124,7 +124,7 @@ const Scheduler = ({
   }
 
   if (!outsideWrapperRef.current) null;
-
+ 
   return (
     <>
       <GlobalStyle />

@@ -1,4 +1,3 @@
-import { ChevronsLeftRightEllipsisIcon } from "lucide-react";
 import { boxHeight } from "@/constants";
 import { Theme } from "@/styles";
 
@@ -13,31 +12,44 @@ export const drawCell = (
   theme: Theme,
   flag?: boolean
 ) => {
-  ctx.strokeStyle = theme.colors.border;
+  const borderColor = theme.mode === "dark" ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)";
+
   if (isCurrentDay && flag) {
-    const dayTheme = "black";
+    // Draw subtle today column highlight
+    const lineHeight = rows * boxHeight * 2;
 
-    ctx.lineWidth = 0.15;
-    ctx.setLineDash([5, 5]);
-    ctx.strokeStyle = dayTheme;
+    // Soft column background tint
+    ctx.fillStyle = theme.mode === "dark" ? "rgba(52, 199, 89, 0.06)" : "rgba(52, 199, 89, 0.05)";
+    ctx.fillRect(x, y, width, boxHeight * 2);
+
+    // Clean dashed vertical line
+    ctx.strokeStyle = theme.mode === "dark" ? "rgba(52, 199, 89, 0.4)" : "rgba(52, 199, 89, 0.35)";
+    ctx.lineWidth = 1.5;
+    ctx.setLineDash([4, 4]);
     ctx.beginPath();
-    ctx.moveTo(x + 0.5, 0.5);
-    ctx.lineTo(x + 0.5, innerWidth);
-
+    ctx.moveTo(x, 0);
+    ctx.lineTo(x, lineHeight);
     ctx.stroke();
-    ctx.strokeStyle = theme.colors.border;
-    ctx.beginPath();
+
+    // Cell border
+    ctx.strokeStyle = borderColor;
+    ctx.lineWidth = 0.5;
     ctx.setLineDash([]);
+    ctx.beginPath();
     ctx.strokeRect(x + 0.5, y, width, boxHeight * 2);
   } else if (isBusinessDay) {
-    ctx.lineWidth = 0.15;
-
+    ctx.strokeStyle = borderColor;
+    ctx.lineWidth = 0.5;
     ctx.fillStyle = "transparent";
     ctx.beginPath();
     ctx.setLineDash([]);
     ctx.strokeRect(x + 0.5, y, width, boxHeight * 2);
   } else {
-    ctx.fillStyle = theme.colors.primary;
+    // Weekend/non-business day - subtle tint
+    ctx.fillStyle = theme.mode === "dark" ? "rgba(255,255,255,0.02)" : "rgba(0,0,0,0.015)";
+    ctx.fillRect(x, y, width, boxHeight * 2);
+    ctx.strokeStyle = borderColor;
+    ctx.lineWidth = 0.5;
     ctx.beginPath();
     ctx.setLineDash([]);
     ctx.strokeRect(x + 0.5, y, width, boxHeight * 2);

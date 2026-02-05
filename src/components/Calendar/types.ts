@@ -1,4 +1,3 @@
-import { AnyAction } from "redux";
 import { Dispatch } from "react";
 import { SchedulerData, SchedulerItemClickData, SchedulerProjectData } from "@/types/global";
 export type CalendarProps = {

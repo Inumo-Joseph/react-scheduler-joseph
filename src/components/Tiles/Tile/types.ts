@@ -1,5 +1,4 @@
 import { Dispatch, Ref } from "react";
-import { AnyAction } from "redux";
 import { DragEndEvent } from "@dnd-kit/core";
 import { SchedulerData, SchedulerProjectData } from "@/types/global";
 
@@ -55,6 +54,8 @@ export type TileProps = {
   ) => void;
   handleDragEnd?: (event: DragEndEvent) => void;
   truncateText?: boolean;
+  /** Hide text for crowded recurring tiles (only show on last tile) */
+  hideRecurringText?: boolean;
   setTruncate?: React.Dispatch<React.SetStateAction<boolean>>;
   projectData: SchedulerData;
   tileRef?: React.RefObject<HTMLButtonElement>;

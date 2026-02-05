@@ -19,7 +19,7 @@ export const drawRow = (config: DrawRowConfig, theme: Theme) => {
   } = config;
 
   ctx.beginPath();
-  ctx.strokeStyle = theme.colors.border;
+  ctx.strokeStyle = theme.mode === "dark" ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)";
   ctx.setLineDash([]);
 
   if (label && font && textYPos) {

@@ -21,7 +21,7 @@ const LeftColumnItem: FC<LeftColumnItemProps> = ({ id, item, rows, onItemClick }
 
         <StyledTextWrapper>
           <StyledText isMain>
-            {item.title.length >= 12 ? item.title.substring(0, 11).concat("...") : item.title}
+            {item.title.length >= 20 ? item.title.substring(0, 11).concat("...") : item.title}
           </StyledText>
         </StyledTextWrapper>
       </StyledInnerWrapper>
