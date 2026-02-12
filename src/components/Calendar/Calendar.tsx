@@ -197,7 +197,8 @@ export const Calendar: FC<CalendarProps> = ({
       style={{
         transformOrigin: "center",
         width: "max-content"
-      }}>
+      }}
+    >
       <StyledOuterWrapper>
         <LeftColumn
           data={page}

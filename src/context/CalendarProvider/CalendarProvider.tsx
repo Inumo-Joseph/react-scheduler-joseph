@@ -280,7 +280,8 @@ const CalendarProvider = ({
         handleFilterData,
         recordsThreshold: maxRecordsPerPage,
         onClearFilterData
-      }}>
+      }}
+    >
       {children}
     </Provider>
   );

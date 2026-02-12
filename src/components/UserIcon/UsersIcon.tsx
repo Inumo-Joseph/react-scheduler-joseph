@@ -37,7 +37,8 @@ const UsersIcon: FC<UsersIconProps> = ({ users, zoom }) => {
         overflow: "hidden",
         textAlign: "center",
         flex: "flex-basis"
-      }}>
+      }}
+    >
       {/* Optional faded icon behind initials */}
       <div
         style={{
@@ -48,7 +49,8 @@ const UsersIcon: FC<UsersIconProps> = ({ users, zoom }) => {
           display: "flex",
           alignItems: "center",
           justifyContent: "center"
-        }}>
+        }}
+      >
         <AccountIcon />
       </div>
 

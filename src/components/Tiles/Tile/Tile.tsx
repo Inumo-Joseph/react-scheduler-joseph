@@ -75,7 +75,8 @@ const Tile: FC<TileProps> = memo(
           size="mini"
           onClose={handleCancelDelete}
           closeOnDimmerClick={true}
-          dimmer={{ style: { backgroundColor: "rgba(0,0,0,0.1)" } }}>
+          dimmer={{ style: { backgroundColor: "rgba(0,0,0,0.1)" } }}
+        >
           <Modal.Content>{`Do you want to delete [${data.name}]? This action cannot be undone.`}</Modal.Content>
           <Modal.Actions>
             <Button onClick={handleCancelDelete}>No</Button>
@@ -284,7 +285,8 @@ const Tile: FC<TileProps> = memo(
             justifyContent: "center",
             gap: "5px",
             color: "white"
-          }}>
+          }}
+        >
           <button
             style={{
               background: data.isCompleted ? "#e04658" : "#038759",
@@ -297,7 +299,8 @@ const Tile: FC<TileProps> = memo(
               borderRadius: "4px",
               fontSize: "0.6rem"
             }}
-            onClick={handleTaskToggle}>
+            onClick={handleTaskToggle}
+          >
             {data.isCompleted ? "Undo" : "Done"}
           </button>
           <div style={{ color: "black" }}>
@@ -312,7 +315,8 @@ const Tile: FC<TileProps> = memo(
           {data.recurring && (
             <div
               className="relative flex text-[white] w-[40px] h-[21px] px-1 items-center justify-between rounded-[4px]"
-              style={{ backgroundColor: getStatus(data).background }}>
+              style={{ backgroundColor: getStatus(data).background }}
+            >
               {reccuringIcon}
               <p>{data.recurring?.[0].toUpperCase()}</p>
             </div>
@@ -351,7 +355,8 @@ const Tile: FC<TileProps> = memo(
         <div
           style={{ pointerEvents: (isDragging && transform) || isOver ? "none" : "auto" }}
           onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeavePopup}>
+          onMouseLeave={handleMouseLeavePopup}
+        >
           <Popup
             open={popupOpen}
             size="mini"
@@ -384,7 +389,8 @@ const Tile: FC<TileProps> = memo(
                               overflow: "hidden",
                               whiteSpace: "nowrap"
                             })
-                          }}>
+                          }}
+                        >
                           {data.name}
                         </span>
                       </div>

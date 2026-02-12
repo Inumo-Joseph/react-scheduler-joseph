@@ -407,7 +407,8 @@ function App() {
           <div
             onClick={() => {
               handleGoTodayClick();
-            }}>
+            }}
+          >
             <div
               style={{
                 display: "flex",
@@ -415,7 +416,8 @@ function App() {
                 alignItems: "center", // vertical alignment
                 justifyContent: "center", // horizontal centering
                 gap: "5px" // spacing between items
-              }}>
+              }}
+            >
               <Calendar />
               Today
             </div>
@@ -425,7 +427,8 @@ function App() {
           <select
             name="select"
             value={schedulerZoom}
-            onChange={(e) => setSchedulerZoom(e.target.value)}>
+            onChange={(e) => setSchedulerZoom(e.target.value)}
+          >
             <option value=""> DAYS, WEEKS, QUARTERS, YEAR </option>
             <option value={"1"}> DAYS</option>
             <option value={"0"}> WEEKS </option>
@@ -439,7 +442,8 @@ function App() {
         <Button
           onClick={() => {
             setShowChecked(!showChecked);
-          }}>
+          }}
+        >
           {" "}
           Show/Hide Checked Items{" "}
         </Button>
@@ -451,7 +455,8 @@ function App() {
             value={schedulerSize}
             onChange={(e) => {
               setSchedulerSize(e.target.value);
-            }}>
+            }}
+          >
             <option value={1}> 0% </option>
             <option value={1.1}> 50% </option>
             <option value={1.2}> 75% </option>

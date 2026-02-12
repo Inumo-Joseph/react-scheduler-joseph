@@ -23,7 +23,8 @@ const IconButton = ({
       isFullRounded={isFullRounded}
       hasChildren={!!children}
       disabled={isDisabled}
-      variant={variant}>
+      variant={variant}
+    >
       <Icon
         iconName={iconName}
         width={width}

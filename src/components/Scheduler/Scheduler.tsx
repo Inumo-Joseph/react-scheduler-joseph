@@ -140,11 +140,13 @@ const Scheduler = ({
             schedulerZoom={schedulerZoom}
             onClearFilterData={onClearFilterData}
             todayClicked={todayClicked}
-            hideCheckedItems={hideCheckedItems}>
+            hideCheckedItems={hideCheckedItems}
+          >
             <StyledOutsideWrapper
               showScroll={!!data.length}
               id={outsideWrapperId}
-              ref={outsideWrapperRef}>
+              ref={outsideWrapperRef}
+            >
               <StyledInnerWrapper>
                 <Calendar
                   data={filteredData}

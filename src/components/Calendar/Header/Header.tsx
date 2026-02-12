@@ -67,7 +67,8 @@ const Header: FC<HeaderProps> = ({
         backgroundColor: "#f5f5f5",
         pointerEvents: "none",
         zIndex: 10
-      }}>
+      }}
+    >
       {/* <Topbar
         width={topBarWidth}
         showThemeToggle={showThemeToggle}

@@ -1,6 +1,9 @@
 # Node artifact and build files
 node_modules/
 dist/
+.claude-flow/
+.hive-mind/
+.swarm
 
 # Log files
 *.log
